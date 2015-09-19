@@ -1,3 +1,5 @@
+require('./common');
+
 import assert from 'assert';
 import { linear, relu, sigmoid, sigmoidHard, tanh, softmax } from '../src/functions/activations';
 
@@ -9,9 +11,10 @@ describe('Activation functions', function () {
   while(repeat--) {
     x = x.concat(x);
   }
+  let x_float32 = new Float32Array(x);
 
   describe('linear', function () {
-    it('should return expected result', (done) => {
+    it('[baseline] should return expected result', (done) => {
       let start = new Date().getTime();
       let y = linear(x);
       console.log(`      ${new Date().getTime() - start} ms`);
@@ -26,12 +29,23 @@ describe('Activation functions', function () {
     while(repeat--) {
       expected = expected.concat(expected);
     }
+    let expected_float32 = new Float32Array(expected);
 
-    it('should return expected result', (done) => {
+    it('[baseline] should return expected result', (done) => {
+      let useSIMD = false;
       let start = new Date().getTime();
-      let y = relu(x);
+      let y = relu(x, useSIMD);
       console.log(`      ${new Date().getTime() - start} ms`);
       assert(y.every((y_i, i) => Math.abs(y_i - expected[i]) < EPSILON));
+      done();
+    });
+
+    it('[SIMD] should return expected result', (done) => {
+      let useSIMD = true;
+      let start = new Date().getTime();
+      let y_float32 = relu(x_float32, useSIMD);
+      console.log(`      ${new Date().getTime() - start} ms`);
+      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < EPSILON));
       done();
     });
   });

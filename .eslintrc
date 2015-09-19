@@ -9,7 +9,8 @@
             "always"
         ],
         "no-eval": 2,
-        "no-console": 0
+        "no-console": 0,
+        "no-undef": 0
     },
     "env": {
         "es6": true,
