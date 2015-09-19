@@ -1,0 +1,42 @@
+{
+  "name": "neuralnet-predict-js",
+  "version": "0.0.0",
+  "description": "Run trained neural networks in the browser or node.js",
+  "main": "dist/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "rm -rf dist && node_modules/.bin/babel src --out-dir dist",
+    "prepublish": "npm run build",
+    "test": "mocha --reporter spec --compilers js:babel/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transcranial/neuralnet-predict-js.git"
+  },
+  "keywords": [
+    "neuralnet",
+    "neuralnets",
+    "neuralnetworks",
+    "neural",
+    "network",
+    "networks",
+    "deep",
+    "machine",
+    "learning"
+  ],
+  "author": "Leon Chen <lchen3@gmail.com> (@transcranial)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/transcranial/neuralnet-predict-js/issues"
+  },
+  "homepage": "https://github.com/transcranial/neuralnet-predict-js#readme",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-eslint": "^4.1.3",
+    "eslint": "^1.5.0",
+    "mocha": "^2.3.2"
+  },
+  "dependencies": {}
+}
