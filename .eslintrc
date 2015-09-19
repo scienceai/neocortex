@@ -1,0 +1,25 @@
+{
+    "rules": {
+        "quotes": [
+            2,
+            "single"
+        ],
+        "semi": [
+            2,
+            "always"
+        ],
+        "no-eval": 2,
+        "no-console": 0
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true,
+        "mocha": true,
+        "worker": true
+    },
+    "ecmaFeatures": {
+        "modules": true
+    },
+    "extends": "eslint:recommended"
+}
