@@ -1,0 +1,1 @@
+export { NeuralNet } from 'neuralnet';
