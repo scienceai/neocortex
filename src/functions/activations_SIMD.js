@@ -1,4 +1,6 @@
 let F32x4 = SIMD.Float32x4;
+let B32x4 = SIMD.Bool32x4;
+let I32x4 = SIMD.Int32x4;
 
 /**
  * Linear function
@@ -34,22 +36,22 @@ export function sigmoid(x) {
 
   for(let i = 0; i < x.length; i += 4) {
     let x_f = F32x4.mul(F32x4.splat(0.5), F32x4.load(x, i));
-    let mask_0 = F32x4.and(F32x4.greaterThanOrEqual(x_f, zeros), F32x4.lessThan(x_f, F32x4.splat(1.7)));
-    let mask_1 = F32x4.and(F32x4.greaterThanOrEqual(x_f, F32x4.splat(1.7)), F32x4.lessThan(x_f, F32x4.splat(3)));
+    let mask_0 = B32x4.and(F32x4.greaterThanOrEqual(x_f, zeros), F32x4.lessThan(x_f, F32x4.splat(1.7)));
+    let mask_1 = B32x4.and(F32x4.greaterThanOrEqual(x_f, F32x4.splat(1.7)), F32x4.lessThan(x_f, F32x4.splat(3)));
     let mask_2 = F32x4.greaterThanOrEqual(x_f, F32x4.splat(3));
-    let mask_3 = F32x4.and(F32x4.greaterThanOrEqual(x_f, F32x4.splat(-1.7)), F32x4.lessThan(x_f, zeros));
-    let mask_4 = F32x4.and(F32x4.greaterThanOrEqual(x_f, F32x4.splat(-3)), F32x4.lessThan(x_f, F32x4.splat(-1.7)));
+    let mask_3 = B32x4.and(F32x4.greaterThanOrEqual(x_f, F32x4.splat(-1.7)), F32x4.lessThan(x_f, zeros));
+    let mask_4 = B32x4.and(F32x4.greaterThanOrEqual(x_f, F32x4.splat(-3)), F32x4.lessThan(x_f, F32x4.splat(-1.7)));
     let mask_5 = F32x4.lessThan(x_f, F32x4.splat(-3));
 
     x_f = F32x4.select(mask_0, F32x4.div(F32x4.mul(F32x4.splat(1.5), x_f), F32x4.add(F32x4.splat(1), x_f)), x_f);
 
-    x_f = F32x4.select(mask_1, F32x4.add(F32x4.splat(0.935409070603099), F32x4.mul(0.0458812946797165, F32x4.sub(x_f, F32x4.splat(1.7)))), x_f);
+    x_f = F32x4.select(mask_1, F32x4.add(F32x4.splat(0.935409070603099), F32x4.mul(F32x4.splat(0.0458812946797165), F32x4.sub(x_f, F32x4.splat(1.7)))), x_f);
 
     x_f = F32x4.select(mask_2, F32x4.splat(0.99505475368673), x_f);
 
     x_f = F32x4.select(mask_3, F32x4.div(F32x4.mul(F32x4.splat(1.5), x_f), F32x4.sub(F32x4.splat(1), x_f)), x_f);
 
-    x_f = F32x4.select(mask_4, F32x4.add(F32x4.splat(-0.935409070603099), F32x4.mul(0.0458812946797165, F32x4.sub(x_f, F32x4.splat(1.7)))), x_f);
+    x_f = F32x4.select(mask_4, F32x4.add(F32x4.splat(-0.935409070603099), F32x4.mul(F32x4.splat(0.0458812946797165), F32x4.sub(x_f, F32x4.splat(1.7)))), x_f);
 
     x_f = F32x4.select(mask_5, F32x4.splat(-0.99505475368673), x_f);
 
