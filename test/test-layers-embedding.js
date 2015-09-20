@@ -12,7 +12,7 @@ describe('Layer: embedding', function() {
   ops.assign(E.pick(3, null), ndarray(new Float32Array([0.7, 0.8, 0.9]), [3]));
 
   it('should create zero-masked embedding matrix', (done) => {
-    let y = embeddingLayer(input, E);
+    let y = embeddingLayer(input, { E });
     assert.deepEqual(y.shape, [3, 3]);
     for (let i = 0; i < y.shape[0]; i++) {
       for (let j = 0; j < y.shape[1]; j++) {
