@@ -33,11 +33,16 @@
   },
   "homepage": "https://github.com/transcranial/neuralnet-predict-js#readme",
   "devDependencies": {
+    "almost-equal": "^1.0.0",
     "babel": "^5.8.23",
     "babel-eslint": "^4.1.3",
     "eslint": "^1.5.0",
     "mocha": "^2.3.2",
     "simd": "^2.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "cwise": "^1.0.8",
+    "ndarray": "^1.0.18",
+    "ndarray-ops": "^1.2.2"
+  }
 }
