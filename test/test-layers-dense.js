@@ -10,7 +10,7 @@ describe('Layer: dense', function() {
 
   it('should produce expected W*x + b', (done) => {
     let expected = [1.35, 2.8, 4.25];
-    let y = denseLayer(x, W, b);
+    let y = denseLayer(x, { W, b });
     assert.deepEqual(y.shape, [3]);
     for (let i = 0; i < y.shape[0]; i++) {
       assert(almostEqual(y.get(i), expected[i], almostEqual.FLT_EPSILON, almostEqual.FLT_EPSILON));
@@ -20,7 +20,7 @@ describe('Layer: dense', function() {
 
   it('should produce expected softmax(W*x + b)', (done) => {
     let expected = [0.0426671, 0.18189475, 0.77543815];
-    let y = denseLayer(x, W, b, 'softmax');
+    let y = denseLayer(x, { W, b }, 'softmax');
     assert.deepEqual(y.shape, [3]);
     for (let i = 0; i < y.shape[0]; i++) {
       assert(almostEqual(y.get(i), expected[i], almostEqual.FLT_EPSILON, almostEqual.FLT_EPSILON));
