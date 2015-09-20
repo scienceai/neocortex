@@ -1,9 +1,9 @@
-require('./common');
-
 import assert from 'assert';
+import ndarray from 'ndarray';
+import almostEqual from 'almost-equal';
 import { linear, relu, sigmoid, sigmoidHard, tanh, softmax } from '../src/functions/activations';
 
-const EPSILON = 0.00001;
+const EPSILON = almostEqual.FLT_EPSILON;
 
 describe('Activation functions [baseline]', function () {
   let x = [ 0.01, 0.03, -0.01, 0.05, 0 ];
@@ -11,31 +11,37 @@ describe('Activation functions [baseline]', function () {
   while(repeat--) {
     x = x.concat(x);
   }
-  let x_float32 = new Float32Array(x);
+
+  let x_float32;
+  // activation functions mutate data in-place, thus we need new vectors for each test
+  beforeEach((done) => {
+    x_float32 = ndarray(new Float32Array(x), [Math.pow(2,17)*5]);
+    done();
+  });
 
   describe('linear', function () {
     it('should return expected result', (done) => {
       let start = new Date().getTime();
       let y_float32 = linear(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
-      assert.equal(y_float32, x_float32);
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - x_float32.data[i]) < EPSILON));
       done();
     });
   });
 
   describe('relu', function () {
-    let expected = [ 0.01, 0.03, 0, 0.05, 0];
+    let expected = [ 0.01, 0.03, 0.01, 0.05, 0];
     let repeat = 17;
     while(repeat--) {
       expected = expected.concat(expected);
     }
-    let expected_float32 = new Float32Array(expected);
+    let expected_float32 = ndarray(new Float32Array(expected), [Math.pow(2,17)*5]);
 
     it('should return expected result', (done) => {
       let start = new Date().getTime();
       let y_float32 = relu(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
-      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < EPSILON));
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < EPSILON));
       done();
     });
   });
@@ -46,13 +52,13 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expected = expected.concat(expected);
     }
-    let expected_float32 = new Float32Array(expected);
+    let expected_float32 = ndarray(new Float32Array(expected), [Math.pow(2,17)*5]);
 
     it('should return expected result', (done) => {
       let start = new Date().getTime();
       let y_float32 = sigmoid(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
-      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < EPSILON));
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < EPSILON));
       done();
     });
   });
@@ -63,14 +69,14 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expectedSigmoid = expectedSigmoid.concat(expectedSigmoid);
     }
-    let expected_float32 = new Float32Array(expectedSigmoid);
+    let expected_float32 = ndarray(new Float32Array(expectedSigmoid), [Math.pow(2,17)*5]);
 
     it('should be pretty close to normal sigmoid', (done) => {
       let start = new Date().getTime();
       let y_float32 = sigmoidHard(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
       // should be pretty close to normal sigmoid
-      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < 0.01));
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < 0.01));
       done();
     });
   });
@@ -81,13 +87,13 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expected = expected.concat(expected);
     }
-    let expected_float32 = new Float32Array(expected);
+    let expected_float32 = ndarray(new Float32Array(expected), [Math.pow(2,17)*5]);
 
     it('should return expected result', (done) => {
       let start = new Date().getTime();
       let y_float32 = tanh(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
-      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < EPSILON));
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < EPSILON));
       done();
     });
   });
@@ -99,13 +105,13 @@ describe('Activation functions [baseline]', function () {
       expected = expected.concat(expected);
     }
     expected = expected.map(z => 5 * z / expected.length);
-    let expected_float32 = new Float32Array(expected);
+    let expected_float32 = ndarray(new Float32Array(expected), [Math.pow(2,17)*5]);
 
     it('should return expected result', (done) => {
       let start = new Date().getTime();
       let y_float32 = softmax(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
-      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < EPSILON));
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < EPSILON));
       done();
     });
   });

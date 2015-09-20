@@ -1,3 +1,5 @@
+import ops from 'ndarray-ops';
+
 /**
  * Linear function
  * 1-to-1 input-output mapping
@@ -10,26 +12,16 @@ export function linear(x) {
  * Rectified linear unit
  */
 export function relu(x) {
-  let y = new Float32Array(x.length);
-
-  for (let i = 0; i < x.length; i++) {
-    y[i] = (x[i] + Math.abs(x[i])) / 2.0;
-  }
-
-  return y;
+  ops.divseq(ops.addeq(x, ops.abseq(x)), 2.0);
+  return x;
 }
 
 /**
  * Sigmoid function
  */
 export function sigmoid(x) {
-  let y = new Float32Array(x.length);
-
-  for (let i = 0; i < x.length; i++) {
-    y[i] = 1.0 / (1.0 + Math.exp(-x[i]));
-  }
-
-  return y;
+  ops.recipeq(ops.addseq(ops.expeq(ops.negeq(x)), 1.0));
+  return x;
 }
 
 /**
@@ -37,42 +29,31 @@ export function sigmoid(x) {
  * approximate sigmoid with increased computational efficiency
  */
 export function sigmoidHard(x) {
-  let y = new Float32Array(x.length);
-
-  for (let i = 0; i < x.length; i++) {
-    let y_i = x[i] * 0.2 + 0.5;
-    if (y_i > 1) y_i = 1;
-    if (y_i < 0) y_i = 0;
-    y[i] = y_i;
+  ops.addseq(ops.mulseq(x, 0.2), 0.5);
+  for (let i = 0; i < x.size; i++) {
+    if (x.data[i] > 1) x.data[i] = 1;
+    if (x.data[i] < 0) x.data[i] = 0;
   }
-
-  return y;
+  return x;
 }
 
 /**
  * Hyperbolic tangent
  */
 export function tanh(x) {
-  let y = new Float32Array(x.length);
-  for (let i = 0; i < x.length; i++) {
-    y[i] = (Math.exp(2.0 * x[i] ) - 1) / (Math.exp(2.0 * x[i] ) + 1);
+  ops.expeq(ops.mulseq(x, 2.0));
+  for (let i = 0; i < x.size; i++) {
+    x.data[i] = (x.data[i] - 1) / (x.data[i] + 1);
   }
-  return y;
+  return x;
 }
 
 /**
  * Softmax function
  */
 export function softmax(x) {
-  let e = new Float32Array(x.length);
-  for (let i = 0; i < x.length; i++) {
-    e[i] = Math.exp(x[i]);
-  }
-  let sum = e.reduce((a, b) => a + b);
-
-  let y = new Float32Array(e.length);
-  for (let i = 0; i < e.length; i++) {
-    y[i] = e[i] / sum;
-  }
-  return y;
+  ops.expeq(x);
+  let sum = ops.sum(x);
+  ops.divseq(x, sum);
+  return x;
 }
