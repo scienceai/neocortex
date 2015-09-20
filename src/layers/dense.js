@@ -4,7 +4,9 @@ import mvprod from 'ndarray-matrix-vector-product';
 import { elemAdd } from '../lib/helper';
 import * as activationFuncs from '../functions/activations';
 
-export function denseLayer(x, W, b, activation='linear') {
+export function denseLayer(x, weights, activation='linear') {
+  let { W, b } = weights;
+
   let y = ndarray(new Float32Array(W.shape[0]), [W.shape[0]]);
 
   // W*x
@@ -12,7 +14,7 @@ export function denseLayer(x, W, b, activation='linear') {
   // W*x + b
   elemAdd(y, b);
   // activation(W*x + b)
-  y.data = activationFuncs[activation](y.data);
+  activationFuncs[activation](y);
 
   return y;
 }
