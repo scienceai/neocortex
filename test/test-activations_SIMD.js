@@ -1,4 +1,4 @@
-require('./common');
+require('./simd-shim');
 
 import assert from 'assert';
 import { linear, relu, sigmoid, sigmoidHard, tanh, softmax } from '../src/functions/activations_SIMD';
