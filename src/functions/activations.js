@@ -10,14 +10,12 @@ export function linear(x) {
  * Rectified linear unit
  */
 export function relu(x) {
-  // x isinstance of Array
-  let y = [];
+  let y = new Float32Array(x.length);
 
   for (let i = 0; i < x.length; i++) {
-    y.push( (x[i] + Math.abs(x[i])) / 2.0 );
+    y[i] = (x[i] + Math.abs(x[i])) / 2.0;
   }
 
-  // returns an instance of Array
   return y;
 }
 
@@ -25,14 +23,12 @@ export function relu(x) {
  * Sigmoid function
  */
 export function sigmoid(x) {
-  // x isinstance of Array
-  let y = [];
+  let y = new Float32Array(x.length);
 
   for (let i = 0; i < x.length; i++) {
-    y.push( 1.0 / (1.0 + Math.exp(-x[i])) );
+    y[i] = 1.0 / (1.0 + Math.exp(-x[i]));
   }
 
-  // returns an instance of Array
   return y;
 }
 
@@ -41,17 +37,15 @@ export function sigmoid(x) {
  * approximate sigmoid with increased computational efficiency
  */
 export function sigmoidHard(x) {
-  // x isinstance of Array
-  let y = [];
+  let y = new Float32Array(x.length);
 
   for (let i = 0; i < x.length; i++) {
     let y_i = x[i] * 0.2 + 0.5;
     if (y_i > 1) y_i = 1;
     if (y_i < 0) y_i = 0;
-    y.push(y_i);
+    y[i] = y_i;
   }
 
-  // returns an instance of Array
   return y;
 }
 
@@ -59,9 +53,9 @@ export function sigmoidHard(x) {
  * Hyperbolic tangent
  */
 export function tanh(x) {
-  let y = [];
+  let y = new Float32Array(x.length);
   for (let i = 0; i < x.length; i++) {
-    y.push( (Math.exp(2.0 * x[i] ) - 1) / (Math.exp(2.0 * x[i] ) + 1) );
+    y[i] = (Math.exp(2.0 * x[i] ) - 1) / (Math.exp(2.0 * x[i] ) + 1);
   }
   return y;
 }
@@ -70,15 +64,15 @@ export function tanh(x) {
  * Softmax function
  */
 export function softmax(x) {
-  let e = [];
+  let e = new Float32Array(x.length);
   for (let i = 0; i < x.length; i++) {
-    e.push( Math.exp(x[i]) );
+    e[i] = Math.exp(x[i]);
   }
   let sum = e.reduce((a, b) => a + b);
 
-  let y = [];
+  let y = new Float32Array(e.length);
   for (let i = 0; i < e.length; i++) {
-    y.push( e[i] / sum );
+    y[i] = e[i] / sum;
   }
   return y;
 }

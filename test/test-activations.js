@@ -11,13 +11,14 @@ describe('Activation functions [baseline]', function () {
   while(repeat--) {
     x = x.concat(x);
   }
+  let x_float32 = new Float32Array(x);
 
   describe('linear', function () {
     it('should return expected result', (done) => {
       let start = new Date().getTime();
-      let y = linear(x);
+      let y_float32 = linear(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
-      assert.equal(y, x);
+      assert.equal(y_float32, x_float32);
       done();
     });
   });
@@ -28,12 +29,13 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expected = expected.concat(expected);
     }
+    let expected_float32 = new Float32Array(expected);
 
     it('should return expected result', (done) => {
       let start = new Date().getTime();
-      let y = relu(x);
+      let y_float32 = relu(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
-      assert(y.every((y_i, i) => Math.abs(y_i - expected[i]) < EPSILON));
+      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < EPSILON));
       done();
     });
   });
@@ -44,12 +46,13 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expected = expected.concat(expected);
     }
+    let expected_float32 = new Float32Array(expected);
 
     it('should return expected result', (done) => {
       let start = new Date().getTime();
-      let y = sigmoid(x);
+      let y_float32 = sigmoid(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
-      assert(y.every((y_i, i) => Math.abs(y_i - expected[i]) < EPSILON));
+      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < EPSILON));
       done();
     });
   });
@@ -60,13 +63,14 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expectedSigmoid = expectedSigmoid.concat(expectedSigmoid);
     }
+    let expected_float32 = new Float32Array(expectedSigmoid);
 
     it('should be pretty close to normal sigmoid', (done) => {
       let start = new Date().getTime();
-      let y = sigmoidHard(x);
+      let y_float32 = sigmoidHard(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
       // should be pretty close to normal sigmoid
-      assert(y.every((y_i, i) => Math.abs(y_i - expectedSigmoid[i]) < 0.01));
+      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < 0.01));
       done();
     });
   });
@@ -77,12 +81,13 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expected = expected.concat(expected);
     }
+    let expected_float32 = new Float32Array(expected);
 
     it('should return expected result', (done) => {
       let start = new Date().getTime();
-      let y = tanh(x);
+      let y_float32 = tanh(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
-      assert(y.every((y_i, i) => Math.abs(y_i - expected[i]) < EPSILON));
+      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < EPSILON));
       done();
     });
   });
@@ -94,12 +99,13 @@ describe('Activation functions [baseline]', function () {
       expected = expected.concat(expected);
     }
     expected = expected.map(z => 5 * z / expected.length);
+    let expected_float32 = new Float32Array(expected);
 
     it('should return expected result', (done) => {
       let start = new Date().getTime();
-      let y = softmax(x);
+      let y_float32 = softmax(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
-      assert(y.every((y_i, i) => Math.abs(y_i - expected[i]) < EPSILON));
+      assert(y_float32.every((y_i, i) => Math.abs(y_i - expected_float32[i]) < EPSILON));
       done();
     });
   });
