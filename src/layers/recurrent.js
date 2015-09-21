@@ -6,18 +6,18 @@ import * as activationFuncs from '../functions/activations';
 export function rGRULayer(x, weights, activation='tanh', innerActivation='sigmoidHard') {
   let { W_xz, W_hz, b_z, W_xr, W_hr, b_r, W_xh, W_hh, b_h } = weights;
 
-  let x_t = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let temp = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let temp2 = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let z_t = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let temp_xz = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let temp_hz = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let r_t = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let temp_xr = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let temp_hr = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let h_t = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let temp_xh = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
-  let temp_hh = ndarray(new Float32Array(x.shape[1]), x.shape[1]);
+  let x_t = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let temp = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let temp2 = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let z_t = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let temp_xz = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let temp_hz = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let r_t = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let temp_xr = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let temp_hr = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let h_t = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let temp_xh = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
+  let temp_hh = ndarray(new Float64Array(x.shape[1]), x.shape[1]);
 
   function _step(_x_t, _h_tm1) {
     mvprod(temp_xz, W_xz, _x_t);

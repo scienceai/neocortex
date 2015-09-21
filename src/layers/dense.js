@@ -6,7 +6,7 @@ import * as activationFuncs from '../functions/activations';
 export function denseLayer(x, weights, activation='linear') {
   let { W, b } = weights;
 
-  let y = ndarray(new Float32Array(W.shape[0]), [W.shape[0]]);
+  let y = ndarray(new Float64Array(W.shape[0]), [W.shape[0]]);
 
   // W*x
   mvprod(y, W, x);
