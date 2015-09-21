@@ -4,18 +4,18 @@ import ndarray from 'ndarray';
 import pack from 'ndarray-pack';
 import { rGRULayer } from '../src/layers/recurrent';
 
-const EPSILON = almostEqual.DBL_EPSILON;
+const EPSILON = almostEqual.FLT_EPSILON;
 
 describe('Layer: recurrent', function() {
-  let input = ndarray(new Float64Array([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]), [2, 4]);
+  let input = pack([[0.1, 0.0, 0.9, 0.6], [0.5, 0.5, 0.5, 0.3]]);
 
   describe('gated recurrent unit (GRU)', function() {
     it('should output the correct hidden state at the last timestep', (done) => {
       let weights = require('./fixtures/test_weights_GRU.json');
       for (let key in weights) {
-        let packed = pack(weights[key]);
-        packed.data = ndarray(new Float64Array(packed.data), packed.);
-        weights[key] = packed;
+        // pack creates Float64Array ndarrays
+        // TODO: need to convert to Float32Array if set as default
+        weights[key] = pack(weights[key]);
       }
 
       let y = rGRULayer(input, weights);
@@ -23,9 +23,7 @@ describe('Layer: recurrent', function() {
 
       assert.deepEqual(y.shape, [4]);
       for (let i = 0; i < y.shape[0]; i++) {
-        for (let j = 0; j < y.shape[1]; j++) {
-          assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
-        }
+        assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
       }
       done();
     });
