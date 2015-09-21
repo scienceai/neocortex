@@ -9,9 +9,9 @@ const EPSILON = almostEqual.FLT_EPSILON;
 describe('Layer: recurrent', function() {
   let input = pack([[0.1, 0.0, 0.9, 0.6], [0.5, 0.5, 0.5, 0.3]]);
 
-  describe('gated recurrent unit (GRU)', function() {
+  describe('gated recurrent unit (GRU) serialized from Keras', function() {
     it('should output the correct hidden state at the last timestep', (done) => {
-      let weights = require('./fixtures/test_weights_GRU.json');
+      let weights = require('./fixtures/test_weights_GRU_keras.json');
       for (let key in weights) {
         // pack creates Float64Array ndarrays
         // TODO: need to convert to Float32Array if set as default
