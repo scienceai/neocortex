@@ -3,7 +3,7 @@ import ndarray from 'ndarray';
 import almostEqual from 'almost-equal';
 import { linear, relu, sigmoid, sigmoidHard, tanh, softmax } from '../src/functions/activations';
 
-const EPSILON = almostEqual.DBL_EPSILON;
+const EPSILON = almostEqual.FLT_EPSILON;
 
 describe('Activation functions [baseline]', function () {
   let x = [ 0.01, 0.03, -0.01, 0.05, 0 ];
@@ -12,21 +12,32 @@ describe('Activation functions [baseline]', function () {
     x = x.concat(x);
   }
 
-  let x_float64;
+  let x_float32, x_float64;
   // activation functions mutate data in-place, thus we need new vectors for each test
   beforeEach((done) => {
+    x_float32 = ndarray(new Float32Array(x), [Math.pow(2,17)*5]);
     x_float64 = ndarray(new Float64Array(x), [Math.pow(2,17)*5]);
     done();
   });
 
   describe('linear', function () {
-    it('should return expected result', (done) => {
+
+    it('should return expected result [float32]', (done) => {
+      let start = new Date().getTime();
+      let y_float32 = linear(x_float32);
+      console.log(`      ${new Date().getTime() - start} ms`);
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - x_float32.data[i]) < EPSILON));
+      done();
+    });
+
+    it('should return expected result [float64]', (done) => {
       let start = new Date().getTime();
       let y_float64 = linear(x_float64);
       console.log(`      ${new Date().getTime() - start} ms`);
       assert(y_float64.data.every((y_i, i) => Math.abs(y_i - x_float64.data[i]) < EPSILON));
       done();
     });
+
   });
 
   describe('relu', function () {
@@ -35,9 +46,18 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expected = expected.concat(expected);
     }
+    let expected_float32 = ndarray(new Float32Array(expected), [Math.pow(2,17)*5]);
     let expected_float64 = ndarray(new Float64Array(expected), [Math.pow(2,17)*5]);
 
-    it('should return expected result', (done) => {
+    it('should return expected result [float32]', (done) => {
+      let start = new Date().getTime();
+      let y_float32 = relu(x_float32);
+      console.log(`      ${new Date().getTime() - start} ms`);
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < EPSILON));
+      done();
+    });
+
+    it('should return expected result [float64]', (done) => {
       let start = new Date().getTime();
       let y_float64 = relu(x_float64);
       console.log(`      ${new Date().getTime() - start} ms`);
@@ -52,9 +72,18 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expected = expected.concat(expected);
     }
+    let expected_float32 = ndarray(new Float32Array(expected), [Math.pow(2,17)*5]);
     let expected_float64 = ndarray(new Float64Array(expected), [Math.pow(2,17)*5]);
 
-    it('should return expected result', (done) => {
+    it('should return expected result [float32]', (done) => {
+      let start = new Date().getTime();
+      let y_float32 = sigmoid(x_float32);
+      console.log(`      ${new Date().getTime() - start} ms`);
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < EPSILON));
+      done();
+    });
+
+    it('should return expected result [float64]', (done) => {
       let start = new Date().getTime();
       let y_float64 = sigmoid(x_float64);
       console.log(`      ${new Date().getTime() - start} ms`);
@@ -69,9 +98,19 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expectedSigmoid = expectedSigmoid.concat(expectedSigmoid);
     }
+    let expected_float32 = ndarray(new Float32Array(expectedSigmoid), [Math.pow(2,17)*5]);
     let expected_float64 = ndarray(new Float64Array(expectedSigmoid), [Math.pow(2,17)*5]);
 
-    it('should be pretty close to normal sigmoid', (done) => {
+    it('should be pretty close to normal sigmoid [float32]', (done) => {
+      let start = new Date().getTime();
+      let y_float32 = sigmoidHard(x_float32);
+      console.log(`      ${new Date().getTime() - start} ms`);
+      // should be pretty close to normal sigmoid
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < 0.01));
+      done();
+    });
+
+    it('should be pretty close to normal sigmoid [float64]', (done) => {
       let start = new Date().getTime();
       let y_float64 = sigmoidHard(x_float64);
       console.log(`      ${new Date().getTime() - start} ms`);
@@ -87,9 +126,18 @@ describe('Activation functions [baseline]', function () {
     while(repeat--) {
       expected = expected.concat(expected);
     }
+    let expected_float32 = ndarray(new Float32Array(expected), [Math.pow(2,17)*5]);
     let expected_float64 = ndarray(new Float64Array(expected), [Math.pow(2,17)*5]);
 
-    it('should return expected result', (done) => {
+    it('should return expected result [float32]', (done) => {
+      let start = new Date().getTime();
+      let y_float32 = tanh(x_float32);
+      console.log(`      ${new Date().getTime() - start} ms`);
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < EPSILON));
+      done();
+    });
+
+    it('should return expected result [float64]', (done) => {
       let start = new Date().getTime();
       let y_float64 = tanh(x_float64);
       console.log(`      ${new Date().getTime() - start} ms`);
@@ -105,9 +153,18 @@ describe('Activation functions [baseline]', function () {
       expected = expected.concat(expected);
     }
     expected = expected.map(z => 5 * z / expected.length);
+    let expected_float32 = ndarray(new Float32Array(expected), [Math.pow(2,17)*5]);
     let expected_float64 = ndarray(new Float64Array(expected), [Math.pow(2,17)*5]);
 
-    it('should return expected result', (done) => {
+    it('should return expected result [float32]', (done) => {
+      let start = new Date().getTime();
+      let y_float32 = softmax(x_float32);
+      console.log(`      ${new Date().getTime() - start} ms`);
+      assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < EPSILON));
+      done();
+    });
+
+    it('should return expected result [float64]', (done) => {
       let start = new Date().getTime();
       let y_float64 = softmax(x_float64);
       console.log(`      ${new Date().getTime() - start} ms`);
