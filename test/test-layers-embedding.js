@@ -5,7 +5,7 @@ import ops from 'ndarray-ops';
 import { embeddingLayer } from '../src/layers/embedding';
 
 describe('Layer: embedding', function() {
-  let input = ndarray(new Int64Array([0,0,0,1,2,3]), [6]);
+  let input = ndarray(new Int32Array([0,0,0,1,2,3]), [6]);
   let E = ndarray(new Float64Array(4*3), [4, 3]);
   ops.assign(E.pick(1, null), ndarray(new Float64Array([0.1, 0.2, 0.3]), [3]));
   ops.assign(E.pick(2, null), ndarray(new Float64Array([0.4, 0.5, 0.6]), [3]));
