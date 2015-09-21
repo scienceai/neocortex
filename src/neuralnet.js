@@ -4,7 +4,16 @@ export class NeuralNet {
 
     this.ARRAY_TYPE = (typeof Float64Array !== 'undefined') ? Float64Array : Array;
     this.USE_SIMD = (this.ARRAY_TYPE === Float64Array) && ('SIMD' in this);
-    this.N_PARALLEL = 1;
+    this.USE_WEBGL = false;
+
+    this._layers = [];
+  }
+
+  addLayer(layer) {
+    this._layers.push(layer);
+  }
+
+  predict(input) {
 
   }
 

@@ -1,1 +1,1 @@
-export { NeuralNet } from 'neuralnet';
+export { NeuralNet } from './neuralnet';
