@@ -5,7 +5,7 @@ import { linear, relu, sigmoid, sigmoidHard, tanh, softmax } from '../src/functi
 
 const EPSILON = 0.00001;
 
-describe('Activation functions [SIMD]', function () {
+describe.skip('Activation functions [SIMD]', function () {
   let x = [ 0.01, 0.03, -0.01, 0.05, 0 ];
   let repeat = 17;
   while(repeat--) {
