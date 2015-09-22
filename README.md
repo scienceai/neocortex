@@ -14,7 +14,7 @@ Computation on GPU is perfomed where possible and advantageous to do so. This is
 
 What about using emscripten to compile models to asm.js? It may be within the realm of possibility (especially with the coming of WebAssembly), but this would be quite heavy and not so trivial (see Cyrille Rosant's [attempts](http://cyrille.rossant.net/numpy-browser-llvm/) at running numpy in the browser through Numba and LLVM). By only focusing only on the prediction phase, we can be as light and minimal as possible. The ultimate goal of this project is to be able to serialize a Keras or Caffe model together with pretrained weights into javascript, pack it in your webapp, and be off and running.
 
-I'd be remiss if I didn't credit Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) as a source of inspiration, as well as the excellent Theano-based deep learning framework [Keras](https://github.com/fchollet/keras/). 
+I'd be remiss if I didn't credit Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) as a source of inspiration, as well as the excellent Theano-based deep learning framework [Keras](https://github.com/fchollet/keras/).
 
 ### Usage
 
@@ -73,7 +73,11 @@ $ npm run build
 
 ##### Webpack
 
+```
+$ npm run build-webpack
+```
 
+Webpack will build the whole package to `build/neuralnet-predict.min.js`.
 
 ### Tests
 
