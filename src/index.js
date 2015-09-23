@@ -4,9 +4,9 @@ import { embeddingLayer } from './layers/embedding';
 import { batchNormalizationLayer } from './layers/normalization';
 import { rGRULayer } from './layers/recurrent';
 
-import { MatmulWebGL } from './lib/matmulWebGL';
+import MatmulWebGL from './lib/matmulWebGL';
 
-import { NeuralNet } from './neuralnet';
+import NeuralNet from './neuralnet';
 
 export {
   activationFuncs,

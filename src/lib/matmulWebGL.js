@@ -101,13 +101,16 @@ void main(void) { \n\
 
   }
 
-  init(matA, matB) {
-    this.matA = matA;
-    this.matB = matB;
-
+  init() {
     this.canvas = document.getElementById('matmulWebGL');
-    this.canvas.height = matA.shape[0];
-    this.canvas.width = matB.shape[1];
+    if (!this.canvas) {
+      let canvas = document.createElement('canvas');
+      canvas.id = 'matmulWebGL';
+      document.body.appendChild(canvas);
+      this.canvas = canvas;
+    }
+    this.canvas.height = 1;
+    this.canvas.width = 1;
 
     if (!this.GL) {
       let ctxAttrs = { premultipliedAlpha: false, preserveDrawingBuffer: false };
@@ -115,9 +118,13 @@ void main(void) { \n\
                 this.canvas.getContext('experimental-webgl', ctxAttrs);
 
       if (typeof this.GL === 'undefined' || this.GL === null) throw new Error('webGL not supported.');
-    }
 
-    this.GL.viewport(0, 0, matB.shape[1], matA.shape[0]);
+      let floatTextures = this.GL.getExtension('OES_texture_float');
+      if (!floatTextures) {
+        console.warn('no floating point texture support in WebGL');
+      }
+    }
+    this.GL.viewport(0, 0, 1, 1);
 
     let vertexShader = this.GL.createShader(this.GL.VERTEX_SHADER);
     this.GL.shaderSource(vertexShader, this.vertexShaderCode);
@@ -132,11 +139,6 @@ void main(void) { \n\
 		this.GL.attachShader(this.renderer, fragmentShader);
 		this.GL.linkProgram(this.renderer);
 		this.GL.useProgram(this.renderer);
-
-    this._bindTexture();
-    this._bindUniform();
-		this._bindVertices();
-    this._bindFrameBuffer();
 
   }
 
@@ -167,7 +169,7 @@ void main(void) { \n\
         , col = 0;
       do {
         texels[(row * cA + col) * 3] = this.matA.data[srcA++];
-        texels[(col * rB + row) * 3 + 1] = this.matB[col * rB + row];
+        texels[(col * rB + row) * 3 + 1] = this.matB.data[col * rB + row];
         if (col >= cA) {
           col = 0;
           row++;
@@ -185,12 +187,8 @@ void main(void) { \n\
 
     this.GL.texParameteri(this.GL.TEXTURE_2D, this.GL.TEXTURE_MAG_FILTER, this.GL.NEAREST);
     this.GL.texParameteri(this.GL.TEXTURE_2D, this.GL.TEXTURE_MIN_FILTER, this.GL.NEAREST);
-		this.GL.uniform1i(this.GL.getUniformLocation(this.renderer,'usampler'), 0);
-
-    this.destTexture = this.GL.createTexture();
-		this.GL.activeTexture(this.GL.TEXTURE2);
-		this.GL.bindTexture(this.GL.TEXTURE_2D, this.destTexture);
-    this.GL.texImage2D(this.GL.TEXTURE_2D, 0, this.GL.RGBA, this.GL.RGBA, this.GL.UNSIGNED_BYTE, this.canvas);
+    let sampler = this.GL.getUniformLocation(this.renderer, 'usampler');
+		this.GL.uniform1i(sampler, 0);
 	}
 
   _bindUniform() {
@@ -232,6 +230,13 @@ void main(void) { \n\
 		this.GL.bufferData(this.GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(vertexIndices), this.GL.STATIC_DRAW);
 	}
 
+  _bindDestTexture() {
+    this.destTexture = this.GL.createTexture();
+		this.GL.activeTexture(this.GL.TEXTURE1);
+		this.GL.bindTexture(this.GL.TEXTURE_2D, this.destTexture);
+    this.GL.texImage2D(this.GL.TEXTURE_2D, 0, this.GL.RGBA, this.GL.RGBA, this.GL.UNSIGNED_BYTE, this.canvas);
+  }
+
   _bindFrameBuffer() {
 		this.renderbuffer = this.renderbuffer || this.GL.createRenderbuffer();
 		this.GL.bindRenderbuffer(this.GL.RENDERBUFFER, null);
@@ -244,12 +249,26 @@ void main(void) { \n\
 		this.GL.framebufferRenderbuffer(this.GL.FRAMEBUFFER, this.GL.DEPTH_ATTACHMENT, this.GL.RENDERBUFFER, this.renderbuffer);
 	}
 
-  multiply() {
+  multiply(matA, matB) {
+    this.matA = matA;
+    this.matB = matB;
+    this.canvas.height = matA.shape[0];
+    this.canvas.width = matB.shape[1];
+    this.GL.viewport(0, 0, matB.shape[1], matA.shape[0]);
+
+    this._bindTexture();
+    this._bindUniform();
+		this._bindVertices();
+    this._bindDestTexture();
+    this._bindFrameBuffer();
+
+    this.GL.drawElements(this.GL.TRIANGLES, 6, this.GL.UNSIGNED_SHORT, 0);
+
     let buffer = new ArrayBuffer(this.matA.shape[0] * this.matB.shape[1] * 4);
 		let product = new Uint8Array(buffer);
 		this.GL.readPixels(0, 0, this.matB.shape[1], this.matA.shape[0], this.GL.RGBA, this.GL.UNSIGNED_BYTE, product);
 
-    return new Float32Array(buffer);
+    return ndarray(new Float32Array(buffer), [this.matA.shape[0], this.matB.shape[1]]);
   }
 
 }
