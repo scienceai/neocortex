@@ -29,7 +29,7 @@
     "learning"
   ],
   "author": "Leon Chen <lchen3@gmail.com> (@transcranial)",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/transcranial/neuralnet-predict-js/issues"
   },

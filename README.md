@@ -12,9 +12,9 @@ By focusing purely on prediction of already trained neural networks, we can take
 
 Computation on GPU is perfomed where possible and advantageous to do so. This is currently implemented using WebGL (hopefully WebCL will in the future make things more interesting).
 
-What about using emscripten to compile models to asm.js? It may be within the realm of possibility (especially with the coming of WebAssembly), but this would be quite heavy and not so trivial (see Cyrille Rosant's [attempts](http://cyrille.rossant.net/numpy-browser-llvm/) at running numpy in the browser through Numba and LLVM). By only focusing only on the prediction phase, we can be as light and minimal as possible. The ultimate goal of this project is to be able to serialize a Keras or Caffe model together with pretrained weights into javascript, pack it in your webapp, and be off and running.
+What about using emscripten to compile models to asm.js? It may be within the realm of possibility, but this would be quite heavy and not so trivial (see Cyrille Rosant's [attempts](http://cyrille.rossant.net/numpy-browser-llvm/) at running numpy in the browser through Numba and LLVM). Here, by only focusing only on the prediction phase, we can be as light and minimal as possible. The ultimate goal of this project is to be able to serialize a Keras or Caffe model together with pretrained weights into javascript, pack it in your webapp, and be off and running.
 
-I'd be remiss if I didn't credit Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) as a source of inspiration, as well as the excellent Theano-based deep learning framework [Keras](https://github.com/fchollet/keras/).
+Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of course a source of inspiration, as well as the excellent Theano-based deep learning framework [Keras](https://github.com/fchollet/keras/).
 
 ### Usage
 
@@ -89,6 +89,6 @@ Note: tests for SIMD code uses a [shim/polyfill](https://github.com/ljharb/simd)
 
 Browser testing is planned.
 
-### Colophon
+### License
 
-&copy; 2015 Leon Chen. MIT License.
+Apache 2.0
