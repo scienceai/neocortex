@@ -2,12 +2,32 @@ import assert from 'assert';
 import almostEqual from 'almost-equal';
 import ndarray from 'ndarray';
 import pack from 'ndarray-pack';
-import { rGRULayer } from '../src/layers/recurrent';
+import { rLSTMLayer, rGRULayer } from '../src/layers/recurrent';
 
 const EPSILON = almostEqual.FLT_EPSILON;
 
 describe('Layer: recurrent', function() {
   let input = pack([[0.1, 0.0, 0.9, 0.6], [0.5, 0.5, 0.5, 0.3]]);
+
+  describe('long short-term memory (LSTM) serialized from Keras', function() {
+    it('should output the correct hidden state at the last timestep', (done) => {
+      let weights = require('./fixtures/test_weights_LSTM_keras.json');
+      for (let key in weights) {
+        // pack creates Float64Array ndarrays
+        // TODO: need to convert to Float32Array if set as default
+        weights[key] = pack(weights[key]);
+      }
+
+      let y = rLSTMLayer(input, weights);
+      let expected = new Float64Array([0.15660709142684937, -0.12310830503702164, 0.3947620987892151, 0.4411243498325348]);
+
+      assert.deepEqual(y.shape, [4]);
+      for (let i = 0; i < y.shape[0]; i++) {
+        assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
+      }
+      done();
+    });
+  });
 
   describe('gated recurrent unit (GRU) serialized from Keras', function() {
     it('should output the correct hidden state at the last timestep', (done) => {

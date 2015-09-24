@@ -42,6 +42,7 @@
     "babel-loader": "^5.3.2",
     "eslint": "^1.5.0",
     "mocha": "^2.3.2",
+    "raw-loader": "^0.5.1",
     "simd": "^2.0.0",
     "webpack": "^1.12.2"
   },
@@ -51,7 +52,6 @@
     "ndarray-matrix-vector-product": "^1.0.0",
     "ndarray-ops": "^1.2.2",
     "ndarray-pack": "^1.1.1",
-    "ndarray-unpack": "^1.0.0",
-    "raw-loader": "^0.5.1"
+    "ndarray-unpack": "^1.0.0"
   }
 }
