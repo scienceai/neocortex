@@ -51,6 +51,7 @@
     "ndarray-matrix-vector-product": "^1.0.0",
     "ndarray-ops": "^1.2.2",
     "ndarray-pack": "^1.1.1",
-    "ndarray-unpack": "^1.0.0"
+    "ndarray-unpack": "^1.0.0",
+    "raw-loader": "^0.5.1"
   }
 }

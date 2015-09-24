@@ -22,83 +22,19 @@ export default class MatmulWebGL {
     this.renderbuffer = null;
     this.framebuffer = null;
 
-    this.vertexShaderCode = '\n\
-// works on texels passed to texture shader \n\
-#ifdef GL_ES \n\
-  precision highp float; \n\
-#endif \n\
-\n\
-attribute vec3 a_pos; \n\
-attribute vec2 a_tex; \n\
-varying vec2   v_tex; \n\
-void main(void) \n\
-{ \n\
-  gl_Position = vec4(a_pos, 1.0); \n\
-  v_tex = a_tex; \n\
-}';
-
-    this.fragmentShaderCode = '\n\
-// Fragment shader performs calculations based on the passed row and column as texture coordinates. \n\
-// Result rendered as 32-bit IEEE754 floating point to the RGBA canvas, readPixel is then used to read out the bytes. \n\
-#ifdef GL_ES \n\
-  precision highp float; \n\
-#endif \n\
-\n\
-varying vec2 v_tex; \n\
-uniform sampler2D u_sampler; \n\
-uniform int u_length; \n\
-uniform float u_rowStep; \n\
-uniform float u_colStep; \n\
-uniform float u_rowOuts; \n\
-uniform float u_colOuts; \n\
-\n\
-float sumRowCol(float row, float col) { \n\
-  float sum = 0.; \n\
-  float sourceTexCol = 0.; \n\
-  float sourceTexRow = 0.; \n\
-  float r = row * u_colStep; \n\
-  float c = col * u_rowStep; \n\
-  for (int pos = 0; pos < 2048; ++pos) { \n\
-    if (pos >= u_length) break; \n\
-    float m1 = texture2D(u_sampler, vec2(sourceTexCol, r)).r; \n\
-    float m2 = texture2D(u_sampler, vec2(c, sourceTexRow)).g; \n\
-    sum += (m1 * m2); \n\
-    sourceTexCol += u_rowStep; \n\
-    sourceTexRow += u_colStep; \n\
-  } \n\
-  return sum; \n\
-} \n\
-\n\
-void main(void) { \n\
-\n\
-  float col = floor((v_tex.s * u_rowOuts)); \n\
-  float row = floor((v_tex.t * u_colOuts)); \n\
-\n\
-  float v = sumRowCol(row,col); \n\
-\n\
-  // Render to IEEE754 Floating Point \n\
-  if (v==0.) { \n\
-    gl_FragColor = vec4(0.,0.,0.,0.); \n\
-    return; \n\
-  } \n\
-  float a = abs(v); \n\
-  float exp = floor(log2(a)); \n\
-  float mantissa = (a * pow(2., 23. - exp)); // fill 24 bits \n\
-  float mantissa_0_7 = floor(mantissa / 256. / 256.); \n\
-  float mantissa_8_15 = mod(floor(mantissa / 256.),256.); \n\
-  float mantissa_16_23 = mod(mantissa,256.); \n\
-\n\
-  highp float sign = 128. - 128. * (a / v); \n\
-  highp float e = (sign + exp + 127.) / 510.; \n\
-  highp float m1 = (mantissa_0_7 - (128. * (1. - mod(exp + 127., 2.)))) / 255.; \n\
-  highp float m2 = (mantissa_8_15) / 255.; \n\
-  highp float m3 = (mantissa_16_23 + .5) / 255.; \n\
-  gl_FragColor = vec4(m3, m2, m1, e); \n\
-}';
+    this.vertexShaderCode = require('raw!./vertexShader.glsl');
+    this.fragmentShaderCode = require('raw!./fragmentShader.glsl');
 
   }
 
   init() {
+    if (!this.vertexShaderCode) {
+      this.vertexShaderCode = fs.readFileSync('./vertexShader.glsl');
+    }
+    if (!this.fragmentShaderCode) {
+      this.fragmentShaderCode = fs.readFileSync('./fragmentShader.glsl');
+    }
+
     this.canvas = document.getElementById('matmulWebGL');
     if (!this.canvas) {
       let canvas = document.createElement('canvas');
