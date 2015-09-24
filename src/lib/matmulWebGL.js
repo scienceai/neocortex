@@ -2,7 +2,7 @@
 Matrix multiplication up to 2048 x 2048 on GPU using WebGL
 
 Matrices are encoded as float32 in textures, then read back out
-using readPixels.
+using readPixels and converted to float32 as ndarray.
 ***************************************************************/
 
 import ndarray from 'ndarray';
