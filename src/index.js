@@ -13,7 +13,11 @@ export {
   denseLayer,
   embeddingLayer,
   batchNormalizationLayer,
+  rLSTMLayer,
   rGRULayer,
+  rJZS1Layer,
+  rJZS2Layer,
+  rJZS3Layer,
   MatmulWebGL,
   NeuralNet
 };
