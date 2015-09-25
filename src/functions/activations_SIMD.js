@@ -68,7 +68,7 @@ export function sigmoid(x) {
  * Hard sigmoid function
  * approximate sigmoid with increased computational efficiency
  */
-export function sigmoidHard(x) {
+export function hard_sigmoid(x) {
   // x isinstance of Float32Array
   let y = new Float32Array(x.length);
   let zeros = F32x4.splat(0);

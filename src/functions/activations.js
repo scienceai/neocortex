@@ -28,7 +28,7 @@ export function sigmoid(x) {
  * Hard sigmoid function
  * approximate sigmoid with increased computational efficiency
  */
-export function sigmoidHard(x) {
+export function hard_sigmoid(x) {
   ops.addseq(ops.mulseq(x, 0.2), 0.5);
   for (let i = 0; i < x.size; i++) {
     if (x.data[i] > 1) x.data[i] = 1;

@@ -1,7 +1,7 @@
 import assert from 'assert';
 import ndarray from 'ndarray';
 import almostEqual from 'almost-equal';
-import { linear, relu, sigmoid, sigmoidHard, tanh, softmax } from '../src/functions/activations';
+import { linear, relu, sigmoid, hard_sigmoid, tanh, softmax } from '../src/functions/activations';
 
 const EPSILON = almostEqual.FLT_EPSILON;
 
@@ -92,7 +92,7 @@ describe('Activation functions [baseline]', function () {
     });
   });
 
-  describe('sigmoidHard', function () {
+  describe('hard_sigmoid', function () {
     let expectedSigmoid = [ 0.50249998, 0.50749944, 0.49750002, 0.5124974, 0.5 ];
     let repeat = 17;
     while(repeat--) {
@@ -103,7 +103,7 @@ describe('Activation functions [baseline]', function () {
 
     it('should be pretty close to normal sigmoid [float32]', (done) => {
       let start = new Date().getTime();
-      let y_float32 = sigmoidHard(x_float32);
+      let y_float32 = hard_sigmoid(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
       // should be pretty close to normal sigmoid
       assert(y_float32.data.every((y_i, i) => Math.abs(y_i - expected_float32.data[i]) < 0.01));
@@ -112,7 +112,7 @@ describe('Activation functions [baseline]', function () {
 
     it('should be pretty close to normal sigmoid [float64]', (done) => {
       let start = new Date().getTime();
-      let y_float64 = sigmoidHard(x_float64);
+      let y_float64 = hard_sigmoid(x_float64);
       console.log(`      ${new Date().getTime() - start} ms`);
       // should be pretty close to normal sigmoid
       assert(y_float64.data.every((y_i, i) => Math.abs(y_i - expected_float64.data[i]) < 0.01));

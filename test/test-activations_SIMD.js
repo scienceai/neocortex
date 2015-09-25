@@ -1,7 +1,7 @@
 require('./simd-shim');
 
 import assert from 'assert';
-import { linear, relu, sigmoid, sigmoidHard, tanh, softmax } from '../src/functions/activations_SIMD';
+import { linear, relu, sigmoid, hard_sigmoid, tanh, softmax } from '../src/functions/activations_SIMD';
 
 const EPSILON = 0.00001;
 
@@ -57,7 +57,7 @@ describe.skip('Activation functions [SIMD]', function () {
     });
   });
 
-  describe('sigmoidHard', function () {
+  describe('hard_sigmoid', function () {
     let expectedSigmoid = [ 0.50249998, 0.50749944, 0.49750002, 0.5124974, 0.5 ];
     let repeat = 17;
     while(repeat--) {
@@ -67,7 +67,7 @@ describe.skip('Activation functions [SIMD]', function () {
 
     it('should be pretty close to normal sigmoid', (done) => {
       let start = new Date().getTime();
-      let y_float32 = sigmoidHard(x_float32);
+      let y_float32 = hard_sigmoid(x_float32);
       console.log(`      ${new Date().getTime() - start} ms`);
       // should be pretty close to normal sigmoid
       assert(y_float32.every((y_i, i) => Math.abs(y_i - expectedSigmoid_float32[i]) < 0.01));
