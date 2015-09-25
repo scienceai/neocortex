@@ -9,17 +9,17 @@ export class NeuralNet {
     this._layers = [];
   }
 
-  addLayer(layerName, weights, parameters) {
-    this._layers.push({ layerName, weights, parameters });
+  addLayer(layerName, parameters) {
+    this._layers.push({ layerName, parameters });
   }
 
   predict(input) {
     let X = input;
 
     for (let layer of this._layers) {
-      let { layerName, weights, parameters } = layer;
+      let { layerName, parameters } = layer;
 
-      X = layerFuncs[layerName](X, weights, ...parameters);
+      X = layerFuncs[layerName](X, ...parameters);
     }
   }
 
