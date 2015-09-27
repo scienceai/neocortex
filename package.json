@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "cwise": "^1.0.8",
+    "json-loader": "^0.5.3",
     "ndarray": "^1.0.18",
     "ndarray-matrix-vector-product": "^1.0.0",
     "ndarray-ops": "^1.2.2",
