@@ -6,7 +6,18 @@ export class NeuralNet {
     this.SIMD_AVAIL = (this.ARRAY_TYPE === Float64Array) && ('SIMD' in this);
     this.WEBGL_AVAIL = true;
 
+    this.modelFile = config.modelFile || null;
+    if (this.modelFile) {
+      this.loadModel(this.modelFile);
+    }
+
     this._layers = [];
+  }
+
+  loadModel(modelFile) {
+    // loads model file in proper json format
+    let model = require(os.path.join(__dirname, modelFile));
+    this._layers = model;
   }
 
   addLayer(layerName, parameters) {
@@ -21,6 +32,8 @@ export class NeuralNet {
 
       X = layerFuncs[layerName](X, ...parameters);
     }
+
+    return X;
   }
 
 }
