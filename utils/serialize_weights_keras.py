@@ -1,6 +1,7 @@
 from keras.models import Model
 import h5py
 import json
+import gzip
 
 layer_name_dict = {
     'Dense': 'denseLayer',
@@ -37,7 +38,7 @@ layer_weights_dict = {
     'JZS3': ['W_xz', 'W_hz', 'b_z', 'W_xr', 'W_hr', 'b_r', 'W_xh', 'W_hh', 'b_h']
 }
 
-def serialize_from_model(model, weights_filepath):
+def serialize_from_model(model, weights_filepath, model_save_filepath):
     if not isinstance(model, Model):
         raise TypeError('must pass in object of type keras.models.Model')
 
@@ -48,7 +49,9 @@ def serialize_from_model(model, weights_filepath):
 
     for n, layer in enumerate(model_metadata['layers']):
         if layer['name'] == 'Activation':
-            layers[n-1]['parameters']['activation'] = layer['activation']
+            prev_layer_name = layers[n-1]['layerName']
+            idx_activation = layer_params_dict[prev_layer_name].index('activation')
+            layers[n-1]['parameters'][idx_activation] = layer['activation']
             continue
 
         layer_params = []
@@ -68,3 +71,6 @@ def serialize_from_model(model, weights_filepath):
             'layerName': layer['name'],
             'parameters': layer_params
         })
+
+    with gzip.open(model_save_filepath, 'wb') as f:
+        f.write(json.dumps(layers).encode('utf8'))
