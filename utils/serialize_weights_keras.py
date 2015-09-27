@@ -1,5 +1,6 @@
 import h5py
 import json
+import gzip
 
 layer_name_dict = {
     'Dense': 'denseLayer',
@@ -68,5 +69,5 @@ def serialize_from_model(model_json_file, weights_hdf5_file, save_filepath):
             'parameters': layer_params
         })
 
-    with open(save_filepath, 'w') as f:
-        json.dump(layers, f)
+    with gzip.open(save_filepath, 'wb') as f:
+        f.write(json.dumps(layers).encode('utf8'))
