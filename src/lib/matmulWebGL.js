@@ -22,8 +22,8 @@ export default class MatmulWebGL {
     this.renderbuffer = null;
     this.framebuffer = null;
 
-    this.vertexShaderCode = require('raw!./vertexShader.glsl');
-    this.fragmentShaderCode = require('raw!./fragmentShader.glsl');
+    this.vertexShaderCode = null;
+    this.fragmentShaderCode = null;
 
   }
 
