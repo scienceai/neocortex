@@ -1,4 +1,7 @@
 import * as layerFuncs from './layers';
+import request from 'superagent';
+import zlib from 'zlib';
+import concat from 'concat-stream';
 
 export default class NeuralNet {
   constructor(config) {
@@ -8,10 +11,10 @@ export default class NeuralNet {
     this.SIMD_AVAIL = (this.ARRAY_TYPE === Float64Array) && ('SIMD' in this);
     this.WEBGL_AVAIL = true;
 
-    if (typeof window === 'undefined') {
-      this.environment = 'node';
-    } else {
+    if (typeof window !== 'undefined') {
       this.environment = 'browser';
+    } else {
+      this.environment = 'node';
     }
 
     this.readyStatus = false;
@@ -27,22 +30,25 @@ export default class NeuralNet {
 
   loadModel(modelFile) {
     if (this.environment === 'node') {
-      /*this._layers = require(path.join(__dirname, modelFile));*/
-      this.readyStatus = true;
+      let gunzip = zlib.createGunzip();
+      fs.createReadStream(__dirname + modelFile)
+        .pipe(gunzip)
+        .pipe(concat((model) => {
+          this._layers = JSON.parse(model.toString());
+          this.readyStatus = true;
+        }));
     } else {
-      let req = new XMLHttpRequest();
-      req.open('GET', modelFile, true);
-      req.onreadystatechange = function (aEvt) {
-        if (req.readyState == 4) {
-           if(req.status == 200) {
-             this._layers = JSON.parse(req.responseText);
-             this.readyStatus = true;
-           } else {
-             console.error('cannot load model file.');
-           }
-        }
-      };
-      req.send(null);
+      let gunzip = zlib.createGunzip();
+      request.get(`/${modelFile}`)
+        .end((err, res, body) => {
+          if (err) return console.error('error loading model file.');
+          if (res.statusCode == 200) {
+            this._layers = JSON.parse(body.toString());
+            this.readyStatus = true;
+          } else {
+            console.error('error loading model file.');
+          }
+        });
     }
   }
 

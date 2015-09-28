@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "build-browser": "browserify src/neuralnet.js -t babelify -t brfs --standalone NeuralNet -o build/neuralnet-predict.min.js",
+    "build-browser": "browserify src/neuralnet.js -t babelify -t brfs -t uglifyify --standalone NeuralNet -o build/neuralnet-predict.min.js",
     "build-node": "rm -rf dist && node_modules/.bin/babel src --out-dir dist",
     "build": "npm run build-node && npm run build-browser",
     "prepublish": "npm run build",
@@ -43,10 +43,12 @@
     "babelify": "^6.3.0",
     "brfs": "^1.4.1",
     "browserify": "^11.2.0",
+    "concat-stream": "^1.5.0",
     "eslint": "^1.5.0",
     "mocha": "^2.3.2",
     "raw-loader": "^0.5.1",
     "simd": "^2.0.0",
+    "uglifyify": "^3.0.1",
     "webpack": "^1.12.2"
   },
   "dependencies": {
@@ -55,6 +57,7 @@
     "ndarray-matrix-vector-product": "^1.0.0",
     "ndarray-ops": "^1.2.2",
     "ndarray-pack": "^1.1.1",
-    "ndarray-unpack": "^1.0.0"
+    "ndarray-unpack": "^1.0.0",
+    "superagent": "^1.4.0"
   }
 }
