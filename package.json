@@ -7,11 +7,12 @@
     "test": "test"
   },
   "scripts": {
-    "build-browser": "browserify src/neuralnet.js -t babelify -t brfs -t uglifyify --standalone NeuralNet -o build/neuralnet-predict.min.js",
+    "build-browser": "browserify src/neuralnet.js -t babelify -t brfs -p [minifyify --no-map] --standalone NeuralNet -o build/neuralnet-predict.min.js",
     "build-node": "rm -rf dist && node_modules/.bin/babel src --out-dir dist",
     "build": "npm run build-node && npm run build-browser",
     "prepublish": "npm run build",
-    "test": "mocha --reporter spec --compilers js:babel/register"
+    "test": "mocha --reporter spec --compilers js:babel/register",
+    "examples-server": "npm run build-browser && cp build/neuralnet-predict.min.js examples && cd examples && python -m http.server"
   },
   "repository": {
     "type": "git",
@@ -45,10 +46,10 @@
     "browserify": "^11.2.0",
     "concat-stream": "^1.5.0",
     "eslint": "^1.5.0",
+    "minifyify": "^7.1.0",
     "mocha": "^2.3.2",
     "raw-loader": "^0.5.1",
     "simd": "^2.0.0",
-    "uglifyify": "^3.0.1",
     "webpack": "^1.12.2"
   },
   "dependencies": {
