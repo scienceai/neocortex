@@ -37,7 +37,7 @@ layer_weights_dict = {
     'JZS3': ['W_xz', 'W_hz', 'b_z', 'W_xr', 'W_hr', 'b_r', 'W_xh', 'W_hh', 'b_h']
 }
 
-def serialize_from_model(model_json_file, weights_hdf5_file, save_filepath):
+def serialize_from_model(model_json_file, weights_hdf5_file, save_filepath, compress):
     with open(model_json_file, 'r') as f:
         model_metadata = json.load(f)
     weights_file = h5py.File(weights_hdf5_file, 'r')
@@ -71,5 +71,9 @@ def serialize_from_model(model_json_file, weights_hdf5_file, save_filepath):
             'parameters': layer_params
         })
 
-    with gzip.open(save_filepath, 'wb') as f:
-        f.write(json.dumps(layers).encode('utf8'))
+    if compress:
+        with gzip.open(save_filepath, 'wb') as f:
+            f.write(json.dumps(layers).encode('utf8'))
+    else:
+        with open(save_filepath, 'w') as f:
+            json.dump(layers, f)
