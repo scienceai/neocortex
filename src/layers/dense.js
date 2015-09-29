@@ -8,10 +8,10 @@ export function denseLayer(arrayType, x, weights, activation='linear') {
   let W = pack(weights['W']);
   let b = pack(weights['b']);
 
-  let y = ndarray(new arrayType(W.shape[0]), [W.shape[0]]);
+  let y = ndarray(new arrayType(W.shape[1]), [W.shape[1]]);
 
   // W*x
-  mvprod(y, W, x);
+  mvprod(y, W.transpose(1, 0), x);
   // W*x + b
   ops.addeq(y, b);
   // activation(W*x + b)

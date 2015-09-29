@@ -5,11 +5,11 @@ import { denseLayer } from '../src/layers/dense';
 
 describe('Layer: dense', function() {
   let x = ndarray(new Float64Array([0.25, 0.5, 0.75]), [3]);
-  let W = [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]];
-  let b = [1, 2, 3];
+  let W = [[-0.9270800352096558, 0.18572671711444855, 0.39262476563453674], [-0.23333904147148132, -0.44041740894317627, -0.7116944789886475], [-0.6425269842147827, -0.9207804799079895, 0.4250005781650543]];
+  let b = [1.0, 0.5, 0.009999999776482582];
 
   it('should produce expected W*x + b', (done) => {
-    let expected = [1.35, 2.8, 4.25];
+    let expected = [0.16966521739959717, -0.3643624186515808, 0.07105938345193863];
     let y = denseLayer(Float64Array, x, { W, b });
     assert.deepEqual(y.shape, [3]);
     for (let i = 0; i < y.shape[0]; i++) {
@@ -19,7 +19,7 @@ describe('Layer: dense', function() {
   });
 
   it('should produce expected softmax(W*x + b)', (done) => {
-    let expected = [0.0426671, 0.18189475, 0.77543815];
+    let expected = [0.4012295603752136, 0.235216423869133, 0.3635540306568146];
     let y = denseLayer(Float64Array, x, { W, b }, 'softmax');
     assert.deepEqual(y.shape, [3]);
     for (let i = 0; i < y.shape[0]; i++) {
