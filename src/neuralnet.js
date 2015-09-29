@@ -20,30 +20,33 @@ export default class NeuralNet {
     this.readyStatus = false;
     this._layers = [];
 
-    this.modelFile = config.modelFile || null;
-    if (this.modelFile) {
-      this.loadModel(this.modelFile);
+    // json or gzip
+    this.modelFileType = config.modelFileType || 'json';
+
+    this.modelFilePath = config.modelFilePath || null;
+    if (this.modelFilePath) {
+      this.loadModel(this.modelFilePath);
     } else {
-      throw new Error('no modelFile specified in config object.');
+      throw new Error('no modelFilePath specified in config object.');
     }
   }
 
-  loadModel(modelFile) {
+  loadModel(modelFilePath) {
     if (this.environment === 'node') {
       let gunzip = zlib.createGunzip();
-      fs.createReadStream(__dirname + modelFile)
+      fs.createReadStream(__dirname + modelFilePath)
         .pipe(gunzip)
         .pipe(concat((model) => {
           this._layers = JSON.parse(model.toString());
           this.readyStatus = true;
         }));
     } else {
-      let gunzip = zlib.createGunzip();
-      request.get(`/${modelFile}`)
-        .end((err, res, body) => {
+      request.get(modelFilePath)
+        .set('Content-Type', 'application/json')
+        .end((err, res) => {
           if (err) return console.error('error loading model file.');
           if (res.statusCode == 200) {
-            this._layers = JSON.parse(body.toString());
+            this._layers = res.body;
             this.readyStatus = true;
           } else {
             console.error('error loading model file.');
