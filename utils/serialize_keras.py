@@ -37,7 +37,7 @@ layer_weights_dict = {
     'JZS3': ['W_xz', 'W_hz', 'b_z', 'W_xr', 'W_hr', 'b_r', 'W_xh', 'W_hh', 'b_h']
 }
 
-def serialize_from_model(model_json_file, weights_hdf5_file, save_filepath, compress):
+def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
     with open(model_json_file, 'r') as f:
         model_metadata = json.load(f)
     weights_file = h5py.File(weights_hdf5_file, 'r')
@@ -48,7 +48,7 @@ def serialize_from_model(model_json_file, weights_hdf5_file, save_filepath, comp
     for k, layer in enumerate(model_metadata['layers']):
         if layer['name'] == 'Activation':
             num_activation_layers += 1
-            prev_layer_name = layers[k-num_activation_layers]['layerName']
+            prev_layer_name = model_metadata['layers'][k-num_activation_layers]['name']
             idx_activation = layer_params_dict[prev_layer_name].index('activation')
             layers[k-num_activation_layers]['parameters'][idx_activation] = layer['activation']
             continue
@@ -67,7 +67,7 @@ def serialize_from_model(model_json_file, weights_hdf5_file, save_filepath, comp
                 layer_params.append(layer[param])
 
         layers.append({
-            'layerName': layer['name'],
+            'layerName': layer_name_dict[layer['name']],
             'parameters': layer_params
         })
 
