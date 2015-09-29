@@ -8,9 +8,17 @@ export default class NeuralNet {
   constructor(config) {
     config = config || {};
 
-    this.ARRAY_TYPE = (typeof Float64Array !== 'undefined') ? Float64Array : Array;
-    this.SIMD_AVAIL = (this.ARRAY_TYPE === Float64Array) && ('SIMD' in this);
+    this.arrayType = Array;
+    if (config.arrayType === 'float32') {
+      this.arrayType = Float32Array;
+    } else if (config.arrayType === 'float64') {
+      this.arrayType = Float64Array;
+    }
+
+    this.SIMD_AVAIL = (this.arrayType === Float32Array || this.arrayType === Float64Array) && ('SIMD' in this);
     this.WEBGL_AVAIL = true;
+
+    this.useGPU = (config.useGPU || false) && this.WEBGL_AVAIL;
 
     if (typeof window !== 'undefined') {
       this.environment = 'browser';
@@ -82,12 +90,12 @@ export default class NeuralNet {
     let _predict = (X) => {
       for (let layer of this._layers) {
         let { layerName, parameters } = layer;
-        X = layerFuncs[layerName](X, ...parameters);
+        X = layerFuncs[layerName](this.arrayType, X, ...parameters);
       }
       return X;
     };
 
-    let X = ndarray(new Float32Array(input), shape);
+    let X = ndarray(new this.arrayType(input), shape);
 
     if (!this.readyStatus) {
       let waitReady = setInterval(() => {

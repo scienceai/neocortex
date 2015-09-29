@@ -6,30 +6,30 @@ import * as activationFuncs from '../functions/activations';
 ///////////////////////////////////////////////////////
 // LSTM
 //
-export function rLSTMLayer(x, weights, activation='tanh', innerActivation='sigmoidHard') {
+export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActivation='sigmoidHard') {
   let { W_xi, W_hi, b_i, W_xc, W_hc, b_c, W_xf, W_hf, b_f, W_xo, W_ho, b_o } = weights;
 
-  let x_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
+  let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
-  let i_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xi = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hi = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let f_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xf = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hf = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let o_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xo = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_ho = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
+  let i_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xi = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hi = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let f_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xf = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hf = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let o_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xo = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_ho = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
-  let c_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xc = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hc = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_fc = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let c_tm1 = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
+  let c_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xc = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hc = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_fc = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let c_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
-  let h_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let h_tm1 = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
+  let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
   function _step() {
     ops.assign(h_tm1, h_t);
@@ -86,22 +86,22 @@ export function rLSTMLayer(x, weights, activation='tanh', innerActivation='sigmo
 ///////////////////////////////////////////////////////
 // GRU
 //
-export function rGRULayer(x, weights, activation='tanh', innerActivation='sigmoidHard') {
+export function rGRULayer(arrayType, x, weights, activation='tanh', innerActivation='sigmoidHard') {
   let { W_xz, W_hz, b_z, W_xr, W_hr, b_r, W_xh, W_hh, b_h } = weights;
 
-  let x_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp2 = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let z_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xz = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hz = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let r_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xr = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hr = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let h_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xh = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hh = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let h_tm1 = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
+  let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp2 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let z_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let r_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
   function _step() {
     ops.assign(h_tm1, h_t);
@@ -152,21 +152,21 @@ export function rGRULayer(x, weights, activation='tanh', innerActivation='sigmoi
 ///////////////////////////////////////////////////////
 // JZS1
 //
-export function rJZS1Layer(x, weights, activation='tanh', innerActivation='sigmoid') {
+export function rJZS1Layer(arrayType, x, weights, activation='tanh', innerActivation='sigmoid') {
   let { W_xz, b_z, W_xr, W_hr, b_r, W_hh, b_h, Pmat } = weights;
 
-  let x_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp2 = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let z_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xz = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let r_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xr = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hr = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let h_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_x_proj = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hh = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let h_tm1 = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
+  let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp2 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let z_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let r_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_x_proj = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
   function _step() {
     ops.assign(h_tm1, h_t);
@@ -215,22 +215,22 @@ export function rJZS1Layer(x, weights, activation='tanh', innerActivation='sigmo
 ///////////////////////////////////////////////////////
 // JZS2
 //
-export function rJZS2Layer(x, weights, activation='tanh', innerActivation='sigmoid') {
+export function rJZS2Layer(arrayType, x, weights, activation='tanh', innerActivation='sigmoid') {
   let { W_xz, W_hz, b_z, W_hr, b_r, W_xh, W_hh, b_h, Pmat } = weights;
 
-  let x_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_x_proj = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp2 = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let z_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xz = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hz = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let r_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hr = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let h_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xh = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hh = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let h_tm1 = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
+  let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_x_proj = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp2 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let z_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let r_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
   function _step() {
     ops.assign(h_tm1, h_t);
@@ -281,23 +281,23 @@ export function rJZS2Layer(x, weights, activation='tanh', innerActivation='sigmo
 ///////////////////////////////////////////////////////
 // JZS3
 //
-export function rJZS3Layer(x, weights, activation='tanh', innerActivation='sigmoid') {
+export function rJZS3Layer(arrayType, x, weights, activation='tanh', innerActivation='sigmoid') {
   let { W_xz, W_hz, b_z, W_xr, W_hr, b_r, W_xh, W_hh, b_h } = weights;
 
-  let x_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp2 = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let z_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xz = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hz = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let r_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xr = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hr = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let h_t = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_xh = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let temp_hh = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let h_tm1 = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
-  let h_tm1_temp = ndarray(new Float64Array(x.shape[1]), [x.shape[1]]);
+  let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp2 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let z_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let r_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_xh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_tm1_temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
   function _step() {
     ops.assign(h_tm1, h_t);

@@ -3,10 +3,10 @@ import ops from 'ndarray-ops';
 import mvprod from 'ndarray-matrix-vector-product';
 import * as activationFuncs from '../functions/activations';
 
-export function denseLayer(x, weights, activation='linear') {
+export function denseLayer(arrayType, x, weights, activation='linear') {
   let { W, b } = weights;
 
-  let y = ndarray(new Float64Array(W.shape[0]), [W.shape[0]]);
+  let y = ndarray(new arrayType(W.shape[0]), [W.shape[0]]);
 
   // W*x
   mvprod(y, W, x);
