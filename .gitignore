@@ -1,6 +1,7 @@
 build/
 examples/neuralnet-predict.min.js
 dist/
+.ipynb_checkpoints/
 
 # Logs
 logs
