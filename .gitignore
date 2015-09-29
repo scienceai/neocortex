@@ -1,4 +1,5 @@
 build/
+examples/neuralnet-predict.min.js
 dist/
 
 # Logs
