@@ -6,7 +6,7 @@ import * as activationFuncs from '../functions/activations';
 ///////////////////////////////////////////////////////
 // LSTM
 //
-export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActivation='sigmoidHard') {
+export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActivation='hard_sigmoid') {
   let { W_xi, W_hi, b_i, W_xc, W_hc, b_c, W_xf, W_hf, b_f, W_xo, W_ho, b_o } = weights;
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
@@ -86,7 +86,7 @@ export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActiva
 ///////////////////////////////////////////////////////
 // GRU
 //
-export function rGRULayer(arrayType, x, weights, activation='tanh', innerActivation='sigmoidHard') {
+export function rGRULayer(arrayType, x, weights, activation='tanh', innerActivation='hard_sigmoid') {
   let { W_xz, W_hz, b_z, W_xr, W_hr, b_r, W_xh, W_hh, b_h } = weights;
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
