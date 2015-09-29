@@ -1,5 +1,6 @@
 import * as layerFuncs from './layers';
 import ndarray from 'ndarray';
+import pack from 'ndarray-pack';
 import request from 'superagent';
 import zlib from 'zlib';
 import concat from 'concat-stream';
@@ -85,7 +86,7 @@ export default class NeuralNet {
     }
   }
 
-  predict(input, shape, callback) {
+  predict(input, callback) {
 
     let _predict = (X) => {
       for (let layer of this._layers) {
@@ -95,7 +96,7 @@ export default class NeuralNet {
       return X;
     };
 
-    let X = ndarray(new this.arrayType(input), shape);
+    let X = pack(input);
 
     if (!this.readyStatus) {
       let waitReady = setInterval(() => {

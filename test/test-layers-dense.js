@@ -5,8 +5,8 @@ import { denseLayer } from '../src/layers/dense';
 
 describe('Layer: dense', function() {
   let x = ndarray(new Float64Array([0.25, 0.5, 0.75]), [3]);
-  let W = ndarray(new Float64Array([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]), [3, 3]);
-  let b = ndarray(new Float64Array([1, 2, 3]), [3]);
+  let W = [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]];
+  let b = [1, 2, 3];
 
   it('should produce expected W*x + b', (done) => {
     let expected = [1.35, 2.8, 4.25];

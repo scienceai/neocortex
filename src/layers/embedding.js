@@ -1,8 +1,9 @@
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
+import pack from 'ndarray-pack';
 
 export function embeddingLayer(arrayType, x, weights) {
-  let { E } = weights;
+  let E = pack(weights['E']);
 
   let nnz = x.data.reduce((a, b) => a + ((b > 0) ? 1 : 0), 0);
   let y = ndarray(new arrayType(nnz * E.shape[1]), [nnz, E.shape[1]]);
