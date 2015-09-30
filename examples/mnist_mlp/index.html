@@ -1,15 +1,61 @@
 <html>
 <head>
   <title>Example: MNIST MLP</title>
+  <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/styles.css" />
+	<link rel="stylesheet" href="/mnist_mlp/custom.css" />
 </head>
 <body>
+  <div class="title">MNIST multi-layer perceptron</div>
+  <div class="description">This demonstrates a 3-layer MLP with ReLU activations and dropout, culminating in a 10-class softmax function which predicts the digit represented in a given 28x28 image. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, interactively with the sample images. Five sample images are randomly loaded per button-click below.</div>
+  <div class="button">load random samples</div>
+  <div class="samples">
+    <canvas id="sample0" class="sample" width="84" height="84"></canvas>
+    <canvas id="sample1" class="sample" width="84" height="84"></canvas>
+    <canvas id="sample2" class="sample" width="84" height="84"></canvas>
+    <canvas id="sample3" class="sample" width="84" height="84"></canvas>
+    <canvas id="sample4" class="sample" width="84" height="84"></canvas>
+  </div>
+
   <script src="/neuralnet-predict.min.js"></script>
+  <script src="/mnist_mlp/sample_data.js"></script>
   <script>
-    var nn = new NeuralNet({
+    'use strict';
+
+    let nn = new NeuralNet({
       modelFilePath: '/mnist_mlp/mnist_mlp_model_params.json',
       modelFileType: 'json'
     });
 
+    [0].forEach(function(sampleNum) {
+
+      let c = document.getElementById('sample' + sampleNum);
+      let ctx = c.getContext('2d');
+      let imgData = ctx.createImageData(28, 28);
+
+      let randIdx = Math.floor(Math.random() * SAMPLE_DATA.length);
+
+      for (let i = 0; i < imgData.data.length; i+=4) {
+        imgData.data[i+0] = 0;
+        imgData.data[i+1] = 0;
+        imgData.data[i+2] = 0;
+        imgData.data[i+3] = 255 * SAMPLE_DATA[sampleNum][i/4];
+      }
+      ctx.putImageData(imgData, 0, 0);
+
+      // resize 300%
+      let imageObject = new Image();
+      imageObject.onload = function() {
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.scale(3, 3);
+        ctx.drawImage(imageObject, 0, 0);
+      }
+      imageObject.src = c.toDataURL();
+
+      nn.predict(SAMPLE_DATA[sampleNum], function(err, result) {console.log(result);});
+
+    });
   </script>
 </body>
 </html>
