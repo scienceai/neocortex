@@ -8,7 +8,7 @@
 <body onLoad="initNN();initSampleData()">
   <div class="title">MNIST multi-layer perceptron</div>
   <div class="description">
-    <p>This demonstrates a 3-layer MLP with ReLU activations and dropout, culminating in a 10-class softmax function which predicts the digit represented in a given 28x28 image. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images. Five sample images are randomly loaded per button-click below.</p>
+    <p>This demonstrates a 3-layer MLP with ReLU activations and dropout, culminating in a 10-class softmax function which predicts the digit represented in a given 28x28 image. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
     <p>Offline, this trained model approached 98.1% test accuracy. Of course, there are vastly better models, such as those based on <a href="/cifar10_convnet">convolutional neural networks</a>.</p>
   </div>
   <div class="button" onClick="loadSamples()">load random samples</div>
@@ -39,6 +39,8 @@
       <p>probability: <span class="result" id="sample4_prob">-</span></p>
     </div>
   </div>
+
+  <!----------- SCRIPTS ------------>
 
   <script src="/neuralnet-predict.min.js"></script>
   <script>
