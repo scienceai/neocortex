@@ -1,4 +1,5 @@
 @import url("http://fonts.googleapis.com/css?family=Lato:300,400,900");
+@import url("http://fonts.googleapis.com/css?family=Inconsolata:400");
 
 body {
   background-color: #f3f6fa;
@@ -39,7 +40,7 @@ a:hover {
 
 .button {
   padding: 15px 50px;
-  margin: 80px 20px 40px 20px;
+  margin: 60px 20px 40px 20px;
   border: 1px solid #7c8081;
   display: inline-block;
   text-align: center;
@@ -55,19 +56,31 @@ a:hover {
 
 .button:hover {
   background-color: #81CFE0;
-  border-color: white;
-  color: white;
+  border-color: #f3f6fa;
+  color: #f3f6fa;
   cursor: pointer;
 }
 
 .samples {
   margin: 50px 0;
-  width: 100%;
   padding: 30px;
   background-color: #F2F1EF;
 }
 
 .samples > .sample {
+  display: inline-block;
   margin-left: 30px;
   margin-right: 30px;
+}
+
+.samples > .sample > canvas {
+  padding: 20px 5px;
+}
+
+.samples > .sample > p {
+  color: #aaaaaa;
+  font-family: 'Inconsolata', monospace;
+  font-size: 1.3em;
+  font-weight: 400;
+  text-align: center;
 }

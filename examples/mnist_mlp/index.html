@@ -4,58 +4,118 @@
   <meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" href="/styles.css" />
-	<link rel="stylesheet" href="/mnist_mlp/custom.css" />
 </head>
-<body>
+<body onLoad="initNN();initSampleData()">
   <div class="title">MNIST multi-layer perceptron</div>
-  <div class="description">This demonstrates a 3-layer MLP with ReLU activations and dropout, culminating in a 10-class softmax function which predicts the digit represented in a given 28x28 image. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, interactively with the sample images. Five sample images are randomly loaded per button-click below.</div>
-  <div class="button">load random samples</div>
+  <div class="description">
+    <p>This demonstrates a 3-layer MLP with ReLU activations and dropout, culminating in a 10-class softmax function which predicts the digit represented in a given 28x28 image. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images. Five sample images are randomly loaded per button-click below.</p>
+    <p>Offline, this trained model approached 98.1% test accuracy. Of course, there are vastly better models, such as those based on <a href="/cifar10_convnet">convolutional neural networks</a>.</p>
+  </div>
+  <div class="button" onClick="loadSamples()">load random samples</div>
   <div class="samples">
-    <canvas id="sample0" class="sample" width="84" height="84"></canvas>
-    <canvas id="sample1" class="sample" width="84" height="84"></canvas>
-    <canvas id="sample2" class="sample" width="84" height="84"></canvas>
-    <canvas id="sample3" class="sample" width="84" height="84"></canvas>
-    <canvas id="sample4" class="sample" width="84" height="84"></canvas>
+    <div class="sample">
+      <canvas id="sample0" width="56" height="56"></canvas>
+      <p>prediction:  <span class="result" id="sample0_pred">-</span></p>
+      <p>probability: <span class="result" id="sample0_prob">-</span></p>
+    </div>
+    <div class="sample">
+      <canvas id="sample1" width="56" height="56"></canvas>
+      <p>prediction:  <span class="result" id="sample1_pred">-</span></p>
+      <p>probability: <span class="result" id="sample1_prob">-</span></p>
+    </div>
+    <div class="sample">
+      <canvas id="sample2" width="56" height="56"></canvas>
+      <p>prediction:  <span class="result" id="sample2_pred">-</span></p>
+      <p>probability: <span class="result" id="sample2_prob">-</span></p>
+    </div>
+    <div class="sample">
+      <canvas id="sample3" width="56" height="56"></canvas>
+      <p>prediction:  <span class="result" id="sample3_pred">-</span></p>
+      <p>probability: <span class="result" id="sample3_prob">-</span></p>
+    </div>
+    <div class="sample">
+      <canvas id="sample4" width="56" height="56"></canvas>
+      <p>prediction:  <span class="result" id="sample4_pred">-</span></p>
+      <p>probability: <span class="result" id="sample4_prob">-</span></p>
+    </div>
   </div>
 
   <script src="/neuralnet-predict.min.js"></script>
-  <script src="/mnist_mlp/sample_data.js"></script>
   <script>
     'use strict';
 
-    let nn = new NeuralNet({
-      modelFilePath: '/mnist_mlp/mnist_mlp_model_params.json',
-      modelFileType: 'json'
-    });
+    let nn, SAMPLE_DATA;
 
-    [0].forEach(function(sampleNum) {
+    function initNN() {
+      nn = new NeuralNet({
+        modelFilePath: '/mnist_mlp/mnist_mlp_model_params.json',
+        modelFileType: 'json'
+      });
+    }
 
-      let c = document.getElementById('sample' + sampleNum);
-      let ctx = c.getContext('2d');
-      let imgData = ctx.createImageData(28, 28);
+    function initSampleData() {
+      let xhr = new XMLHttpRequest();
+      xhr.overrideMimeType("application/json");
+      xhr.open('GET', '/mnist_mlp/sample_data.json', true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+          SAMPLE_DATA = JSON.parse(xhr.responseText);
+          loadSamples();
+        }
+      };
+      xhr.send(null);
+    }
 
-      let randIdx = Math.floor(Math.random() * SAMPLE_DATA.length);
+    function loadSamples() {
+      [0, 1, 2, 3, 4].forEach(function(sampleNum) {
 
-      for (let i = 0; i < imgData.data.length; i+=4) {
-        imgData.data[i+0] = 0;
-        imgData.data[i+1] = 0;
-        imgData.data[i+2] = 0;
-        imgData.data[i+3] = 255 * SAMPLE_DATA[sampleNum][i/4];
-      }
-      ctx.putImageData(imgData, 0, 0);
-
-      // resize 300%
-      let imageObject = new Image();
-      imageObject.onload = function() {
+        let c = document.getElementById('sample' + sampleNum);
+        let ctx = c.getContext('2d');
         ctx.clearRect(0, 0, c.width, c.height);
-        ctx.scale(3, 3);
-        ctx.drawImage(imageObject, 0, 0);
-      }
-      imageObject.src = c.toDataURL();
+        let imgData = ctx.createImageData(28, 28);
 
-      nn.predict(SAMPLE_DATA[sampleNum], function(err, result) {console.log(result);});
+        let randIdx = Math.floor(Math.random() * SAMPLE_DATA.data.length);
 
-    });
+        for (let i = 0; i < imgData.data.length; i+=4) {
+          imgData.data[i+0] = 0;
+          imgData.data[i+1] = 0;
+          imgData.data[i+2] = 0;
+          imgData.data[i+3] = 255 * SAMPLE_DATA.data[randIdx][i/4];
+        }
+        ctx.putImageData(imgData, 0, 0);
+
+        // resize image 200% (context needs to be scaled back down to 100% for next paint)
+        let imageObject = new Image();
+        imageObject.onload = function() {
+          ctx.clearRect(0, 0, c.width, c.height);
+          ctx.scale(2, 2);
+          ctx.drawImage(imageObject, 0, 0);
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+        }
+        imageObject.src = c.toDataURL();
+
+        nn.predict(SAMPLE_DATA.data[randIdx], function(err, result) {
+          let $pred = document.getElementById('sample' + sampleNum + '_pred');
+          let $prob = document.getElementById('sample' + sampleNum + '_prob');
+
+          let argmax = Object.keys(result.data).reduce(function(a, b) {
+            if (result.data[a] > result.data[b]) return a;
+            else return b;
+          });
+
+          $pred.innerHTML = argmax;
+          $prob.innerHTML = result.data[argmax].toFixed(3);
+
+          if (SAMPLE_DATA.labels[randIdx] == argmax) {
+            $pred.style.color = '#3FC380';
+          } else {
+            $pred.style.color = '#E74C3C';
+          }
+
+        });
+
+      });
+    }
   </script>
 </body>
 </html>
