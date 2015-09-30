@@ -106,6 +106,9 @@ export default class NeuralNet {
           callback(null, output);
         }
       }, 10);
+    } else {
+      let output = _predict(X);
+      callback(null, output);
     }
 
   }
