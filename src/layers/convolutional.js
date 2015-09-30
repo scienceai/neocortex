@@ -53,26 +53,28 @@ export function convolution2DLayer(arrayType, x, weights,
     for (let stack = 0; stack < stack_size; stack++) {
 
       let convTemp = ndarray(new arrayType(rows_new * cols_new), [rows_new, cols_new]);
+      let filter_weights = W.pick(filter, stack, null, null);
 
       if (border_mode === 'valid') {
 
-        convolve(convTemp, x.pick(stack, null, null), W.pick(filter, stack, null, null));
+        convolve(convTemp, x.pick(stack, null, null), filter_weights.step(-1,-1));
 
       } else if (border_mode === 'same') {
 
         let convTempFull = ndarray(new arrayType((x.shape[1] + nb_row - 1) * (x.shape[2] + nb_col - 1)), [x.shape[1] + nb_row - 1, x.shape[2] + nb_col - 1]);
-        convolve(convTempFull, x_mod.pick(stack, null, null), W.pick(filter, stack, null, null));
+        convolve(convTempFull, x_mod.pick(stack, null, null), filter_weights.step(-1,-1));
         let shift_x = Math.floor((nb_row - 1) / 2);
         let shift_y = Math.floor((nb_col - 1) / 2);
         ops.assign(convTemp, convTempFull.hi(x.shape[1] + shift_x, x.shape[2] + shift_y).lo(shift_x, shift_y));
 
       } else if (border_mode === 'full') {
 
-        convolve(convTemp, x_mod.pick(stack, null, null), W.pick(filter, stack, null, null));
+        convolve(convTemp, x_mod.pick(stack, null, null), filter_weights.step(-1,-1));
 
       }
 
-      ops.sumeq(convTempSum, convTemp);
+      ops.addeq(convTempSum, convTemp);
+      if (filter == 0) {console.log(x.pick(stack, null, null), filter_weights.step(-1,-1))}
     }
 
     ops.addseq(convTempSum, b.get(filter));

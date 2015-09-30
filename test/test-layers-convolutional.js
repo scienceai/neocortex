@@ -18,9 +18,12 @@ describe('Layer: convolutional', function() {
       let weights = require('./fixtures/test_weights_convolution2d_keras.json');
 
       let y = convolution2DLayer(arrayType, input, weights,
-        nb_filter=5, stack_size=2, nb_row=4, nb_col=3,
-        border_mode='valid', subsample=[1,1], activation='linear');
-
+        5, 2, 4, 3, // nb_filter, stack_size, nb_row, nb_col
+        'valid', // border_mode
+        [1,1], // subsample
+        'linear' // activation
+      );
+console.log(y);
       let expected = pack([[[-23.931154251098633, -25.2711181640625]], [[3.360344171524048, 3.208177328109741]], [[2.332014322280884, 2.3287289142608643]], [[-26.280771255493164, -27.71440887451172]], [[54.16725158691406, 56.917640686035156]]]);
 
       assert.deepEqual(y.shape, [5,1,2]);
