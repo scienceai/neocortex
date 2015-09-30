@@ -48,7 +48,7 @@ def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
     for k, layer in enumerate(model_metadata['layers']):
         if layer['name'] == 'Activation':
             num_activation_layers += 1
-            prev_layer_name = model_metadata['layers'][k-num_activation_layers]['name']
+            prev_layer_name = model_metadata['layers'][k-1]['name']
             idx_activation = layer_params_dict[prev_layer_name].index('activation')
             layers[k-num_activation_layers]['parameters'][idx_activation] = layer['activation']
             continue
