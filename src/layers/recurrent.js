@@ -1,7 +1,7 @@
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
 import pack from 'ndarray-pack';
-import mvprod from 'ndarray-matrix-vector-product';
+import mvprod from '../lib/matrix-vector-product';
 import * as activationFuncs from '../functions/activations';
 
 ///////////////////////////////////////////////////////
