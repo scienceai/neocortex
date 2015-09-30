@@ -4,6 +4,12 @@ import pack from 'ndarray-pack';
 import mvprod from '../lib/matrix-vector-product';
 import * as activationFuncs from '../functions/activations';
 
+/*
+* Recurrent neural network layers
+*
+* shape of input tensor: timesteps x dimensions
+*/
+
 ///////////////////////////////////////////////////////
 // LSTM
 //
