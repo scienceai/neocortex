@@ -10,7 +10,11 @@ export function batchNormalizationLayer(arrayType, x, weights, epsilon=EPSILON) 
   let mean = pack(weights['mean']);
   let std = pack(weights['std']);
 
-  ops.addeq(ops.muleq(ops.diveq(ops.subeq(x, mean), ops.addseq(std, epsilon)), gamma), beta);
+  let y = ndarray(new arrayType(x.size), x.shape);
 
-  return x;
+  ops.addseq(std, epsilon);
+  ops.sub(y, x, mean);
+  ops.addeq(ops.muleq(ops.diveq(y, std), gamma), beta);
+
+  return y;
 }

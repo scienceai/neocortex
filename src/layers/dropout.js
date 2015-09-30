@@ -3,7 +3,8 @@ import ops from 'ndarray-ops';
 
 export function dropoutLayer(arrayType, x, p=0.5) {
 
-  ops.mulseq(x, p);
+  let y = ndarray(new arrayType(x.size), x.shape);
+  ops.muls(y, x, p);
 
-  return x;
+  return y;
 }
