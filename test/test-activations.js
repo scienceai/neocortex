@@ -41,7 +41,7 @@ describe('Activation functions [baseline]', function () {
   });
 
   describe('relu', function () {
-    let expected = [ 0.01, 0.03, 0.01, 0.05, 0];
+    let expected = [ 0.01, 0.03, 0, 0.05, 0];
     let repeat = 17;
     while(repeat--) {
       expected = expected.concat(expected);

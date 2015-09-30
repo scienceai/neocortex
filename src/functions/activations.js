@@ -12,7 +12,8 @@ export function linear(x) {
  * Rectified linear unit
  */
 export function relu(x) {
-  ops.divseq(ops.addeq(x, ops.abseq(x)), 2.0);
+  // note: (x + abs(x)) / 2.0 will be faster
+  ops.maxseq(x, 0.0);
   return x;
 }
 
