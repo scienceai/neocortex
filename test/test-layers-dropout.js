@@ -17,7 +17,7 @@ describe('Layer: dropout', function() {
   });
 
   it('should produce expected', (done) => {
-    let expected = [0.05, 0.06, 0.12];
+    let expected = [0.45, 0.54, 1.08];
     let y = dropoutLayer(Float64Array, x, 0.1);
     assert.deepEqual(y.shape, [3]);
     for (let i = 0; i < y.shape[0]; i++) {
