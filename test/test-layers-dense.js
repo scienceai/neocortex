@@ -3,6 +3,8 @@ import almostEqual from 'almost-equal';
 import ndarray from 'ndarray';
 import { denseLayer } from '../src/layers/dense';
 
+const EPSILON = almostEqual.FLT_EPSILON;
+
 describe('Layer: dense', function() {
   let x = ndarray(new Float64Array([0.25, 0.5, 0.75]), [3]);
   let W = [[-0.9270800352096558, 0.18572671711444855, 0.39262476563453674], [-0.23333904147148132, -0.44041740894317627, -0.7116944789886475], [-0.6425269842147827, -0.9207804799079895, 0.4250005781650543]];
@@ -13,7 +15,7 @@ describe('Layer: dense', function() {
     let y = denseLayer(Float64Array, x, { W, b });
     assert.deepEqual(y.shape, [3]);
     for (let i = 0; i < y.shape[0]; i++) {
-      assert(almostEqual(y.get(i), expected[i], almostEqual.FLT_EPSILON, almostEqual.FLT_EPSILON));
+      assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
     }
     done();
   });
@@ -23,7 +25,7 @@ describe('Layer: dense', function() {
     let y = denseLayer(Float64Array, x, { W, b }, 'softmax');
     assert.deepEqual(y.shape, [3]);
     for (let i = 0; i < y.shape[0]; i++) {
-      assert(almostEqual(y.get(i), expected[i], almostEqual.FLT_EPSILON, almostEqual.FLT_EPSILON));
+      assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
     }
     done();
   });

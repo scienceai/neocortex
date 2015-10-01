@@ -41,6 +41,8 @@ Functions and layers currently implemented are listed below. More forthcoming.
 
 + `denseLayer`
 
++ `flattenLayer`
+
 ##### Recurrent layers
 
 + `rGRULayer` (gated-recurrent unit or GRU)
