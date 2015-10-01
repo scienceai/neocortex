@@ -44,7 +44,9 @@ export function convolution2DLayer(arrayType, x, weights,
   if (border_mode === 'same' || border_mode === 'full') {
     // zero-padding
     x_mod = ndarray(new arrayType(x.shape[0] * (x.shape[1] + 2*(nb_row-1)) * (x.shape[2] + 2*(nb_col-1))), [x.shape[0], x.shape[1] + 2*(nb_row-1), x.shape[2] + 2*(nb_col-1)]);
-    ops.assign(x_mod.hi(x.shape[1] + nb_row - 1, x.shape[2] + nb_col - 1).lo(nb_row-1, nb_col-1), x);
+    for (let stack = 0; stack < stack_size; stack++) {
+      ops.assign(x_mod.pick(stack, null, null).hi(x.shape[1] + nb_row - 1, x.shape[2] + nb_col - 1).lo(nb_row - 1, nb_col - 1), x.pick(stack, null, null));
+    }
   }
 
   for (let filter = 0; filter < nb_filter; filter++) {
