@@ -16,7 +16,7 @@ What about using emscripten to compile models to asm.js? It may be within the re
 
 Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of course a source of inspiration, as well as the excellent Theano-based deep learning framework [Keras](https://github.com/fchollet/keras/).
 
-### Usage
+### Examples
 
 
 ### API
@@ -27,15 +27,17 @@ Functions and layers currently implemented are listed below. More forthcoming.
 
 + `linear`
 
-+ `relu` (rectified linear or ReLU)
++ `relu`
 
-+ `sigmoid` or `sigmoidHard`
++ `sigmoid`
+
++ `hard_sigmoid`
 
 + `tanh`
 
 + `softmax`
 
-##### Dense fully-connected layers
+##### Basic layers
 
 + `denseLayer`
 
@@ -49,13 +51,13 @@ Functions and layers currently implemented are listed below. More forthcoming.
 
 ##### Convolutional layers
 
-+ `convolution1DLayer`
-
 + `convolution2DLayer`
 
-+ `pooling1DLayer`
++ `maxPooling2DLayer`
 
-+ `pooling2DLayer`
++ `convolution1DLayer`
+
++ `maxPooling1DLayer`
 
 ##### Embedding layers
 
@@ -65,19 +67,31 @@ Functions and layers currently implemented are listed below. More forthcoming.
 
 + `batchNormalizationLayer` - see [Ioffe and Szegedy 2015](http://arxiv.org/abs/1502.03167)
 
+##### Advanced activation layers
+
++ `leakyReLULayer`
+
++ `parametricReLULayer`
+
++ `parametricSoftplusLayer`
+
++ `thresholdedLinearLayer`
+
++ `thresholdedReLuLayer`
+
 ### Build
+
+Build for both the browser (outputs to `build/neuralnet-predict.min.js`) and node.js (outputs to `dist/`):
 
 ```
 $ npm run build
 ```
 
-##### Webpack
+To build just for the browser:
 
 ```
-$ npm run build-webpack
+$ npm run build-browser
 ```
-
-Webpack will build the whole package to `build/neuralnet-predict.min.js`.
 
 ### Tests
 
