@@ -85,3 +85,25 @@ export function convolution2DLayer(arrayType, x, weights,
   activationFuncs[activation](y);
   return y;
 }
+
+
+///////////////////////////////////////////////////////
+// 2D max-pooling layer
+//
+export function maxPooling2DLayer(arrayType, x, poolsize=[2,2], stride=null, ignore_border=true) {
+  let rows_new = Math.floor(x.shape[1] / poolsize[0]);
+  let cols_new = Math.floor(x.shape[2] / poolsize[1]);
+
+  let y = ndarray(new arrayType(x.shape[0] * rows_new * cols_new), [x.shape[0], rows_new, cols_new]);
+
+  // x.shape[0] wil represent the stack size
+  for (let stack = 0; stack < x.shape[0]; stack++) {
+    for (let i = 0; i < rows_new; i++) {
+      for (let j = 0; j < cols_new; j++) {
+        y.set(stack, i, j, ops.sup(x.pick(stack, null, null).hi((i+1)*poolsize[0], (j+1)*poolsize[1]).lo(i*poolsize[0], j*poolsize[1])));
+      }
+    }
+  }
+
+  return y;
+}
