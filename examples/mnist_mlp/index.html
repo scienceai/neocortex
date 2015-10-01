@@ -57,10 +57,10 @@
 
     function initSampleData() {
       let xhr = new XMLHttpRequest();
-      xhr.overrideMimeType("application/json");
+      xhr.overrideMimeType('application/json');
       xhr.open('GET', '/mnist_mlp/sample_data.json', true);
       xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == "200") {
+        if (xhr.readyState == 4 && xhr.status == '200') {
           SAMPLE_DATA = JSON.parse(xhr.responseText);
           loadSamples();
         }
@@ -71,7 +71,7 @@
     function loadSamples() {
       [0, 1, 2, 3, 4].forEach(function(sampleNum) {
 
-        let c = document.getElementById('sample' + sampleNum);
+        let c = document.getElementById(`sample${sampleNum}`);
         let ctx = c.getContext('2d');
         ctx.clearRect(0, 0, c.width, c.height);
         let imgData = ctx.createImageData(28, 28);
@@ -97,8 +97,8 @@
         imageObject.src = c.toDataURL();
 
         nn.predict(SAMPLE_DATA.data[randIdx], function(err, result) {
-          let $pred = document.getElementById('sample' + sampleNum + '_pred');
-          let $prob = document.getElementById('sample' + sampleNum + '_prob');
+          let $pred = document.getElementById(`sample${sampleNum}_pred`);
+          let $prob = document.getElementById(`sample${sampleNum}_prob`);
 
           let argmax = Object.keys(result.data).reduce(function(a, b) {
             if (result.data[a] > result.data[b]) return a;
