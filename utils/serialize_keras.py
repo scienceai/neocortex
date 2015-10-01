@@ -5,36 +5,55 @@ import gzip
 layer_name_dict = {
     'Dense': 'denseLayer',
     'Dropout': 'dropoutLayer',
+    'Flatten': 'flattenLayer',
     'Embedding': 'embeddingLayer',
     'BatchNormalization': 'batchNormalizationLayer',
+    'LeakyReLU': 'leakyReLULayer',
+    'PReLU': 'parametricReLULayer',
+    'ParametricSoftplus': 'parametricSoftplusLayer',
+    'ThresholdedLinear': 'thresholdedLinearLayer',
+    'ThresholdedReLu': 'thresholdedReLuLayer',
     'LSTM': 'rLSTMLayer',
     'GRU': 'rGRULayer',
     'JZS1': 'rJZS1Layer',
     'JZS2': 'rJZS2Layer',
-    'JZS3': 'rJZS3Layer'
+    'JZS3': 'rJZS3Layer',
+    'Convolution2D': 'convolution2DLayer',
+    'MaxPooling2D': 'maxPooling2DLayer'
 }
 
 layer_params_dict = {
     'Dense': ['weights', 'activation'],
     'Dropout': ['p'],
+    'Flatten': [],
     'Embedding': ['weights'],
     'BatchNormalization': ['weights', 'epsilon'],
+    'LeakyReLU': ['alpha'],
+    'PReLU': ['weights'],
+    'ParametricSoftplus': ['weights'],
+    'ThresholdedLinear': ['theta'],
+    'ThresholdedReLu': ['theta'],
     'LSTM': ['weights', 'activation', 'inner_activation'],
     'GRU': ['weights', 'activation', 'inner_activation'],
     'JZS1': ['weights', 'activation', 'inner_activation'],
     'JZS2': ['weights', 'activation', 'inner_activation'],
-    'JZS3': ['weights', 'activation', 'inner_activation']
+    'JZS3': ['weights', 'activation', 'inner_activation'],
+    'Convolution2D': ['weights', 'nb_filter', 'stack_size', 'nb_row', 'nb_col', 'border_mode', 'subsample', 'activation'],
+    'MaxPooling2D': ['poolsize', 'stride', 'ignore_border']
 }
 
 layer_weights_dict = {
     'Dense': ['W', 'b'],
     'Embedding': ['E'],
     'BatchNormalization': ['gamma', 'beta', 'mean', 'std'],
+    'PReLU': ['alphas'],
+    'ParametricSoftplus': ['alphas', 'betas'],
     'LSTM': ['W_xi', 'W_hi', 'b_i', 'W_xc', 'W_hc', 'b_c', 'W_xf', 'W_hf', 'b_f', 'W_xo', 'W_ho', 'b_o'],
     'GRU': ['W_xz', 'W_hz', 'b_z', 'W_xr', 'W_hr', 'b_r', 'W_xh', 'W_hh', 'b_h'],
     'JZS1': ['W_xz', 'b_z', 'W_xr', 'W_hr', 'b_r', 'W_hh', 'b_h', 'Pmat'],
     'JZS2': ['W_xz', 'W_hz', 'b_z', 'W_hr', 'b_r', 'W_xh', 'W_hh', 'b_h', 'Pmat'],
-    'JZS3': ['W_xz', 'W_hz', 'b_z', 'W_xr', 'W_hr', 'b_r', 'W_xh', 'W_hh', 'b_h']
+    'JZS3': ['W_xz', 'W_hz', 'b_z', 'W_xr', 'W_hr', 'b_r', 'W_xh', 'W_hh', 'b_h'],
+    'Convolution2D': ['W', 'b']
 }
 
 def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
