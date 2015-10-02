@@ -52,6 +52,12 @@ a:hover {
 	text-transform: uppercase;
   background-color: rgba(255, 255, 255, 0);
   transition: background-color 0.5s ease-out, border-color 0.5s ease-out, color 0.5s ease-out;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .button:hover {
@@ -65,6 +71,12 @@ a:hover {
   margin: 50px 0;
   padding: 30px;
   background-color: #F2F1EF;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .samples > .sample {
