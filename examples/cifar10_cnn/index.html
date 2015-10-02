@@ -1,0 +1,124 @@
+<html>
+<head>
+  <title>Example: CIFAR-10 CNN</title>
+  <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/styles.css" />
+</head>
+<body onLoad="init()">
+  <div class="title">CIFAR-10 convolutional neural network</div>
+  <div class="description">
+    <p>This is a demo of a basic convolutional neural network on the CIFAR-10 dataset. The model consists of 8 convolution layers with leaky ReLU activation units, 4 max-pooling layers with dropout, 2 fully-connected dense layers, with final softmax for classification into 10 classes. Offline test accuracy of this model was around 84.4%, trained without any image augmentation. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
+  </div>
+  <div class="button" onClick="loadSamples()">load random samples</div>
+  <div class="samples">
+    <div class="sample">
+      <canvas id="sample0" width="128" height="128"></canvas>
+      <p>prediction:  <span class="result" id="sample0_pred">-</span></p>
+      <p>probability: <span class="result" id="sample0_prob">-</span></p>
+    </div>
+    <div class="sample">
+      <canvas id="sample1" width="128" height="128"></canvas>
+      <p>prediction:  <span class="result" id="sample1_pred">-</span></p>
+      <p>probability: <span class="result" id="sample1_prob">-</span></p>
+    </div>
+    <div class="sample">
+      <canvas id="sample2" width="128" height="128"></canvas>
+      <p>prediction:  <span class="result" id="sample2_pred">-</span></p>
+      <p>probability: <span class="result" id="sample2_prob">-</span></p>
+    </div>
+    <div class="sample">
+      <canvas id="sample3" width="128" height="128"></canvas>
+      <p>prediction:  <span class="result" id="sample3_pred">-</span></p>
+      <p>probability: <span class="result" id="sample3_prob">-</span></p>
+    </div>
+    <div class="sample">
+      <canvas id="sample4" width="128" height="128"></canvas>
+      <p>prediction:  <span class="result" id="sample4_pred">-</span></p>
+      <p>probability: <span class="result" id="sample4_prob">-</span></p>
+    </div>
+  </div>
+
+  <!----------- SCRIPTS ------------>
+
+  <script src="/neuralnet-predict.min.js"></script>
+  <script>
+    'use strict';
+
+    let nn;
+
+    function init() {
+      nn = new NeuralNet({
+        modelFilePath: '/cifar10_cnn/cifar10_cnn_model_params.json.gz',
+        sampleDataPath: '/cifar10_cnn/sample_data.json.gz'
+      });
+
+      if (!nn.sampleDataLoaded) {
+        let waitSampleData = setInterval(function() {
+          if (nn.sampleDataLoaded) {
+            clearInterval(waitSampleData);
+            loadSamples();
+          }
+        }, 10);
+      } else {
+        loadSamples();
+      }
+    }
+
+    function loadSamples() {
+      [0].forEach(function(sampleNum) {
+
+        let c = document.getElementById(`sample${sampleNum}`);
+        let ctx = c.getContext('2d');
+        ctx.clearRect(0, 0, c.width, c.height);
+        let imgData = ctx.createImageData(32, 32);
+
+        let randIdx = Math.floor(Math.random() * nn.SAMPLE_DATA.data.length);
+
+        let pos = 0;
+        for (let i = 0; i < 32; i++) {
+          for (let j = 0; j < 32; j++) {
+            imgData.data[pos+0] = 255 * nn.SAMPLE_DATA.data[randIdx][0][i][j];
+            imgData.data[pos+1] = 255 * nn.SAMPLE_DATA.data[randIdx][1][i][j];
+            imgData.data[pos+2] = 255 * nn.SAMPLE_DATA.data[randIdx][2][i][j];
+            imgData.data[pos+3] = 255;
+            pos += 4;
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+
+        // resize image 200% (context needs to be scaled back down to 100% for next paint)
+        let imageObject = new Image();
+        imageObject.onload = function() {
+          ctx.clearRect(0, 0, c.width, c.height);
+          ctx.scale(4, 4);
+          ctx.drawImage(imageObject, 0, 0);
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+        }
+        imageObject.src = c.toDataURL();
+
+        nn.predict(nn.SAMPLE_DATA.data[randIdx], function(err, result) {
+          let $pred = document.getElementById(`sample${sampleNum}_pred`);
+          let $prob = document.getElementById(`sample${sampleNum}_prob`);
+
+          let argmax = Object.keys(result.data).reduce(function(a, b) {
+            if (result.data[a] > result.data[b]) return a;
+            else return b;
+          });
+
+          $pred.innerHTML = argmax;
+          $prob.innerHTML = result.data[argmax].toFixed(3);
+
+          if (nn.SAMPLE_DATA.labels[randIdx] == argmax) {
+            $pred.style.color = '#3FC380';
+          } else {
+            $pred.style.color = '#E74C3C';
+          }
+
+        });
+
+      });
+    }
+  </script>
+</body>
+</html>
