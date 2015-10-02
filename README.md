@@ -37,6 +37,18 @@ Functions and layers currently implemented are listed below. More forthcoming.
 
 + `softmax`
 
+##### Advanced activation layers
+
++ `leakyReLULayer`
+
++ `parametricReLULayer`
+
++ `parametricSoftplusLayer`
+
++ `thresholdedLinearLayer`
+
++ `thresholdedReLuLayer`
+
 ##### Basic layers
 
 + `denseLayer`
@@ -68,18 +80,6 @@ Functions and layers currently implemented are listed below. More forthcoming.
 ##### Normalization layers
 
 + `batchNormalizationLayer` - see [Ioffe and Szegedy 2015](http://arxiv.org/abs/1502.03167)
-
-##### Advanced activation layers
-
-+ `leakyReLULayer`
-
-+ `parametricReLULayer`
-
-+ `parametricSoftplusLayer`
-
-+ `thresholdedLinearLayer`
-
-+ `thresholdedReLuLayer`
 
 ### Build
 
