@@ -105,8 +105,10 @@ export default class NeuralNet {
 
     let _predict = (X) => {
       for (let layer of this._layers) {
+        let start = new Date().getTime();
         let { layerName, parameters } = layer;
         X = layerFuncs[layerName](this.arrayType, X, ...parameters);
+        console.log(layerName, new Date().getTime() - start, X);
       }
       return X;
     };

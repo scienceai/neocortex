@@ -21,7 +21,7 @@ describe('Layer: convolutional', function() {
 
     let input = pack(JSON.parse(input_JSON));
 
-    it('should output the correct tensor (border mode: valid)', (done) => {
+    it.only('should output the correct tensor (border mode: valid)', (done) => {
       let weights = require('./fixtures/test_weights_convolution2d_keras.json');
 
       let y = convolution2DLayer(arrayType, input, weights,
@@ -32,7 +32,7 @@ describe('Layer: convolutional', function() {
       );
 
       let expected = pack(JSON.parse(convolution2D_valid_expected_JSON));
-
+console.log(y);
       assert.deepEqual(y.shape, [5,1,2]);
       for (let i = 0; i < y.shape[0]; i++) {
         for (let j = 0; j < y.shape[1]; j++) {
@@ -55,7 +55,7 @@ describe('Layer: convolutional', function() {
       );
 
       let expected = pack(JSON.parse(convolution2D_same_expected_JSON));
-
+console.log(y);
       assert.deepEqual(y.shape, [5,4,4]);
       for (let i = 0; i < y.shape[0]; i++) {
         for (let j = 0; j < y.shape[1]; j++) {

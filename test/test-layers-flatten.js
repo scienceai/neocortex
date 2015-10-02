@@ -34,7 +34,6 @@ describe('Layer: flatten', function() {
     let input = pack([[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]);
     let expected = pack([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
     let y = flattenLayer(Float64Array, input);
-    console.log(y);
     assert.deepEqual(y.shape, [12]);
     for (let i = 0; i < y.shape[0]; i++) {
       assert(almostEqual(y.get(i), expected.get(i), EPSILON, EPSILON));
