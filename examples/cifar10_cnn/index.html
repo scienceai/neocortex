@@ -13,27 +13,27 @@
   <div class="button" onClick="loadSamples()">load random samples</div>
   <div class="samples">
     <div class="sample">
-      <canvas id="sample0" width="128" height="128"></canvas>
+      <canvas id="sample0" width="96" height="96"></canvas>
       <p>prediction:  <span class="result" id="sample0_pred">-</span></p>
       <p>probability: <span class="result" id="sample0_prob">-</span></p>
     </div>
     <div class="sample">
-      <canvas id="sample1" width="128" height="128"></canvas>
+      <canvas id="sample1" width="96" height="96"></canvas>
       <p>prediction:  <span class="result" id="sample1_pred">-</span></p>
       <p>probability: <span class="result" id="sample1_prob">-</span></p>
     </div>
     <div class="sample">
-      <canvas id="sample2" width="128" height="128"></canvas>
+      <canvas id="sample2" width="96" height="96"></canvas>
       <p>prediction:  <span class="result" id="sample2_pred">-</span></p>
       <p>probability: <span class="result" id="sample2_prob">-</span></p>
     </div>
     <div class="sample">
-      <canvas id="sample3" width="128" height="128"></canvas>
+      <canvas id="sample3" width="96" height="96"></canvas>
       <p>prediction:  <span class="result" id="sample3_pred">-</span></p>
       <p>probability: <span class="result" id="sample3_prob">-</span></p>
     </div>
     <div class="sample">
-      <canvas id="sample4" width="128" height="128"></canvas>
+      <canvas id="sample4" width="96" height="96"></canvas>
       <p>prediction:  <span class="result" id="sample4_pred">-</span></p>
       <p>probability: <span class="result" id="sample4_prob">-</span></p>
     </div>
@@ -45,12 +45,16 @@
   <script>
     'use strict';
 
+    const CIFAR10_CLASSES = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck'];
+
     let nn;
 
     function init() {
       nn = new NeuralNet({
         modelFilePath: '/cifar10_cnn/cifar10_cnn_model_params.json.gz',
-        sampleDataPath: '/cifar10_cnn/sample_data.json.gz'
+        sampleDataPath: '/cifar10_cnn/sample_data.json.gz',
+        arrayType: 'float32',
+        useGPU: false
       });
 
       if (!nn.sampleDataLoaded) {
@@ -66,7 +70,7 @@
     }
 
     function loadSamples() {
-      [0].forEach(function(sampleNum) {
+      for (let sampleNum = 0; sampleNum < 5; sampleNum++) {
 
         let c = document.getElementById(`sample${sampleNum}`);
         let ctx = c.getContext('2d');
@@ -91,7 +95,7 @@
         let imageObject = new Image();
         imageObject.onload = function() {
           ctx.clearRect(0, 0, c.width, c.height);
-          ctx.scale(4, 4);
+          ctx.scale(3, 3);
           ctx.drawImage(imageObject, 0, 0);
           ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
@@ -106,7 +110,7 @@
             else return b;
           });
 
-          $pred.innerHTML = argmax;
+          $pred.innerHTML = CIFAR10_CLASSES[argmax];
           $prob.innerHTML = result.data[argmax].toFixed(3);
 
           if (nn.SAMPLE_DATA.labels[randIdx] == argmax) {
@@ -117,7 +121,7 @@
 
         });
 
-      });
+      };
     }
   </script>
 </body>

@@ -51,7 +51,9 @@
     function init() {
       nn = new NeuralNet({
         modelFilePath: '/mnist_mlp/mnist_mlp_model_params.json.gz',
-        sampleDataPath: '/mnist_mlp/sample_data.json.gz'
+        sampleDataPath: '/mnist_mlp/sample_data.json.gz',
+        arrayType: 'float64',
+        useGPU: false
       });
 
       if (!nn.sampleDataLoaded) {
