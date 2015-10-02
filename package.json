@@ -12,7 +12,7 @@
     "build": "npm run build-node && npm run build-browser",
     "prepublish": "npm run build",
     "test": "mocha --reporter spec --compilers js:babel/register",
-    "examples-server": "npm run build-browser && cp build/neuralnet-predict.min.js examples && cd examples && python -m http.server"
+    "examples-server": "npm run build-browser && cp build/neuralnet-predict.min.js examples && node examples/server.js"
   },
   "repository": {
     "type": "git",
@@ -46,11 +46,11 @@
     "browserify": "^11.2.0",
     "concat-stream": "^1.5.0",
     "eslint": "^1.5.0",
+    "express": "^4.13.3",
     "minifyify": "^7.1.0",
     "mocha": "^2.3.2",
     "raw-loader": "^0.5.1",
-    "simd": "^2.0.0",
-    "webpack": "^1.12.2"
+    "simd": "^2.0.0"
   },
   "dependencies": {
     "cwise": "^1.0.8",
