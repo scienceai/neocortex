@@ -30,59 +30,74 @@ export default class NeuralNet {
     this.readyStatus = false;
     this._layers = [];
 
-    // json or gzip
-    this.modelFileType = config.modelFileType || 'json';
-
-    this.modelFilePath = config.modelFilePath || null;
-    if (this.modelFilePath) {
-      this.loadModel(this.modelFilePath);
+    if (config.modelFilePath) {
+      this.loadModel(config.modelFilePath);
     } else {
       throw new Error('no modelFilePath specified in config object.');
+    }
+
+    this.sampleDataLoaded = false;
+
+    if (config.sampleDataPath) {
+      this.loadSampleData(config.sampleDataPath);
     }
   }
 
   loadModel(modelFilePath) {
     if (this.environment === 'node') {
       let s = fs.createReadStream(__dirname + modelFilePath);
-      if (this.modelFileType === 'gzip') {
+      if (modelFilePath.endsWith('.json.gz')) {
         let gunzip = zlib.createGunzip();
         s.pipe(gunzip).pipe(concat((model) => {
           this._layers = JSON.parse(model.toString());
           this.readyStatus = true;
         }));
-      } else if (this.modelFileType === 'json') {
+      } else if (modelFilePath.endsWith('.json')) {
         s.pipe(concat((model) => {
           this._layers = JSON.parse(model.toString());
           this.readyStatus = true;
         }));
       }
     } else if (this.environment === 'browser') {
-      if (this.modelFileType === 'gzip') {
-        request.get(modelFilePath)
-          .set('Content-Type', 'application/json')
-          .set('Content-Encoding', 'gzip')
-          .end((err, res) => {
-            if (err) return console.error('error loading model file.');
-            if (res.statusCode == 200) {
-              this._layers = res.body;
-              this.readyStatus = true;
-            } else {
-              console.error('error loading model file.');
-            }
-          });
-      } else if (this.modelFileType === 'json') {
-        request.get(modelFilePath)
-          .set('Content-Type', 'application/json')
-          .end((err, res) => {
-            if (err) return console.error('error loading model file.');
-            if (res.statusCode == 200) {
-              this._layers = res.body;
-              this.readyStatus = true;
-            } else {
-              console.error('error loading model file.');
-            }
-          });
+      request.get(modelFilePath)
+        .end((err, res) => {
+          if (err) return console.error('error loading model file.');
+          if (res.statusCode == 200) {
+            this._layers = res.body;
+            this.readyStatus = true;
+          } else {
+            console.error('error loading model file.');
+          }
+        });
+    }
+  }
+
+  loadSampleData(sampleDataPath) {
+    if (this.environment === 'node') {
+      let s = fs.createReadStream(__dirname + sampleDataPath);
+      if (sampleDataPath.endsWith('.json.gz')) {
+        let gunzip = zlib.createGunzip();
+        s.pipe(gunzip).pipe(concat((data) => {
+          this.SAMPLE_DATA = JSON.parse(data.toString());
+          this.sampleDataLoaded = true;
+        }));
+      } else if (sampleDataPath.endsWith('.json')) {
+        s.pipe(concat((data) => {
+          this.SAMPLE_DATA = JSON.parse(data.toString());
+          this.sampleDataLoaded = true;
+        }));
       }
+    } else if (this.environment === 'browser') {
+      request.get(sampleDataPath)
+        .end((err, res) => {
+          if (err) return console.error('error loading data file.');
+          if (res.statusCode == 200) {
+            this.SAMPLE_DATA = res.body;
+            this.sampleDataLoaded = true;
+          } else {
+            console.error('error loading data file.');
+          }
+        });
     }
   }
 
