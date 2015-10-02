@@ -1,7 +1,7 @@
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
 import pack from 'ndarray-pack';
-import convolve from 'ndarray-convolve';
+import convolve from '../lib/convolve-2d';
 import mvprod from '../lib/matrix-vector-product';
 import * as activationFuncs from '../functions/activations';
 
@@ -25,8 +25,9 @@ export function convolution2DLayer(arrayType, x, weights,
   let W = pack(weights['W']);
   let b = pack(weights['b']);
 
-  let rows_new = 0;
-  let cols_new = 0;
+  let stacks_new = nb_filter;
+  let rows_new = x.shape[1];
+  let cols_new = x.shape[2];
   if (border_mode === 'valid') {
     rows_new = x.shape[1] - nb_row + 1;
     cols_new = x.shape[2] - nb_col + 1;
@@ -38,66 +39,50 @@ export function convolution2DLayer(arrayType, x, weights,
     cols_new = x.shape[2] + nb_col - 1;
   }
 
-  let y = ndarray(new arrayType(W.shape[0] * rows_new * cols_new), [W.shape[0], rows_new, cols_new]);
+  let y = ndarray(new arrayType(nb_filter * rows_new * cols_new), [nb_filter, rows_new, cols_new]);
 
   let x_mod;
   if (border_mode === 'same' || border_mode === 'full') {
     // zero-padding
     x_mod = ndarray(new arrayType(x.shape[0] * (x.shape[1] + 2*(nb_row-1)) * (x.shape[2] + 2*(nb_col-1))), [x.shape[0], x.shape[1] + 2*(nb_row-1), x.shape[2] + 2*(nb_col-1)]);
-    for (let stack = 0; stack < stack_size; stack++) {
-      ops.assign(x_mod.pick(stack, null, null).hi(x.shape[1] + nb_row - 1, x.shape[2] + nb_col - 1).lo(nb_row - 1, nb_col - 1), x.pick(stack, null, null));
-    }
+
+    ops.assign(x_mod.hi(stack_size, x.shape[1] + nb_row - 1, x.shape[2] + nb_col - 1).lo(0, nb_row - 1, nb_col - 1), x);
+  } else if (border_mode === 'valid') {
+    x_mod = ndarray(new arrayType(x.data), x.shape);
   }
 
+  // broadcast x
+  let x_broadcasted = ndarray(new arrayType(nb_filter * x_mod.size), [nb_filter, x_mod.shape[0], x_mod.shape[1], x_mod.shape[2]]);
   for (let filter = 0; filter < nb_filter; filter++) {
+    ops.assign(x_broadcasted.pick(filter, null, null, null), x_mod);
+  }
 
-    let filter_weights = W.pick(filter, null, null, null).step(-1, 1, 1);
+  if (border_mode === 'valid') {
 
-    let convTemp, convTemp2;
-    let stack_begin, row_begin, col_begin;
-    if (border_mode === 'valid') {
+    convolve(y, x_broadcasted, W);
 
-      convTemp = ndarray(new arrayType(x.size), x.shape);
-      convTemp2 = ndarray(new arrayType(rows_new * cols_new), [rows_new, cols_new]);
+  } else if (border_mode === 'same') {
 
-      convolve(convTemp, x, filter_weights);
+    let convTemp = ndarray(new arrayType(nb_filter * (x.shape[1] + nb_row - 1) * (x.shape[2] + nb_col - 1)), [nb_filter, x.shape[1] + nb_row - 1, x.shape[2] + nb_col - 1]);
+    convolve(convTemp, x_broadcasted, W);
+    let shift_x = Math.floor((nb_row - 1) / 2);
+    let shift_y = Math.floor((nb_col - 1) / 2);
 
-      stack_begin = Math.floor((stack_size - 1) / 2);
-      row_begin = Math.floor((nb_row - 1) / 2);
-      col_begin = Math.floor((nb_col - 1) / 2);
-      ops.assign(convTemp2, convTemp.pick(stack_begin, null, null).hi(row_begin + rows_new, col_begin + cols_new).lo(row_begin, col_begin));
+    ops.assign(y, convTemp.hi(nb_filter, rows_new + shift_x, cols_new + shift_y).lo(0, shift_x, shift_y));
 
-    } else if (border_mode === 'same') {
+  } else if (border_mode === 'full') {
 
-      convTemp = ndarray(new arrayType(x_mod.size), x_mod.shape);
-      convTemp2 = ndarray(new arrayType(rows_new * cols_new), [rows_new, cols_new]);
+    convolve(y, x_broadcasted, W);
 
-      convolve(convTemp, x_mod, filter_weights);
+  }
 
-      stack_begin = Math.floor((stack_size - 1) / 2);
-      row_begin = 2 * Math.floor((nb_row - 1) / 2);
-      col_begin = 2 * Math.floor((nb_col - 1) / 2);
-      ops.assign(convTemp2, convTemp.pick(stack_begin, null, null).hi(row_begin + rows_new, col_begin + cols_new).lo(row_begin, col_begin));
-
-    } else if (border_mode === 'full') {
-
-      convTemp = ndarray(new arrayType(x_mod.size), x_mod.shape);
-      convTemp2 = ndarray(new arrayType(rows_new * cols_new), [rows_new, cols_new]);
-
-      convolve(convTemp, x_mod, filter_weights);
-
-      stack_begin = Math.floor((stack_size - 1) / 2);
-      row_begin = Math.floor((nb_row - 1) / 2);
-      col_begin = Math.floor((nb_col - 1) / 2);
-      ops.assign(convTemp2, convTemp.pick(stack_begin, null, null).hi(row_begin + rows_new, col_begin + cols_new).lo(row_begin, col_begin));
-
-    }
-
-    ops.addseq(convTemp2, b.get(filter));
-    ops.assign(y.pick(filter, null, null), convTemp2);
+  // add bias
+  for (let filter = 0; filter < nb_filter; filter++) {
+    ops.addseq(y.pick(filter, null, null), b.get(filter));
   }
 
   activationFuncs[activation](y);
+
   return y;
 }
 

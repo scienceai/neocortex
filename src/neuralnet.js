@@ -9,22 +9,22 @@ export default class NeuralNet {
   constructor(config) {
     config = config || {};
 
-    this.arrayType = Array;
+    this.arrayType = Float64Array || Array;
     if (config.arrayType === 'float32') {
       this.arrayType = Float32Array;
     } else if (config.arrayType === 'float64') {
       this.arrayType = Float64Array;
     }
 
-    this.SIMD_AVAIL = (this.arrayType === Float32Array || this.arrayType === Float64Array) && ('SIMD' in this);
-    this.WEBGL_AVAIL = true;
+    this._SIMD_AVAIL = (this.arrayType === Float32Array || this.arrayType === Float64Array) && ('SIMD' in this);
+    this._WEBGL_AVAIL = true;
 
-    this.useGPU = (config.useGPU || false) && this.WEBGL_AVAIL;
+    this.useGPU = (config.useGPU || false) && this._WEBGL_AVAIL;
 
     if (typeof window !== 'undefined') {
-      this.environment = 'browser';
+      this._environment = 'browser';
     } else {
-      this.environment = 'node';
+      this._environment = 'node';
     }
 
     this.readyStatus = false;
@@ -44,7 +44,7 @@ export default class NeuralNet {
   }
 
   loadModel(modelFilePath) {
-    if (this.environment === 'node') {
+    if (this._environment === 'node') {
       let s = fs.createReadStream(__dirname + modelFilePath);
       if (modelFilePath.endsWith('.json.gz')) {
         let gunzip = zlib.createGunzip();
@@ -58,7 +58,7 @@ export default class NeuralNet {
           this.readyStatus = true;
         }));
       }
-    } else if (this.environment === 'browser') {
+    } else if (this._environment === 'browser') {
       request.get(modelFilePath)
         .end((err, res) => {
           if (err) return console.error('error loading model file.');
@@ -73,7 +73,7 @@ export default class NeuralNet {
   }
 
   loadSampleData(sampleDataPath) {
-    if (this.environment === 'node') {
+    if (this._environment === 'node') {
       let s = fs.createReadStream(__dirname + sampleDataPath);
       if (sampleDataPath.endsWith('.json.gz')) {
         let gunzip = zlib.createGunzip();
@@ -87,7 +87,7 @@ export default class NeuralNet {
           this.sampleDataLoaded = true;
         }));
       }
-    } else if (this.environment === 'browser') {
+    } else if (this._environment === 'browser') {
       request.get(sampleDataPath)
         .end((err, res) => {
           if (err) return console.error('error loading data file.');
