@@ -56,9 +56,11 @@
     "cwise": "^1.0.8",
     "ndarray": "^1.0.18",
     "ndarray-blas-level1": "^1.1.1",
+    "ndarray-fft": "^1.0.0",
     "ndarray-ops": "^1.2.2",
     "ndarray-pack": "^1.1.1",
     "ndarray-unpack": "^1.0.0",
-    "superagent": "^1.4.0"
+    "superagent": "^1.4.0",
+    "typedarray-pool": "^1.1.0"
   }
 }

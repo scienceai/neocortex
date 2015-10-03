@@ -52,32 +52,34 @@ export function convolution2DLayer(arrayType, x, weights,
   }
 
   // broadcast x
-  let x_broadcasted = ndarray(new arrayType(nb_filter * x_mod.size), [nb_filter, x_mod.shape[0], x_mod.shape[1], x_mod.shape[2]]);
+  /*let x_broadcasted = ndarray(new arrayType(nb_filter * x_mod.size), [nb_filter, x_mod.shape[0], x_mod.shape[1], x_mod.shape[2]]);
   for (let filter = 0; filter < nb_filter; filter++) {
     ops.assign(x_broadcasted.pick(filter, null, null, null), x_mod);
-  }
+  }*/
 
-  if (border_mode === 'valid') {
-
-    convolve(y, x_broadcasted, W);
-
-  } else if (border_mode === 'same') {
-
-    let convTemp = ndarray(new arrayType(nb_filter * (x.shape[1] + nb_row - 1) * (x.shape[2] + nb_col - 1)), [nb_filter, x.shape[1] + nb_row - 1, x.shape[2] + nb_col - 1]);
-    convolve(convTemp, x_broadcasted, W);
-    let shift_x = Math.floor((nb_row - 1) / 2);
-    let shift_y = Math.floor((nb_col - 1) / 2);
-
-    ops.assign(y, convTemp.hi(nb_filter, rows_new + shift_x, cols_new + shift_y).lo(0, shift_x, shift_y));
-
-  } else if (border_mode === 'full') {
-
-    convolve(y, x_broadcasted, W);
-
-  }
-
-  // add bias
   for (let filter = 0; filter < nb_filter; filter++) {
+    let filter_weights = W.pick(filter, null, null, null);
+
+    if (border_mode === 'valid') {
+
+      convolve(y.pick(filter, null, null), x_mod, filter_weights.step(-1, 1, 1));
+
+    } else if (border_mode === 'same') {
+
+      let convTemp = ndarray(new arrayType((x.shape[1] + nb_row - 1) * (x.shape[2] + nb_col - 1)), [x.shape[1] + nb_row - 1, x.shape[2] + nb_col - 1]);
+      convolve(convTemp, x_mod, filter_weights.step(-1, 1, 1));
+      let shift_x = Math.floor((nb_row - 1) / 2);
+      let shift_y = Math.floor((nb_col - 1) / 2);
+
+      ops.assign(y.pick(filter, null, null), convTemp.hi(rows_new + shift_x, cols_new + shift_y).lo(shift_x, shift_y));
+
+    } else if (border_mode === 'full') {
+
+      convolve(y.pick(filter, null, null), x_mod, filter_weights.step(-1, 1, 1));
+
+    }
+
+    // add bias
     ops.addseq(y.pick(filter, null, null), b.get(filter));
   }
 
