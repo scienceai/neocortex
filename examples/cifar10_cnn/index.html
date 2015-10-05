@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <title>Example: CIFAR-10 CNN</title>
   <meta charset="utf-8" />
@@ -8,7 +9,7 @@
 <body onLoad="init()">
   <div class="title">CIFAR-10 convolutional neural network</div>
   <div class="description">
-    <p>This is a demo of a basic convolutional neural network on the CIFAR-10 dataset. The model consists of 8 convolution layers with leaky ReLU activation units, 4 max-pooling layers with dropout, 2 fully-connected dense layers, with final softmax for classification into 10 classes. Offline test accuracy of this model was around 84.4%, trained without any image augmentation. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
+    <p>This is a demo of a basic convolutional neural network on the CIFAR-10 dataset. The model based on VGGNet consists of 6 convolution layers with leaky ReLU activation units, 3 max-pooling layers with dropout, and 2 fully-connected dense layers, with final softmax for classification into 10 classes. Offline test accuracy of this simple model was around 84%, but it was trained without any image augmentation. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
   </div>
   <div class="button" onClick="loadSamples()">load random samples</div>
   <div class="samples">
@@ -51,8 +52,8 @@
 
     function init() {
       nn = new NeuralNet({
-        modelFilePath: '/cifar10_cnn/cifar10_cnn_model_params.json.gz',
-        sampleDataPath: '/cifar10_cnn/sample_data.json.gz',
+        modelFilePath: '/cifar10_cnn/cifar10_cnn_model_params.json',
+        sampleDataPath: '/cifar10_cnn/sample_data.json',
         arrayType: 'float32',
         useGPU: false
       });
