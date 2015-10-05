@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <title>Example: MNIST MLP</title>
   <meta charset="utf-8" />
@@ -50,8 +51,8 @@
 
     function init() {
       nn = new NeuralNet({
-        modelFilePath: '/mnist_mlp/mnist_mlp_model_params.json.gz',
-        sampleDataPath: '/mnist_mlp/sample_data.json.gz',
+        modelFilePath: '/mnist_mlp/mnist_mlp_model_params.json',
+        sampleDataPath: '/mnist_mlp/sample_data.json',
         arrayType: 'float64',
         useGPU: false
       });
