@@ -33,11 +33,11 @@ layer_params_dict = {
     'ParametricSoftplus': ['weights'],
     'ThresholdedLinear': ['theta'],
     'ThresholdedReLu': ['theta'],
-    'LSTM': ['weights', 'activation', 'inner_activation'],
-    'GRU': ['weights', 'activation', 'inner_activation'],
-    'JZS1': ['weights', 'activation', 'inner_activation'],
-    'JZS2': ['weights', 'activation', 'inner_activation'],
-    'JZS3': ['weights', 'activation', 'inner_activation'],
+    'LSTM': ['weights', 'activation', 'inner_activation', 'return_sequences'],
+    'GRU': ['weights', 'activation', 'inner_activation', 'return_sequences'],
+    'JZS1': ['weights', 'activation', 'inner_activation', 'return_sequences'],
+    'JZS2': ['weights', 'activation', 'inner_activation', 'return_sequences'],
+    'JZS3': ['weights', 'activation', 'inner_activation', 'return_sequences'],
     'Convolution2D': ['weights', 'nb_filter', 'stack_size', 'nb_row', 'nb_col', 'border_mode', 'subsample', 'activation'],
     'MaxPooling2D': ['poolsize', 'stride', 'ignore_border']
 }

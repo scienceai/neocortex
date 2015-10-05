@@ -13,7 +13,7 @@ import * as activationFuncs from '../functions/activations';
 ///////////////////////////////////////////////////////
 // LSTM
 //
-export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActivation='hard_sigmoid') {
+export function rLSTMLayer(arrayType, x, weights, activation='tanh', inner_activation='hard_sigmoid', return_sequences=false) {
   let W_xi = pack(weights['W_xi']);
   let W_hi = pack(weights['W_hi']);
   let b_i = pack(weights['b_i']);
@@ -49,6 +49,11 @@ export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActiva
   let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
   let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
+  let h_seq;
+  if (return_sequences) {
+    h_seq = ndarray(new arrayType(x.size), x.shape);
+  }
+
   function _step() {
     ops.assign(h_tm1, h_t);
 
@@ -58,7 +63,7 @@ export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActiva
     ops.addeq(i_t, temp_xi);
     ops.addeq(i_t, temp_hi);
     ops.addeq(i_t, b_i);
-    activationFuncs[innerActivation](i_t);
+    activationFuncs[inner_activation](i_t);
 
     mvprod(temp_xf, W_xf.transpose(1, 0), x_t);
     mvprod(temp_hf, W_hf.transpose(1, 0), h_tm1);
@@ -66,7 +71,7 @@ export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActiva
     ops.addeq(f_t, temp_xf);
     ops.addeq(f_t, temp_hf);
     ops.addeq(f_t, b_f);
-    activationFuncs[innerActivation](f_t);
+    activationFuncs[inner_activation](f_t);
 
     mvprod(temp_xo, W_xo.transpose(1, 0), x_t);
     mvprod(temp_ho, W_ho.transpose(1, 0), h_tm1);
@@ -74,7 +79,7 @@ export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActiva
     ops.addeq(o_t, temp_xo);
     ops.addeq(o_t, temp_ho);
     ops.addeq(o_t, b_o);
-    activationFuncs[innerActivation](o_t);
+    activationFuncs[inner_activation](o_t);
 
     mvprod(temp_xc, W_xc.transpose(1, 0), x_t);
     mvprod(temp_hc, W_hc.transpose(1, 0), h_tm1);
@@ -95,6 +100,10 @@ export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActiva
   for (let i = 0; i < x.shape[0]; i++) {
     ops.assign(x_t, x.pick(i, null));
     _step();
+
+    if (return_sequences) {
+      ops.assign(h_seq.pick(i, null), h_t);
+    }
   }
 
   return h_t;
@@ -104,7 +113,7 @@ export function rLSTMLayer(arrayType, x, weights, activation='tanh', innerActiva
 ///////////////////////////////////////////////////////
 // GRU
 //
-export function rGRULayer(arrayType, x, weights, activation='tanh', innerActivation='hard_sigmoid') {
+export function rGRULayer(arrayType, x, weights, activation='tanh', inner_activation='hard_sigmoid', return_sequences=false) {
   let W_xz = pack(weights['W_xz']);
   let W_hz = pack(weights['W_hz']);
   let b_z = pack(weights['b_z']);
@@ -129,6 +138,11 @@ export function rGRULayer(arrayType, x, weights, activation='tanh', innerActivat
   let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
   let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
+  let h_seq;
+  if (return_sequences) {
+    h_seq = ndarray(new arrayType(x.size), x.shape);
+  }
+
   function _step() {
     ops.assign(h_tm1, h_t);
 
@@ -138,7 +152,7 @@ export function rGRULayer(arrayType, x, weights, activation='tanh', innerActivat
     ops.addeq(z_t, temp_xz);
     ops.addeq(z_t, temp_hz);
     ops.addeq(z_t, b_z);
-    activationFuncs[innerActivation](z_t);
+    activationFuncs[inner_activation](z_t);
 
     mvprod(temp_xr, W_xr.transpose(1, 0), x_t);
     mvprod(temp_hr, W_hr.transpose(1, 0), h_tm1);
@@ -146,7 +160,7 @@ export function rGRULayer(arrayType, x, weights, activation='tanh', innerActivat
     ops.addeq(r_t, temp_xr);
     ops.addeq(r_t, temp_hr);
     ops.addeq(r_t, b_r);
-    activationFuncs[innerActivation](r_t);
+    activationFuncs[inner_activation](r_t);
 
     mvprod(temp_xh, W_xh.transpose(1, 0), x_t);
     ops.mul(temp, r_t, h_tm1);
@@ -169,6 +183,10 @@ export function rGRULayer(arrayType, x, weights, activation='tanh', innerActivat
   for (let i = 0; i < x.shape[0]; i++) {
     ops.assign(x_t, x.pick(i, null));
     _step();
+
+    if (return_sequences) {
+      ops.assign(h_seq.pick(i, null), h_t);
+    }
   }
 
   return h_t;
@@ -178,7 +196,7 @@ export function rGRULayer(arrayType, x, weights, activation='tanh', innerActivat
 ///////////////////////////////////////////////////////
 // JZS1
 //
-export function rJZS1Layer(arrayType, x, weights, activation='tanh', innerActivation='sigmoid') {
+export function rJZS1Layer(arrayType, x, weights, activation='tanh', inner_activation='sigmoid', return_sequences=false) {
   let W_xz = pack(weights['W_xz']);
   let b_z = pack(weights['b_z']);
   let W_xr = pack(weights['W_xr']);
@@ -201,6 +219,11 @@ export function rJZS1Layer(arrayType, x, weights, activation='tanh', innerActiva
   let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
   let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
+  let h_seq;
+  if (return_sequences) {
+    h_seq = ndarray(new arrayType(x.size), x.shape);
+  }
+
   function _step() {
     ops.assign(h_tm1, h_t);
 
@@ -208,7 +231,7 @@ export function rJZS1Layer(arrayType, x, weights, activation='tanh', innerActiva
     ops.assigns(z_t, 0);
     ops.addeq(z_t, temp_xz);
     ops.addeq(z_t, b_z);
-    activationFuncs[innerActivation](z_t);
+    activationFuncs[inner_activation](z_t);
 
     mvprod(temp_xr, W_xr.transpose(1, 0), x_t);
     mvprod(temp_hr, W_hr.transpose(1, 0), h_tm1);
@@ -216,7 +239,7 @@ export function rJZS1Layer(arrayType, x, weights, activation='tanh', innerActiva
     ops.addeq(r_t, temp_xr);
     ops.addeq(r_t, temp_hr);
     ops.addeq(r_t, b_r);
-    activationFuncs[innerActivation](r_t);
+    activationFuncs[inner_activation](r_t);
 
     mvprod(temp_x_proj, Pmat.transpose(1, 0), x_t);
     ops.mul(temp, r_t, h_tm1);
@@ -239,6 +262,10 @@ export function rJZS1Layer(arrayType, x, weights, activation='tanh', innerActiva
   for (let i = 0; i < x.shape[0]; i++) {
     ops.assign(x_t, x.pick(i, null));
     _step();
+
+    if (return_sequences) {
+      ops.assign(h_seq.pick(i, null), h_t);
+    }
   }
 
   return h_t;
@@ -248,7 +275,7 @@ export function rJZS1Layer(arrayType, x, weights, activation='tanh', innerActiva
 ///////////////////////////////////////////////////////
 // JZS2
 //
-export function rJZS2Layer(arrayType, x, weights, activation='tanh', innerActivation='sigmoid') {
+export function rJZS2Layer(arrayType, x, weights, activation='tanh', inner_activation='sigmoid', return_sequences=false) {
   let W_xz = pack(weights['W_xz']);
   let W_hz = pack(weights['W_hz']);
   let b_z = pack(weights['b_z']);
@@ -273,6 +300,11 @@ export function rJZS2Layer(arrayType, x, weights, activation='tanh', innerActiva
   let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
   let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
+  let h_seq;
+  if (return_sequences) {
+    h_seq = ndarray(new arrayType(x.size), x.shape);
+  }
+
   function _step() {
     ops.assign(h_tm1, h_t);
 
@@ -282,7 +314,7 @@ export function rJZS2Layer(arrayType, x, weights, activation='tanh', innerActiva
     ops.addeq(z_t, temp_xz);
     ops.addeq(z_t, temp_hz);
     ops.addeq(z_t, b_z);
-    activationFuncs[innerActivation](z_t);
+    activationFuncs[inner_activation](z_t);
 
     mvprod(temp_x_proj, Pmat.transpose(1, 0), x_t);
     mvprod(temp_hr, W_hr.transpose(1, 0), h_tm1);
@@ -290,7 +322,7 @@ export function rJZS2Layer(arrayType, x, weights, activation='tanh', innerActiva
     ops.addeq(r_t, temp_x_proj);
     ops.addeq(r_t, temp_hr);
     ops.addeq(r_t, b_r);
-    activationFuncs[innerActivation](r_t);
+    activationFuncs[inner_activation](r_t);
 
     mvprod(temp_xh, W_xh.transpose(1, 0), x_t);
     ops.mul(temp, r_t, h_tm1);
@@ -313,6 +345,10 @@ export function rJZS2Layer(arrayType, x, weights, activation='tanh', innerActiva
   for (let i = 0; i < x.shape[0]; i++) {
     ops.assign(x_t, x.pick(i, null));
     _step();
+
+    if (return_sequences) {
+      ops.assign(h_seq.pick(i, null), h_t);
+    }
   }
 
   return h_t;
@@ -322,7 +358,7 @@ export function rJZS2Layer(arrayType, x, weights, activation='tanh', innerActiva
 ///////////////////////////////////////////////////////
 // JZS3
 //
-export function rJZS3Layer(arrayType, x, weights, activation='tanh', innerActivation='sigmoid') {
+export function rJZS3Layer(arrayType, x, weights, activation='tanh', inner_activation='sigmoid', return_sequences=false) {
   let W_xz = pack(weights['W_xz']);
   let W_hz = pack(weights['W_hz']);
   let b_z = pack(weights['b_z']);
@@ -348,6 +384,11 @@ export function rJZS3Layer(arrayType, x, weights, activation='tanh', innerActiva
   let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
   let h_tm1_temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
+  let h_seq;
+  if (return_sequences) {
+    h_seq = ndarray(new arrayType(x.size), x.shape);
+  }
+
   function _step() {
     ops.assign(h_tm1, h_t);
 
@@ -358,7 +399,7 @@ export function rJZS3Layer(arrayType, x, weights, activation='tanh', innerActiva
     ops.addeq(z_t, temp_xz);
     ops.addeq(z_t, temp_hz);
     ops.addeq(z_t, b_z);
-    activationFuncs[innerActivation](z_t);
+    activationFuncs[inner_activation](z_t);
 
     mvprod(temp_xr, W_xr.transpose(1, 0), x_t);
     mvprod(temp_hr, W_hr.transpose(1, 0), h_tm1);
@@ -366,7 +407,7 @@ export function rJZS3Layer(arrayType, x, weights, activation='tanh', innerActiva
     ops.addeq(r_t, temp_xr);
     ops.addeq(r_t, temp_hr);
     ops.addeq(r_t, b_r);
-    activationFuncs[innerActivation](r_t);
+    activationFuncs[inner_activation](r_t);
 
     mvprod(temp_xh, W_xh.transpose(1, 0), x_t);
     ops.mul(temp, r_t, h_tm1);
@@ -389,6 +430,10 @@ export function rJZS3Layer(arrayType, x, weights, activation='tanh', innerActiva
   for (let i = 0; i < x.shape[0]; i++) {
     ops.assign(x_t, x.pick(i, null));
     _step();
+
+    if (return_sequences) {
+      ops.assign(h_seq.pick(i, null), h_t);
+    }
   }
 
   return h_t;
