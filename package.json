@@ -53,6 +53,7 @@
     "simd": "^2.0.0"
   },
   "dependencies": {
+    "bluebird": "^2.10.2",
     "cwise": "^1.0.8",
     "ndarray": "^1.0.18",
     "ndarray-blas-level1": "^1.1.1",
