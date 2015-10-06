@@ -90,9 +90,21 @@ a:hover {
 }
 
 .samples > .sample > p {
-  color: #aaaaaa;
+  color: #AAAAAA;
   font-family: 'Inconsolata', monospace;
   font-size: 1.3em;
   font-weight: 400;
   text-align: center;
+}
+
+.samples > .sample .bar-left {
+  display: inline-block;
+  height: 10px;
+  width: 0px;
+}
+.samples > .sample .bar-right {
+  display: inline-block;
+  height: 10px;
+  width: 0px;
+  background-color: #FFFFFF;
 }

@@ -9,120 +9,183 @@
 <body onLoad="init()">
   <div class="title">CIFAR-10 convolutional neural network</div>
   <div class="description">
-    <p>This is a demo of a basic convolutional neural network on the CIFAR-10 dataset. The model based on VGGNet consists of 6 convolution layers with leaky ReLU activation units, 3 max-pooling layers with dropout, and 2 fully-connected dense layers, with final softmax for classification into 10 classes. Offline test accuracy of this simple model was around 84%, but it was trained without any image augmentation. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
+    <p>This is a demo of a basic convolutional neural network on the CIFAR-10 dataset. The model based on VGGNet consists of 6 convolution layers with leaky ReLU activation units, 3 max-pooling layers with dropout, and 2 fully-connected dense layers, with final softmax for classification into 10 classes. Offline test accuracy of this simple model was around 85%, trained without any image augmentation. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
   </div>
   <div class="button" onClick="loadSamples()">load random samples</div>
   <div class="samples">
     <div class="sample">
       <canvas id="sample0" width="96" height="96"></canvas>
-      <p>prediction:  <span class="result" id="sample0_pred">-</span></p>
-      <p>probability: <span class="result" id="sample0_prob">-</span></p>
+      <p>
+        <span id="sample0_pred0">-</span><br><span class="bar-left" id="sample0_prob0_left"></span><span class="bar-right" id="sample0_prob0_right"></span>
+      </p>
+      <p>
+        <span id="sample0_pred1">-</span><br><span class="bar-left" id="sample0_prob1_left"></span><span class="bar-right" id="sample0_prob1_right"></span>
+      </p>
+      <p>
+        <span id="sample0_pred2">-</span><br><span class="bar-left" id="sample0_prob2_left"></span><span class="bar-right" id="sample0_prob2_right"></span>
+      </p>
     </div>
     <div class="sample">
       <canvas id="sample1" width="96" height="96"></canvas>
-      <p>prediction:  <span class="result" id="sample1_pred">-</span></p>
-      <p>probability: <span class="result" id="sample1_prob">-</span></p>
+      <p>
+        <span id="sample1_pred0">-</span><br><span class="bar-left" id="sample1_prob0_left"></span><span class="bar-right" id="sample1_prob0_right"></span>
+      </p>
+      <p>
+        <span id="sample1_pred1">-</span><br><span class="bar-left" id="sample1_prob1_left"></span><span class="bar-right" id="sample1_prob1_right"></span>
+      </p>
+      <p>
+        <span id="sample1_pred2">-</span><br><span class="bar-left" id="sample1_prob2_left"></span><span class="bar-right" id="sample1_prob2_right"></span>
+      </p>
     </div>
     <div class="sample">
       <canvas id="sample2" width="96" height="96"></canvas>
-      <p>prediction:  <span class="result" id="sample2_pred">-</span></p>
-      <p>probability: <span class="result" id="sample2_prob">-</span></p>
+      <p>
+        <span id="sample2_pred0">-</span><br><span class="bar-left" id="sample2_prob0_left"></span><span class="bar-right" id="sample2_prob0_right"></span>
+      </p>
+      <p>
+        <span id="sample2_pred1">-</span><br><span class="bar-left" id="sample2_prob1_left"></span><span class="bar-right" id="sample2_prob1_right"></span>
+      </p>
+      <p>
+        <span id="sample2_pred2">-</span><br><span class="bar-left" id="sample2_prob2_left"></span><span class="bar-right" id="sample2_prob2_right"></span>
+      </p>
     </div>
     <div class="sample">
       <canvas id="sample3" width="96" height="96"></canvas>
-      <p>prediction:  <span class="result" id="sample3_pred">-</span></p>
-      <p>probability: <span class="result" id="sample3_prob">-</span></p>
+      <p>
+        <span id="sample3_pred0">-</span><br><span class="bar-left" id="sample3_prob0_left"></span><span class="bar-right" id="sample3_prob0_right"></span>
+      </p>
+      <p>
+        <span id="sample3_pred1">-</span><br><span class="bar-left" id="sample3_prob1_left"></span><span class="bar-right" id="sample3_prob1_right"></span>
+      </p>
+      <p>
+        <span id="sample3_pred2">-</span><br><span class="bar-left" id="sample3_prob2_left"></span><span class="bar-right" id="sample3_prob2_right"></span>
+      </p>
     </div>
     <div class="sample">
       <canvas id="sample4" width="96" height="96"></canvas>
-      <p>prediction:  <span class="result" id="sample4_pred">-</span></p>
-      <p>probability: <span class="result" id="sample4_prob">-</span></p>
+      <p>
+        <span id="sample4_pred0">-</span><br><span class="bar-left" id="sample4_prob0_left"></span><span class="bar-right" id="sample4_prob0_right"></span>
+      </p>
+      <p>
+        <span id="sample4_pred1">-</span><br><span class="bar-left" id="sample4_prob1_left"></span><span class="bar-right" id="sample4_prob1_right"></span>
+      </p>
+      <p>
+        <span id="sample4_pred2">-</span><br><span class="bar-left" id="sample4_prob2_left"></span><span class="bar-right" id="sample4_prob2_right"></span>
+      </p>
     </div>
   </div>
 
   <!----------- SCRIPTS ------------>
 
-  <script src="/neuralnet-predict.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
   <script>
     'use strict';
 
-    const CIFAR10_CLASSES = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck'];
-
-    let nn;
+    let SAMPLE_DATA;
+    let workers = [];
 
     function init() {
-      nn = new NeuralNet({
-        modelFilePath: '/cifar10_cnn/cifar10_cnn_model_params.json',
-        sampleDataPath: '/cifar10_cnn/sample_data.json',
-        arrayType: 'float32',
-        useGPU: false
-      });
-
-      if (!nn.sampleDataLoaded) {
-        let waitSampleData = setInterval(function() {
-          if (nn.sampleDataLoaded) {
-            clearInterval(waitSampleData);
-            loadSamples();
+      for (let i = 0; i < 5; i++) {
+        let worker = new Worker('worker.js');
+        worker.onmessage = function(e) {
+          console.log(e);
+          if ('predictions' in e.data) {
+            showPredictions(e.data.sampleNum, e.data.predictions, e.data.sampleLabel)
           }
-        }, 10);
-      } else {
-        loadSamples();
+        }
+        workers.push(worker);
       }
+
+      $.getJSON('/cifar10_cnn/sample_data.json', function(samples) {
+        SAMPLE_DATA = samples;
+        loadSamples();
+      });
     }
 
     function loadSamples() {
-      for (let sampleNum = 0; sampleNum < 5; sampleNum++) {
+      [0, 1, 2, 3, 4].forEach(function(sampleNum) {
+        // get random sample image
+        let randIdx = Math.floor(Math.random() * SAMPLE_DATA.data.length);
+        let sampleData = SAMPLE_DATA.data[randIdx];
+        let sampleLabel = SAMPLE_DATA.labels[randIdx];
 
-        let c = document.getElementById(`sample${sampleNum}`);
-        let ctx = c.getContext('2d');
-        ctx.clearRect(0, 0, c.width, c.height);
-        let imgData = ctx.createImageData(32, 32);
-
-        let randIdx = Math.floor(Math.random() * nn.SAMPLE_DATA.data.length);
-
-        let pos = 0;
-        for (let i = 0; i < 32; i++) {
-          for (let j = 0; j < 32; j++) {
-            imgData.data[pos+0] = 255 * nn.SAMPLE_DATA.data[randIdx][0][i][j];
-            imgData.data[pos+1] = 255 * nn.SAMPLE_DATA.data[randIdx][1][i][j];
-            imgData.data[pos+2] = 255 * nn.SAMPLE_DATA.data[randIdx][2][i][j];
-            imgData.data[pos+3] = 255;
-            pos += 4;
-          }
-        }
-        ctx.putImageData(imgData, 0, 0);
-
-        // resize image 200% (context needs to be scaled back down to 100% for next paint)
-        let imageObject = new Image();
-        imageObject.onload = function() {
-          ctx.clearRect(0, 0, c.width, c.height);
-          ctx.scale(3, 3);
-          ctx.drawImage(imageObject, 0, 0);
-          ctx.setTransform(1, 0, 0, 1, 0, 0);
-        }
-        imageObject.src = c.toDataURL();
-
-        nn.predict(nn.SAMPLE_DATA.data[randIdx], function(err, result) {
-          let $pred = document.getElementById(`sample${sampleNum}_pred`);
-          let $prob = document.getElementById(`sample${sampleNum}_prob`);
-
-          let argmax = Object.keys(result.data).reduce(function(a, b) {
-            if (result.data[a] > result.data[b]) return a;
-            else return b;
-          });
-
-          $pred.innerHTML = CIFAR10_CLASSES[argmax];
-          $prob.innerHTML = result.data[argmax].toFixed(3);
-
-          if (nn.SAMPLE_DATA.labels[randIdx] == argmax) {
-            $pred.style.color = '#3FC380';
-          } else {
-            $pred.style.color = '#E74C3C';
-          }
-
+        workers[sampleNum].postMessage({
+          sampleNum: sampleNum,
+          sampleData: sampleData,
+          sampleLabel: sampleLabel
         });
 
-      };
+        drawSample(sampleNum, sampleData);
+      });
+    }
+
+    function drawSample(sampleNum, sampleData) {
+      let c = document.getElementById(`sample${sampleNum}`);
+      let ctx = c.getContext('2d');
+      ctx.clearRect(0, 0, c.width, c.height);
+      let imgData = ctx.createImageData(32, 32);
+
+      let pos = 0;
+      for (let i = 0; i < 32; i++) {
+        for (let j = 0; j < 32; j++) {
+          imgData.data[pos+0] = 255 * sampleData[0][i][j];
+          imgData.data[pos+1] = 255 * sampleData[1][i][j];
+          imgData.data[pos+2] = 255 * sampleData[2][i][j];
+          imgData.data[pos+3] = 255;
+          pos += 4;
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+
+      // resize image 200% (context needs to be scaled back down to 100% for next paint)
+      let imageObject = new Image();
+      imageObject.onload = function() {
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.scale(3, 3);
+        ctx.drawImage(imageObject, 0, 0);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+      }
+      imageObject.src = c.toDataURL();
+    }
+
+    function showPredictions(sampleNum, predictions, sampleLabel) {
+      const CIFAR10_CLASSES = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck'];
+
+      let predClasses = predictions.map(function(probability, i) {
+        return {
+          class: CIFAR10_CLASSES[i],
+          probability: probability,
+          isCorrect: sampleLabel == i
+        };
+      });
+
+      predClasses.sort(function(a, b) {
+        return b.probability - a.probability;
+      });
+
+      // display top-3 results
+      [0, 1, 2].forEach(function(k) {
+        let $pred = document.getElementById(`sample${sampleNum}_pred${k}`);
+        let $probLeft = document.getElementById(`sample${sampleNum}_prob${k}_left`);
+        let $probRight = document.getElementById(`sample${sampleNum}_prob${k}_right`);
+
+        $pred.innerHTML = predClasses[k].class;
+        $probLeft.style.width = Math.floor(96 * predClasses[k].probability) + 'px';
+        $probRight.style.width = Math.ceil(96 - 96 * predClasses[k].probability) + 'px';
+
+        if (predClasses[k].isCorrect) {
+          if (k === 0) {
+            $pred.style.color = '#3FC380';
+            $probLeft.style.backgroundColor = '#3FC380';
+          } else {
+            $pred.style.color = '#E74C3C';
+            $probLeft.style.backgroundColor = '#E74C3C';
+          }
+        } else {
+          $pred.style.color = '#AAAAAA';
+          $probLeft.style.backgroundColor = '#AAAAAA';
+        }
+      });
     }
   </script>
 </body>
