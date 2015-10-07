@@ -1,8 +1,8 @@
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
 import pack from 'ndarray-pack';
-import convolve from '../lib/convolve-2d';
-import mvprod from '../lib/matrix-vector-product';
+import convolve from '../lib/cpu/convolve-2d';
+import mvprod from '../lib/cpu/matrix-vector-product';
 import * as activationFuncs from '../functions/activations';
 
 /*
