@@ -29,10 +29,10 @@ export default class MatmulWebGL {
 
   init() {
     if (!this.vertexShaderCode) {
-      this.vertexShaderCode = fs.readFileSync('./vertexShader.glsl');
+      this.vertexShaderCode = fs.readFileSync('./matmul_vertex_shader.glsl');
     }
     if (!this.fragmentShaderCode) {
-      this.fragmentShaderCode = fs.readFileSync('./fragmentShader.glsl');
+      this.fragmentShaderCode = fs.readFileSync('./matmul_fragment_shader.glsl');
     }
 
     this.canvas = document.getElementById('matmulWebGL');
