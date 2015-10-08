@@ -95,10 +95,10 @@ describe('Layer: convolutional', function() {
 
     let input = pack(JSON.parse(input_JSON));
 
-    it('should output the correct tensor (input shape: [4,4], poolsize: [2,2])', (done) => {
+    it('should output the correct tensor (input shape: [4,4], pool_size: [2,2])', (done) => {
 
       let y = maxPooling2DLayer(arrayType, input,
-        [2,2], // poolsize
+        [2,2], // pool_size
         null, // stride
         true // ignore_border
       );
@@ -116,10 +116,10 @@ describe('Layer: convolutional', function() {
       done();
     });
 
-    it('should output the correct tensor (input shape: [4,4], poolsize: [3,3])', (done) => {
+    it('should output the correct tensor (input shape: [4,4], pool_size: [3,3])', (done) => {
 
       let y = maxPooling2DLayer(arrayType, input,
-        [3,3], // poolsize
+        [3,3], // pool_size
         null, // stride
         true // ignore_border
       );
@@ -137,10 +137,10 @@ describe('Layer: convolutional', function() {
       done();
     });
 
-    it('should output the correct tensor (input shape: [4,4], poolsize: [1,2])', (done) => {
+    it('should output the correct tensor (input shape: [4,4], pool_size: [1,2])', (done) => {
 
       let y = maxPooling2DLayer(arrayType, input,
-        [1,2], // poolsize
+        [1,2], // pool_size
         null, // stride
         true // ignore_border
       );
@@ -158,10 +158,10 @@ describe('Layer: convolutional', function() {
       done();
     });
 
-    it('should output the correct tensor (input shape: [4,4], poolsize: [3,2])', (done) => {
+    it('should output the correct tensor (input shape: [4,4], pool_size: [3,2])', (done) => {
 
       let y = maxPooling2DLayer(arrayType, input,
-        [3,2], // poolsize
+        [3,2], // pool_size
         null, // stride
         true // ignore_border
       );
@@ -179,10 +179,10 @@ describe('Layer: convolutional', function() {
       done();
     });
 
-    it('should output the correct tensor (input shape: [3,3], poolsize: [2,2])', (done) => {
+    it('should output the correct tensor (input shape: [3,3], pool_size: [2,2])', (done) => {
 
       let y = maxPooling2DLayer(arrayType, input.hi(2,3,3).lo(0,0,0),
-        [2,2], // poolsize
+        [2,2], // pool_size
         null, // stride
         true // ignore_border
       );
@@ -200,10 +200,10 @@ describe('Layer: convolutional', function() {
       done();
     });
 
-    it('should output the correct tensor (input shape: [3,2], poolsize: [2,2])', (done) => {
+    it('should output the correct tensor (input shape: [3,2], pool_size: [2,2])', (done) => {
 
       let y = maxPooling2DLayer(arrayType, input.hi(2,3,2).lo(0,0,0),
-        [2,2], // poolsize
+        [2,2], // pool_size
         null, // stride
         true // ignore_border
       );
