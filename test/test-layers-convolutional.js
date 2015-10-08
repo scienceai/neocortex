@@ -24,8 +24,9 @@ describe('Layer: convolutional', function() {
     it('should output the correct tensor (border mode: valid)', (done) => {
       let weights = require('./fixtures/test_weights_convolution2d_keras.json');
 
+      // stack_size (inferred) = 2
       let y = convolution2DLayer(arrayType, input, weights,
-        5, 2, 4, 3, // nb_filter, stack_size, nb_row, nb_col
+        5, 4, 3, // nb_filter, nb_row, nb_col
         'valid', // border_mode
         [1,1], // subsample
         'linear' // activation
@@ -47,8 +48,9 @@ describe('Layer: convolutional', function() {
     it('should output the correct tensor (border mode: same)', (done) => {
       let weights = require('./fixtures/test_weights_convolution2d_keras.json');
 
+      // stack_size (inferred) = 2
       let y = convolution2DLayer(arrayType, input, weights,
-        5, 2, 4, 3, // nb_filter, stack_size, nb_row, nb_col
+        5, 4, 3, // nb_filter, nb_row, nb_col
         'same', // border_mode
         [1,1], // subsample
         'linear' // activation
@@ -70,8 +72,9 @@ describe('Layer: convolutional', function() {
     it('should output the correct tensor (border mode: full)', (done) => {
       let weights = require('./fixtures/test_weights_convolution2d_keras.json');
 
+      // stack_size (inferred) = 2
       let y = convolution2DLayer(arrayType, input, weights,
-        5, 2, 4, 3, // nb_filter, stack_size, nb_row, nb_col
+        5, 4, 3, // nb_filter, nb_row, nb_col
         'full', // border_mode
         [1,1], // subsample
         'linear' // activation

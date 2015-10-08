@@ -38,7 +38,7 @@ layer_params_dict = {
     'JZS1': ['weights', 'activation', 'inner_activation', 'return_sequences'],
     'JZS2': ['weights', 'activation', 'inner_activation', 'return_sequences'],
     'JZS3': ['weights', 'activation', 'inner_activation', 'return_sequences'],
-    'Convolution2D': ['weights', 'nb_filter', 'stack_size', 'nb_row', 'nb_col', 'border_mode', 'subsample', 'activation'],
+    'Convolution2D': ['weights', 'nb_filter', 'nb_row', 'nb_col', 'border_mode', 'subsample', 'activation'],
     'MaxPooling2D': ['pool_size', 'stride', 'ignore_border']
 }
 

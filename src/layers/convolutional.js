@@ -17,10 +17,12 @@ import * as activationFuncs from '../functions/activations';
 // TODO:
 // - subsample
 export function convolution2DLayer(arrayType, x, weights,
-  nb_filter=64, stack_size=3, nb_row=3, nb_col=3,
+  nb_filter=64, nb_row=3, nb_col=3,
   border_mode='valid',
   subsample=[1,1],
   activation='relu') {
+
+  let stack_size = x.shape[0];
 
   let W = pack(weights['W']);
   let b = pack(weights['b']);
