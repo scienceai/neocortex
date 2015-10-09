@@ -34,10 +34,8 @@ export default class NeuralNet {
     }
     console.log(`Running from environment: ${this._environment}`);
 
-    this._layers = [];
-
     this._modelFilePath = config.modelFilePath || null;
-    this._sampleDataPath = config.sampleDataPath || null;
+    this._layers = [];
   }
 
   loadModel() {
@@ -71,41 +69,6 @@ export default class NeuralNet {
             resolve(true);
           }));
         }
-      }
-    });
-  }
-
-  loadSampleData() {
-    return new Promise((resolve, reject) => {
-      if (!this._sampleDataPath) {
-        reject(new Error('no sampleDataPath specified in config object.'));
-      }
-
-      if (this._environment === 'node') {
-        let s = fs.createReadStream(__dirname + this._sampleDataPath);
-        if (this._sampleDataPath.endsWith('.json.gz')) {
-          let gunzip = zlib.createGunzip();
-          s.pipe(gunzip).pipe(concat((data) => {
-            this.SAMPLE_DATA = JSON.parse(data.toString());
-            resolve(true);
-          }));
-        } else if (this._sampleDataPath.endsWith('.json')) {
-          s.pipe(concat((data) => {
-            this.SAMPLE_DATA = JSON.parse(data.toString());
-            resolve(true);
-          }));
-        }
-      } else if (this._environment === 'browser' || this._environment === 'webworker') {
-        request.get(this._sampleDataPath)
-          .end((err, res) => {
-            if (err) reject(err);
-            if (res.statusCode == 200) {
-              this.SAMPLE_DATA = res.body;
-              resolve(true);
-            } else {
-              reject(new Error('error loading data file.'));
-            }
-          });
       }
     });
   }
