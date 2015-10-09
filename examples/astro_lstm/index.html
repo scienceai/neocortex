@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Example: LSTM classifier for astronomical names</title>
+  <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css">
+	<link rel="stylesheet" href="/styles.css" />
+</head>
+<body onLoad="init()">
+  <div class="title animated fadeIn">LSTM recurrent neural network for classifying astronomical object names</div>
+  <div class="description animated fadeIn">
+    <p>The International Astronomical Union has a set of guidelines for <a>naming astronomical objects</a>, some of which are specific (e.g., comet names are prefixed with type, year of discovery, etc.), while other are more open (e.g., minor planet names should be "not too similar to an existing name of a Minor Planet or natural Planetary satellite"). The confluence of historical legacies and the modern discovery explosion has led to a large assortment of names, from proper names to catalog numbers. Recurrent neural networks are particularly good at learning sequence information. Here, we demonstrate a LSTM (long short-term memory) recurrent neural network trained on classifying astronomical object names by their character sequences. The overall architecture consists of an character embedding layer, single 64-dimensional LSTM layer, and a fully-connected dense layer with softmax activation. Training was performed on 14,215 stars, galaxies, quasars, comets, asteroids, and planets. An accuracy of 99.2% was achieved in the 10%-split test set. Offline, the architecture and weights of the trained <a href="http://keras.io" target="_blank">Keras</a> model are serialized into a JSON file, which is loaded here and run entirely <strong><em>in your browser</em></strong>.</p>
+  </div>
+  <div class="samples animated fadeInUp">
+    <div class="sample">
+      <p><span id="sampleObject">-</span></p>
+      <p>predicted class:  <span id="samplePred">-</span></p>
+      <p><img src="" /></p>
+    </div>
+  </div>
+  <div class="loader">
+    <div class="loader-squares">
+      <div class="square first"></div>
+      <div class="square second"></div>
+      <div class="square third"></div>
+      <div class="square fourth"></div>
+    </div>
+    <div class="loader-text">initializing . . . </div>
+  </div>
+
+  <!----------- SCRIPTS ------------>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+  <script src="/neuralnet-predict.min.js"></script>
+  <script>
+    'use strict';
+
+    let SAMPLE_DATA;
+    let INDICES_DICT;
+    let nn;
+
+    function init() {
+
+      nn = new NeuralNet({
+        modelFilePath: '/astro_lstm/astro_lstm_model_params.json',
+        arrayType: 'float32',
+        useGPU: false
+      });
+
+      nn.loadModel().then(function() {
+
+        $.getJSON('/astro_lstm/sample_data.json', function(samples) {
+          $.getJSON('/astro_lstm/char_label_indices.json', function(indices) {
+            $('.loader').fadeOut();
+            $('.samples').css('display', 'block');
+
+            SAMPLE_DATA = samples;
+            INDICES_DICT = indices;
+            streamSamples();
+          });
+        });
+
+      }).catch(function(e) {
+        console.error(e);
+      });
+
+    }
+
+
+    function streamSamples() {
+      // get random sample
+      let randIdx = Math.floor(Math.random() * SAMPLE_DATA.names.length);
+      let sampleData = SAMPLE_DATA.names[randIdx];
+      let sampleLabel = SAMPLE_DATA.labels[randIdx];
+
+      clearPrediction();
+
+      nn.predict(nameToSeq(sampleData)).then(function(predictions) {
+        showPrediction(sampleData, predictions, sampleLabel);
+      });
+    }
+
+
+    function nameToSeq(name) {
+      let seq = [];
+      for (let i = 0; i < 50; i++) {
+        seq.push(0);
+      }
+      for (let i = 0; i < name.length; i++) {
+        seq[50 - name.length + i] = INDICES_DICT.chars[name[i]];
+      }
+      return seq;
+    }
+
+
+    function clearPrediction(sampleNum) {
+      let $obj = document.getElementById(`sampleObject`);
+      let $pred = document.getElementById(`samplePred`);
+
+      $obj.innerHTML = '-';
+      $pred.innerHTML = '-';
+      $pred.style.color = '#AAAAAA';
+    }
+
+
+    function showPrediction(sampleData, predictions, sampleLabel) {
+
+      let predClasses = predictions.map(function(probability, i) {
+        return {
+          class: INDICES_DICT.labels[i],
+          probability: probability,
+          isCorrect: sampleLabel == INDICES_DICT.labels[i]
+        };
+      });
+
+      predClasses.sort(function(a, b) {
+        return b.probability - a.probability;
+      });
+
+      let $obj = document.getElementById(`sampleObject`);
+      let $pred = document.getElementById(`samplePred`);
+
+      $obj.innerHTML = sampleData;
+      $pred.innerHTML = predClasses[0].class;
+
+      if (predClasses[0].isCorrect) {
+        $pred.style.color = '#3FC380';
+      } else {
+        $pred.style.color = '#E74C3C';
+      }
+    }
+
+  </script>
+</body>
+</html>
