@@ -4,15 +4,19 @@
   <title>Example: CIFAR-10 CNN</title>
   <meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css">
 	<link rel="stylesheet" href="/styles.css" />
 </head>
 <body onLoad="init()">
-  <div class="title">CIFAR-10 convolutional neural network</div>
-  <div class="description">
-    <p>This is a demo of a basic convolutional neural network on the CIFAR-10 dataset. The model based on VGGNet consists of 6 convolution layers with leaky ReLU activation units, 3 max-pooling layers with dropout, and 2 fully-connected dense layers, with final softmax for classification into 10 classes. Offline test accuracy of this simple model was around 85%, trained without any image augmentation. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
+  <div class="title animated fadeIn">CIFAR-10 convolutional neural network</div>
+  <div class="description animated fadeIn">
+    <p>This is a demo of a basic convolutional neural network on the CIFAR-10 dataset. The model based on VGGNet consists of 6 convolution layers with leaky ReLU activation units, 3 max-pooling layers with dropout, and 2 fully-connected dense layers, with final softmax for classification into 10 classes. Offline test accuracy of this simple model was around 85%, trained without any image augmentation. The architecture and weights of the model were serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file, which is then used to run the neural network <strong><em>in your browser</em></strong>, on-the-fly with the loaded sample images (prediction isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
+    <p>In CPU mode, there are five instances of the neural network running in their own Web Worker threads. Example running in GPU mode through WebGL is forthcoming.</p>
   </div>
-  <div class="button" onClick="loadSamples()">load random samples</div>
-  <div class="samples">
+  <div class="button-wrapper animated fadeIn">
+    <div class="button" onClick="loadSamples()">load random samples</div>
+  </div>
+  <div class="samples animated fadeInUp">
     <div class="sample">
       <canvas id="sample0" width="96" height="96"></canvas>
       <p>
@@ -74,6 +78,15 @@
       </p>
     </div>
   </div>
+  <div class="loader">
+    <div class="loader-squares">
+      <div class="square first"></div>
+      <div class="square second"></div>
+      <div class="square third"></div>
+      <div class="square fourth"></div>
+    </div>
+    <div class="loader-text">initializing . . . </div>
+  </div>
 
   <!----------- SCRIPTS ------------>
 
@@ -97,10 +110,15 @@
       }
 
       $.getJSON('/cifar10_cnn/sample_data.json', function(samples) {
+        $('.loader').fadeOut();
+        $('.button-wrapper').css('display', 'block');
+        $('.samples').css('display', 'block');
+
         SAMPLE_DATA = samples;
         loadSamples();
       });
     }
+
 
     function loadSamples() {
       [0, 1, 2, 3, 4].forEach(function(sampleNum) {
@@ -115,9 +133,11 @@
           sampleLabel: sampleLabel
         });
 
+        clearPredictions(sampleNum);
         drawSample(sampleNum, sampleData);
       });
     }
+
 
     function drawSample(sampleNum, sampleData) {
       let c = document.getElementById(`sample${sampleNum}`);
@@ -137,7 +157,7 @@
       }
       ctx.putImageData(imgData, 0, 0);
 
-      // resize image 200% (context needs to be scaled back down to 100% for next paint)
+      // resize image 300% (context needs to be scaled back down to 100% for next paint)
       let imageObject = new Image();
       imageObject.onload = function() {
         ctx.clearRect(0, 0, c.width, c.height);
@@ -147,6 +167,21 @@
       }
       imageObject.src = c.toDataURL();
     }
+
+
+    function clearPredictions(sampleNum) {
+      [0, 1, 2].forEach(function(k) {
+        let $pred = document.getElementById(`sample${sampleNum}_pred${k}`);
+        let $probLeft = document.getElementById(`sample${sampleNum}_prob${k}_left`);
+        let $probRight = document.getElementById(`sample${sampleNum}_prob${k}_right`);
+
+        $pred.innerHTML = '-';
+        $probLeft.style.width = '0px';
+        $probRight.style.width = '96px';
+        $pred.style.color = '#AAAAAA';
+      });
+    }
+
 
     function showPredictions(sampleNum, predictions, sampleLabel) {
       const CIFAR10_CLASSES = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck'];
@@ -187,6 +222,7 @@
         }
       });
     }
+
   </script>
 </body>
 </html>
