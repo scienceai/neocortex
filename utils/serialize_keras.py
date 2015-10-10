@@ -76,11 +76,10 @@ def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
 
         for param in layer_params_dict[layer['name']]:
             if param == 'weights':
-                layer_weights = list(weights_file.get('layer_{}'.format(k)))
                 weights = {}
                 weight_names = layer_weights_dict[layer['name']]
-                for name, w in zip(weight_names, layer_weights):
-                    weights[name] = weights_file.get('layer_{}/{}'.format(k, w)).value.tolist()
+                for p, name in enumerate(weight_names):
+                    weights[name] = weights_file.get('layer_{}/param_{}'.format(k, p)).value.tolist()
                 layer_params.append(weights)
             else:
                 layer_params.append(layer[param])
