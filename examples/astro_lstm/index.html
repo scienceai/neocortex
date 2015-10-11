@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="/styles.css" />
 </head>
 <body onLoad="init()">
-  <div class="title animated fadeIn">LSTM recurrent neural network for classifying astronomical object names</div>
+  <div class="title animated fadeIn">LSTM recurrent neural network <br>for classifying astronomical object names</div>
   <div class="description animated fadeIn">
     <p>The International Astronomical Union has a set of guidelines for <a>naming astronomical objects</a>, some of which are specific (e.g., comet names are prefixed with type, year of discovery, etc.), while other are more open (e.g., minor planet names should be "not too similar to an existing name of a Minor Planet or natural Planetary satellite"). The confluence of historical legacies and the modern discovery explosion has led to a large assortment of names, from proper names to catalog numbers. Recurrent neural networks are particularly good at learning sequence information. Here, we demonstrate a LSTM (long short-term memory) recurrent neural network trained on classifying astronomical object names by their character sequences. The overall architecture consists of an character embedding layer, single 64-dimensional LSTM layer, and a fully-connected dense layer with softmax activation. Training was performed on 14,215 stars, galaxies, quasars, comets, asteroids, and planets. An accuracy of 99.2% was achieved in the 10%-split test set. Offline, the architecture and weights of the trained <a href="http://keras.io" target="_blank">Keras</a> model are serialized into a JSON file, which is loaded here and run entirely <strong><em>in your browser</em></strong>.</p>
   </div>
@@ -74,9 +74,10 @@
       let sampleData = SAMPLE_DATA.names[randIdx];
       let sampleLabel = SAMPLE_DATA.labels[randIdx];
 
+      let seq = nameToSeq(sampleData);
+      console.log(seq);
       clearPrediction();
-
-      nn.predict(nameToSeq(sampleData)).then(function(predictions) {
+      nn.predict(seq).then(function(predictions) {
         showPrediction(sampleData, predictions, sampleLabel);
       });
     }
