@@ -4,19 +4,18 @@
   <title>Example: MNIST MLP</title>
   <meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css">
 	<link rel="stylesheet" href="/styles.css" />
 </head>
 <body onLoad="init()">
-  <div class="title animated fadeIn">MNIST multi-layer perceptron</div>
-  <div class="description animated fadeIn">
+  <div class="title" data-sr="enter bottom over 2s and move 30px">MNIST multi-layer perceptron</div>
+  <div class="description" data-sr="enter right over 2s and move 20px">
     <p>This demonstrates a 3-layer MLP with ReLU activations and dropout, culminating in a 10-class softmax function which predicts the digit represented in a given 28x28 image. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
     <p>Offline, this trained model achieved 98.1% test accuracy. Of course, there are models that perform much better, such as those based on <a href="/cifar10_cnn">convolutional neural networks</a>.</p>
   </div>
-  <div class="button-wrapper animated fadeIn">
+  <div class="button-wrapper">
     <div class="button" id="loadButton" onClick="loadSamples()">load random samples</div>
   </div>
-  <div class="samples animated fadeInUp">
+  <div class="samples">
     <div class="sample">
       <canvas id="sample0" width="56" height="56"></canvas>
       <p>prediction:  <span class="result" id="sample0_pred">-</span></p>
@@ -170,6 +169,17 @@
       }
     }
 
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/2.3.2/scrollReveal.min.js"></script>
+  <script>
+    (function() {
+      window.sr= new scrollReveal({
+        reset: true,
+        mobile: true,
+        vFactor: 0.2
+      });
+    })();
   </script>
 </body>
 </html>

@@ -4,23 +4,33 @@
   <title>neuralnet-predict.js examples</title>
   <meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css">
 	<link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <div class="title animated fadeInDown">EXAMPLES</div>
+  <div class="title" data-sr="scale down 40% then enter top over 2s and move 30px">EXAMPLES</div>
   <div class="examples">
-    <div class="example animated fadeInLeft">
+    <div class="example" data-sr="enter left over 1.5s and move 25px">
       <div class="example-title">CIFAR-10<br>Convolutional neural network</div>
       <a href="/cifar10_cnn"><img src="https://kaggle2.blob.core.windows.net/competitions/kaggle/3649/media/cifar-10.png" /></a>
     </div>
-    <div class="example animated fadeInUp">
+    <div class="example" data-sr="enter left over 1.5s and move 25px">
       <div class="example-title">MNIST<br>Multi-layer perceptron</div>
       <a href="/mnist_mlp"><img src="http://i.ytimg.com/vi/0QI3xgXuB-Q/hqdefault.jpg" /></a>
     </div>
-    <div class="example animated fadeInRight">
+    <div class="example" data-sr="enter left over 1.5s and move 25px">
       <div class="example-title">Astronomical object names classification<br>LSTM recurrent neural network</div>
       <a href="/astro_lstm"><img src="http://apod.nasa.gov/apod/image/9911/m31_ware_big.jpg" /></a>
     </div>
   </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/2.3.2/scrollReveal.min.js"></script>
+  <script>
+    (function() {
+      window.sr= new scrollReveal({
+        reset: true,
+        mobile: true,
+        vFactor: 0.2
+      });
+    })();
+  </script>
 </body>

@@ -4,15 +4,14 @@
   <title>Example: LSTM classifier for astronomical names</title>
   <meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css">
 	<link rel="stylesheet" href="/styles.css" />
 </head>
 <body onLoad="init()">
-  <div class="title animated fadeIn">LSTM recurrent neural network <br>for classifying astronomical object names</div>
-  <div class="description animated fadeIn">
-    <p>The International Astronomical Union has a set of guidelines for <a>naming astronomical objects</a>, some of which are specific (e.g., comet names are prefixed with type, year of discovery, etc.), while other are more open (e.g., minor planet names should be "not too similar to an existing name of a Minor Planet or natural Planetary satellite"). The confluence of historical legacies and the modern discovery explosion has led to a large assortment of names, from proper names to catalog numbers. Recurrent neural networks are particularly good at learning sequence information. Here, we demonstrate a LSTM (long short-term memory) recurrent neural network trained on classifying astronomical object names by their character sequences. The overall architecture consists of an character embedding layer, single 64-dimensional LSTM layer, and a fully-connected dense layer with softmax activation. Training was performed on 14,215 stars, galaxies, quasars, comets, asteroids, and planets. An accuracy of 99.2% was achieved in the 10%-split test set. Offline, the architecture and weights of the trained <a href="http://keras.io" target="_blank">Keras</a> model are serialized into a JSON file, which is loaded here and run entirely <strong><em>in your browser</em></strong>.</p>
+  <div class="title" data-sr="enter bottom over 2s and move 30px">LSTM recurrent neural network<br> for classifying astronomical object names</div>
+  <div class="description" data-sr="enter right over 2s and move 20px">
+    <p>The International Astronomical Union has a set of guidelines for <a href="https://www.iau.org/public/themes/naming/">naming astronomical objects</a>, some of which are specific (e.g., comet names are prefixed with type, year of discovery, etc.), while other are more open (e.g., minor planet names should be "not too similar to an existing name of a Minor Planet or natural Planetary satellite"). The confluence of historical legacies and the modern discovery explosion has led to a large assortment of names, from proper names to catalog numbers. Recurrent neural networks are particularly good at learning sequence information. Here, we demonstrate a LSTM (long short-term memory) recurrent neural network trained on classifying astronomical object names by their character sequences. The overall architecture consists of an character embedding layer, single 64-dimensional LSTM layer, and a fully-connected dense layer with softmax activation. Training was performed on 14,215 stars, galaxies, quasars, comets, asteroids, and planets. An accuracy of 99.2% was achieved in the 10%-split test set. Offline, the architecture and weights of the trained <a href="http://keras.io" target="_blank">Keras</a> model are serialized into a JSON file, which is loaded here and run entirely <strong><em>in your browser</em></strong>.</p>
   </div>
-  <div class="samples animated fadeInUp">
+  <div class="samples">
     <div class="sample">
       <p><span id="sampleObject">-</span></p>
       <p>predicted class:  <span id="samplePred">-</span></p>
@@ -74,10 +73,8 @@
       let sampleData = SAMPLE_DATA.names[randIdx];
       let sampleLabel = SAMPLE_DATA.labels[randIdx];
 
-      let seq = nameToSeq(sampleData);
-      console.log(seq);
       clearPrediction();
-      nn.predict(seq).then(function(predictions) {
+      nn.predict(nameToSeq(sampleData)).then(function(predictions) {
         showPrediction(sampleData, predictions, sampleLabel);
       });
     }
@@ -132,6 +129,17 @@
       }
     }
 
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/2.3.2/scrollReveal.min.js"></script>
+  <script>
+    (function() {
+      window.sr= new scrollReveal({
+        reset: true,
+        mobile: true,
+        vFactor: 0.2
+      });
+    })();
   </script>
 </body>
 </html>

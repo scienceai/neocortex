@@ -4,19 +4,18 @@
   <title>Example: CIFAR-10 CNN</title>
   <meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css">
 	<link rel="stylesheet" href="/styles.css" />
 </head>
 <body onLoad="init()">
-  <div class="title animated fadeIn">CIFAR-10 convolutional neural network</div>
-  <div class="description animated fadeIn">
+  <div class="title" data-sr="enter bottom over 2s and move 30px">CIFAR-10 convolutional neural network</div>
+  <div class="description" data-sr="enter right over 2s and move 20px">
     <p>This is a demo of a basic convolutional neural network on the CIFAR-10 dataset. The model based on VGGNet consists of 6 convolution layers with leaky ReLU activation units, 3 max-pooling layers with dropout, and 2 fully-connected dense layers, with final softmax for classification into 10 classes. Offline test accuracy of this simple model was around 85%, trained without any image augmentation. The architecture and weights of the model were serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file, which is then used to run the neural network <strong><em>in your browser</em></strong>, on-the-fly with the loaded sample images (prediction isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
     <p>In CPU mode, there are five instances of the neural network running in their own Web Worker threads. Example running in GPU mode through WebGL is forthcoming.</p>
   </div>
-  <div class="button-wrapper animated fadeIn">
+  <div class="button-wrapper">
     <div class="button" onClick="loadSamples()">load random samples</div>
   </div>
-  <div class="samples animated fadeInUp">
+  <div class="samples">
     <div class="sample">
       <canvas id="sample0" width="96" height="96"></canvas>
       <p>
@@ -223,6 +222,17 @@
       });
     }
 
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/2.3.2/scrollReveal.min.js"></script>
+  <script>
+    (function() {
+      window.sr= new scrollReveal({
+        reset: true,
+        mobile: true,
+        vFactor: 0.2
+      });
+    })();
   </script>
 </body>
 </html>
