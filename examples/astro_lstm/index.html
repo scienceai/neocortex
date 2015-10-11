@@ -5,18 +5,27 @@
   <meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 <body onLoad="init()">
   <div class="title" data-sr="enter bottom over 2s and move 30px">LSTM recurrent neural network<br> for classifying astronomical object names</div>
   <div class="description" data-sr="enter right over 2s and move 20px">
-    <p>The International Astronomical Union has a set of guidelines for <a href="https://www.iau.org/public/themes/naming/">naming astronomical objects</a>, some of which are specific (e.g., comet names are prefixed with type, year of discovery, etc.), while other are more open (e.g., minor planet names should be "not too similar to an existing name of a Minor Planet or natural Planetary satellite"). The confluence of historical legacies and the modern discovery explosion has led to a large assortment of names, from proper names to catalog numbers. Recurrent neural networks are particularly good at learning sequence information. Here, we demonstrate a LSTM (long short-term memory) recurrent neural network trained on classifying astronomical object names by their character sequences. The overall architecture consists of an character embedding layer, single 64-dimensional LSTM layer, and a fully-connected dense layer with softmax activation. Training was performed on 14,215 stars, galaxies, quasars, comets, asteroids, and planets. An accuracy of 99.2% was achieved in the 10%-split test set. Offline, the architecture and weights of the trained <a href="http://keras.io" target="_blank">Keras</a> model are serialized into a JSON file, which is loaded here and run entirely <strong><em>in your browser</em></strong>.</p>
+    <p>The International Astronomical Union has a set of guidelines for <a href="https://www.iau.org/public/themes/naming/" target="_blank">naming astronomical objects</a>, some of which are specific (e.g., comet names are prefixed with type, year of discovery, etc.), while other are given more room for creativity (e.g., minor planet names should be "not too similar to an existing name of a Minor Planet or natural Planetary satellite"). The confluence of historical legacies and a modern discovery explosion has led to a large assortment of names, ranging from proper names to catalog numbers. Can we train a neural network to learn these naming rules automatically?</p>
+    <p><a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/" target="_blank">Recurrent neural networks</a> are particularly good at learning sequence information. Here, we demonstrate a LSTM (long short-term memory) architecture recurrent neural network trained to classify these astronomical object names by the sequence of characters in their names. The overall architecture consists of an character embedding layer, single 64-dimensional LSTM layer, and a fully-connected dense layer with softmax activation to differentiate between 6 classes: <em>star</em>, <em>galaxy</em>, <em>quasar</em>, <em>comet</em>, <em>asteroid</em>, or <em>planet</em>.</p>
+    <p>Training was performed on 14,215 examples taken from <a href="https://en.wikipedia.org/wiki/Lists_of_astronomical_objects" target="_blank">Wikipedia tables</a>. An accuracy of 99.2% was achieved in the 10%-split test set. Offline, the architecture and weights of the trained <a href="http://keras.io" target="_blank">Keras</a> model are serialized into a JSON file, which is loaded here and run in real-time entirely <strong><em>within the browser</em></strong>, performing dynamic classification on each streamed sample below.</p>
   </div>
   <div class="samples">
     <div class="sample">
-      <p><span id="sampleObject">-</span></p>
-      <p>predicted class:  <span id="samplePred">-</span></p>
-      <p><img src="" /></p>
+      <p><strong><span id="sample-object">-</span></strong></p>
+      <p>predicted class:  <span id="sample-pred">-</span></p>
+      <p>
+        <img id="image-pred" src="" />
+      </p>
     </div>
+  </div>
+  <div class="nav">
+    <div class="back" data-sr="enter left over 2s and move 20px"><a href="/"><i class="fa fa-arrow-circle-left fa-2x"></i><br>More Examples</a></div>
+    <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/astro_lstm", target="_blank"><i class="fa fa-github fa-2x"></i><br>View on GitHub</a></div>
   </div>
   <div class="loader">
     <div class="loader-squares">
@@ -35,9 +44,10 @@
   <script>
     'use strict';
 
-    let SAMPLE_DATA;
-    let INDICES_DICT;
-    let nn;
+    let SAMPLE_DATA
+      , INDICES_DICT
+      , nn
+      , sampleStream;
 
     function init() {
 
@@ -56,11 +66,14 @@
 
             SAMPLE_DATA = samples;
             INDICES_DICT = indices;
-            streamSamples();
+            sampleStream = setInterval(function() {
+              streamSamples();
+            }, 2000);
           });
         });
 
       }).catch(function(e) {
+        clearInterval(sampleStream);
         console.error(e);
       });
 
@@ -93,8 +106,8 @@
 
 
     function clearPrediction(sampleNum) {
-      let $obj = document.getElementById(`sampleObject`);
-      let $pred = document.getElementById(`samplePred`);
+      let $obj = document.getElementById(`sample-object`);
+      let $pred = document.getElementById(`sample-pred`);
 
       $obj.innerHTML = '-';
       $pred.innerHTML = '-';
@@ -103,6 +116,15 @@
 
 
     function showPrediction(sampleData, predictions, sampleLabel) {
+
+      const IMAGE_SRC = {
+        asteroid: "http://nssdc.gsfc.nasa.gov/image/planetary/asteroid/ida.jpg",
+        comet: "http://i.space.com/images/i/000/003/719/i02/080908-comet-02.jpg",
+        galaxy: "http://apod.nasa.gov/apod/image/9911/m31_ware_big.jpg",
+        star: "https://astronomypictureoftheday.files.wordpress.com/2010/03/rho-coronae-borealis.jpg",
+        planet: "http://www.blogcdn.com/www.engadget.com/media/2013/07/esa-blue-exoplanet.jpg",
+        quasar: "http://i.space.com/images/i/000/011/163/i02/black-hole-quasar-water-cloud.jpg"
+      };
 
       let predClasses = predictions.map(function(probability, i) {
         return {
@@ -116,8 +138,8 @@
         return b.probability - a.probability;
       });
 
-      let $obj = document.getElementById(`sampleObject`);
-      let $pred = document.getElementById(`samplePred`);
+      let $obj = document.getElementById(`sample-object`);
+      let $pred = document.getElementById(`sample-pred`);
 
       $obj.innerHTML = sampleData;
       $pred.innerHTML = predClasses[0].class;
@@ -127,6 +149,9 @@
       } else {
         $pred.style.color = '#E74C3C';
       }
+
+      $('#image-pred').css('display', 'block');
+      $('#image-pred').attr('src', IMAGE_SRC[sampleLabel]);
     }
 
   </script>
