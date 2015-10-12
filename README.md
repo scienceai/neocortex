@@ -1,6 +1,10 @@
-# neuralnet-predict.js
+<p align="center">
+  <img src="examples/logo.png"/>
+</p>
 
 Run trained neural networks in the browser or node.js.
+
+Check out the [project page and examples](https://scienceai.github.io/neuralnet-predict-js).
 
 ### Background
 
@@ -17,6 +21,11 @@ What about using emscripten to compile models to asm.js? It may be within the re
 Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of course a source of inspiration, as well as the excellent Theano-based deep learning framework [Keras](https://github.com/fchollet/keras/).
 
 ### Examples
+
+
+
+### Usage
+
 
 
 ### API
