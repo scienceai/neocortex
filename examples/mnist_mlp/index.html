@@ -8,53 +8,55 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 <body onLoad="init()">
-  <div class="title" data-sr="enter bottom over 2s and move 30px">MNIST multi-layer perceptron</div>
-  <div class="description" data-sr="enter right over 2s and move 20px">
-    <p>This demonstrates a 3-layer MLP with ReLU activations and dropout, culminating in a 10-class softmax function which predicts the digit represented in a given 28x28 image. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
-    <p>Offline, this trained model achieved 98.1% test accuracy. Of course, there are models that perform much better, such as those based on <a href="/cifar10_cnn">convolutional neural networks</a>.</p>
-  </div>
-  <div class="button-wrapper">
-    <div class="button" id="loadButton" onClick="loadSamples()">load random samples</div>
-  </div>
-  <div class="samples">
-    <div class="sample">
-      <canvas id="sample0" width="56" height="56"></canvas>
-      <p>prediction:  <span class="result" id="sample0_pred">-</span></p>
-      <p>probability: <span class="result" id="sample0_prob">-</span></p>
+  <div class="container">
+    <div class="title" data-sr="enter bottom over 2s and move 30px">MNIST multi-layer perceptron</div>
+    <div class="description" data-sr="enter right over 2s and move 20px">
+      <p>This demonstrates a 3-layer MLP with ReLU activations and dropout, culminating in a 10-class softmax function which predicts the digit represented in a given 28x28 image. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
+      <p>Offline, this trained model achieved 98.1% test accuracy. Of course, there are models that perform much better, such as those based on <a href="/cifar10_cnn">convolutional neural networks</a>.</p>
     </div>
-    <div class="sample">
-      <canvas id="sample1" width="56" height="56"></canvas>
-      <p>prediction:  <span class="result" id="sample1_pred">-</span></p>
-      <p>probability: <span class="result" id="sample1_prob">-</span></p>
+    <div class="button-wrapper">
+      <div class="button" id="loadButton" onClick="loadSamples()">load random samples</div>
     </div>
-    <div class="sample">
-      <canvas id="sample2" width="56" height="56"></canvas>
-      <p>prediction:  <span class="result" id="sample2_pred">-</span></p>
-      <p>probability: <span class="result" id="sample2_prob">-</span></p>
+    <div class="samples">
+      <div class="sample">
+        <canvas id="sample0" width="56" height="56"></canvas>
+        <p>prediction:  <span class="result" id="sample0_pred">-</span></p>
+        <p>probability: <span class="result" id="sample0_prob">-</span></p>
+      </div>
+      <div class="sample">
+        <canvas id="sample1" width="56" height="56"></canvas>
+        <p>prediction:  <span class="result" id="sample1_pred">-</span></p>
+        <p>probability: <span class="result" id="sample1_prob">-</span></p>
+      </div>
+      <div class="sample">
+        <canvas id="sample2" width="56" height="56"></canvas>
+        <p>prediction:  <span class="result" id="sample2_pred">-</span></p>
+        <p>probability: <span class="result" id="sample2_prob">-</span></p>
+      </div>
+      <div class="sample">
+        <canvas id="sample3" width="56" height="56"></canvas>
+        <p>prediction:  <span class="result" id="sample3_pred">-</span></p>
+        <p>probability: <span class="result" id="sample3_prob">-</span></p>
+      </div>
+      <div class="sample">
+        <canvas id="sample4" width="56" height="56"></canvas>
+        <p>prediction:  <span class="result" id="sample4_pred">-</span></p>
+        <p>probability: <span class="result" id="sample4_prob">-</span></p>
+      </div>
     </div>
-    <div class="sample">
-      <canvas id="sample3" width="56" height="56"></canvas>
-      <p>prediction:  <span class="result" id="sample3_pred">-</span></p>
-      <p>probability: <span class="result" id="sample3_prob">-</span></p>
+    <div class="loader">
+      <div class="loader-squares">
+        <div class="square first"></div>
+        <div class="square second"></div>
+        <div class="square third"></div>
+        <div class="square fourth"></div>
+      </div>
+      <div class="loader-text">initializing . . . </div>
     </div>
-    <div class="sample">
-      <canvas id="sample4" width="56" height="56"></canvas>
-      <p>prediction:  <span class="result" id="sample4_pred">-</span></p>
-      <p>probability: <span class="result" id="sample4_prob">-</span></p>
+    <div class="nav">
+      <div class="back" data-sr="enter left over 2s and move 20px"><a href="/"><i class="fa fa-arrow-circle-left fa-2x"></i><br>More Examples</a></div>
+      <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/mnist_mlp", target="_blank"><i class="fa fa-github fa-2x"></i><br>View on GitHub</a></div>
     </div>
-  </div>
-  <div class="loader">
-    <div class="loader-squares">
-      <div class="square first"></div>
-      <div class="square second"></div>
-      <div class="square third"></div>
-      <div class="square fourth"></div>
-    </div>
-    <div class="loader-text">initializing . . . </div>
-  </div>
-  <div class="nav">
-    <div class="back" data-sr="enter left over 2s and move 20px"><a href="/"><i class="fa fa-arrow-circle-left fa-2x"></i><br>More Examples</a></div>
-    <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/mnist_mlp", target="_blank"><i class="fa fa-github fa-2x"></i><br>View on GitHub</a></div>
   </div>
   <div class="copyright">&copy; 2015 <a href="https://science.ai" target="_blank">science.ai</a><br>
     Maintained by <a href="https://twitter.com/transcranial" target="_blank">@transcranial</a> | Code licensed under <a href="https://github.com/scienceai/neuralnet-predict-js/blob/master/LICENSE" target="_blank">Apache 2.0</a>
@@ -62,6 +64,7 @@
 
   <!----------- SCRIPTS ------------>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xdomain/0.7.3/xdomain.min.js" slave="https://scienceai.github.io/neuralnet-predict-js/proxy.html"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
   <script src="/neuralnet-predict.min.js"></script>
   <script>

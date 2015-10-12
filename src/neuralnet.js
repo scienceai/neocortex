@@ -32,7 +32,7 @@ export default class NeuralNet {
     } else {
       this._environment = 'shell';
     }
-    console.log(`Running from environment: ${this._environment}`);
+    console.log(`Running in environment: ${this._environment}`);
 
     this._modelFilePath = config.modelFilePath || null;
     this._layers = [];
@@ -46,6 +46,7 @@ export default class NeuralNet {
 
       if (this._environment === 'browser' || this._environment === 'webworker') {
         request.get(this._modelFilePath)
+          .withCredentials()
           .end((err, res) => {
             if (err) reject(err);
             if (res.statusCode == 200) {
@@ -78,10 +79,8 @@ export default class NeuralNet {
 
       let _predict = (X) => {
         for (let layer of this._layers) {
-          let start = new Date().getTime();
           let { layerName, parameters } = layer;
           X = layerFuncs[layerName](this._arrayType, X, ...parameters);
-          console.log(layerName, new Date().getTime() - start, X);
         }
         return X;
       };

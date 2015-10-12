@@ -8,33 +8,35 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 <body onLoad="init()">
-  <div class="title" data-sr="enter bottom over 2s and move 30px">LSTM recurrent neural network<br> for classifying astronomical object names</div>
-  <div class="description" data-sr="enter right over 2s and move 20px">
-    <p>The International Astronomical Union has a set of guidelines for <a href="https://www.iau.org/public/themes/naming/" target="_blank">naming astronomical objects</a>, some of which are specific (e.g., comet names are prefixed with type, year of discovery, etc.), while other are given more room for creativity (e.g., minor planet names should be "not too similar to an existing name of a Minor Planet or natural Planetary satellite"). The confluence of historical legacies and a modern discovery explosion has led to a large assortment of names, ranging from proper names to catalog numbers. Can we train a neural network to learn these naming rules automatically?</p>
-    <p><a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/" target="_blank">Recurrent neural networks</a> are particularly good at learning sequence information. Here, we demonstrate a LSTM (long short-term memory) architecture recurrent neural network trained to classify these astronomical object names by the sequence of characters in their names. The overall architecture consists of an character embedding layer, single 64-dimensional LSTM layer, and a fully-connected dense layer with softmax activation to differentiate between 6 classes: <em>star</em>, <em>galaxy</em>, <em>quasar</em>, <em>comet</em>, <em>asteroid</em>, or <em>planet</em>.</p>
-    <p>Training was performed on 14,215 examples taken from <a href="https://en.wikipedia.org/wiki/Lists_of_astronomical_objects" target="_blank">Wikipedia tables</a>. An accuracy of 99.2% was achieved in the 10%-split test set. Offline, the architecture and weights of the trained <a href="http://keras.io" target="_blank">Keras</a> model are serialized into a JSON file, which is loaded here and run in real-time entirely <strong><em>within the browser</em></strong>, performing dynamic classification on each streamed sample below.</p>
-  </div>
-  <div class="samples">
-    <div class="sample">
-      <p><strong><span id="sample-object">-</span></strong></p>
-      <p>predicted class:  <span id="sample-pred">-</span></p>
-      <p>
-        <img id="image-pred" src="" />
-      </p>
+  <div class="container">
+    <div class="title" data-sr="enter bottom over 2s and move 30px">LSTM recurrent neural network<br> for classifying astronomical object names</div>
+    <div class="description" data-sr="enter right over 2s and move 20px">
+      <p>The International Astronomical Union has a set of guidelines for <a href="https://www.iau.org/public/themes/naming/" target="_blank">naming astronomical objects</a>, some of which are specific (e.g., comet names are prefixed with type, year of discovery, etc.), while other are given more room for creativity (e.g., minor planet names should be "not too similar to an existing name of a Minor Planet or natural Planetary satellite"). The confluence of historical legacies and a modern discovery explosion has led to a large assortment of names, ranging from proper names to catalog numbers. Can we train a neural network to learn these naming rules automatically?</p>
+      <p><a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/" target="_blank">Recurrent neural networks</a> are particularly good at learning sequence information. Here, we demonstrate a LSTM (long short-term memory) architecture recurrent neural network trained to classify these astronomical object names by the sequence of characters in their names. The overall architecture consists of an character embedding layer, single 64-dimensional LSTM layer, and a fully-connected dense layer with softmax activation to differentiate between 6 classes: <em>star</em>, <em>galaxy</em>, <em>quasar</em>, <em>comet</em>, <em>asteroid</em>, or <em>planet</em>.</p>
+      <p>Training was performed on 14,215 examples taken from <a href="https://en.wikipedia.org/wiki/Lists_of_astronomical_objects" target="_blank">Wikipedia tables</a>. An accuracy of 99.2% was achieved in the 10%-split test set. Offline, the architecture and weights of the trained <a href="http://keras.io" target="_blank">Keras</a> model are serialized into a JSON file, which is loaded here and run in real-time entirely <strong><em>within the browser</em></strong>, performing dynamic classification on each streamed sample below.</p>
     </div>
-  </div>
-  <div class="loader">
-    <div class="loader-squares">
-      <div class="square first"></div>
-      <div class="square second"></div>
-      <div class="square third"></div>
-      <div class="square fourth"></div>
+    <div class="samples">
+      <div class="sample">
+        <p><strong><span id="sample-object">-</span></strong></p>
+        <p>predicted class:  <span id="sample-pred">-</span></p>
+        <p>
+          <img id="image-pred" src="" />
+        </p>
+      </div>
     </div>
-    <div class="loader-text">initializing . . . </div>
-  </div>
-  <div class="nav">
-    <div class="back" data-sr="enter left over 2s and move 20px"><a href="/"><i class="fa fa-arrow-circle-left fa-2x"></i><br>More Examples</a></div>
-    <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/astro_lstm", target="_blank"><i class="fa fa-github fa-2x"></i><br>View on GitHub</a></div>
+    <div class="loader">
+      <div class="loader-squares">
+        <div class="square first"></div>
+        <div class="square second"></div>
+        <div class="square third"></div>
+        <div class="square fourth"></div>
+      </div>
+      <div class="loader-text">initializing . . . </div>
+    </div>
+    <div class="nav">
+      <div class="back" data-sr="enter left over 2s and move 20px"><a href="/"><i class="fa fa-arrow-circle-left fa-2x"></i><br>More Examples</a></div>
+      <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/astro_lstm", target="_blank"><i class="fa fa-github fa-2x"></i><br>View on GitHub</a></div>
+    </div>
   </div>
   <div class="copyright">&copy; 2015 <a href="https://science.ai" target="_blank">science.ai</a><br>
     Maintained by <a href="https://twitter.com/transcranial" target="_blank">@transcranial</a> | Code licensed under <a href="https://github.com/scienceai/neuralnet-predict-js/blob/master/LICENSE" target="_blank">Apache 2.0</a>
@@ -42,6 +44,7 @@
 
   <!----------- SCRIPTS ------------>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xdomain/0.7.3/xdomain.min.js" slave="https://scienceai.github.io/neuralnet-predict-js/proxy.html"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
   <script src="/neuralnet-predict.min.js"></script>
   <script>

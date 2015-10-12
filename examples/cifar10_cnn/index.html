@@ -8,88 +8,90 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 <body onLoad="init()">
-  <div class="title" data-sr="enter bottom over 2s and move 30px">CIFAR-10 convolutional neural network</div>
-  <div class="description" data-sr="enter right over 2s and move 20px">
-    <p>This is a demo of a basic convolutional neural network on the CIFAR-10 dataset. The model based on VGGNet consists of 6 convolution layers with leaky ReLU activation units, 3 max-pooling layers with dropout, and 2 fully-connected dense layers, with final softmax for classification into 10 classes. Offline test accuracy of this simple model was around 85%, trained without any image augmentation. The architecture and weights of the model were serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file, which is then used to run the neural network <strong><em>in your browser</em></strong>, on-the-fly with the loaded sample images (prediction isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
-    <p>In CPU mode, there are five instances of the neural network running in their own Web Worker threads. Example running in GPU mode through WebGL is forthcoming.</p>
-  </div>
-  <div class="button-wrapper">
-    <div class="button" onClick="loadSamples()">load random samples</div>
-  </div>
-  <div class="samples">
-    <div class="sample">
-      <canvas id="sample0" width="96" height="96"></canvas>
-      <p>
-        <span id="sample0_pred0">-</span><br><span class="bar-left" id="sample0_prob0_left"></span><span class="bar-right" id="sample0_prob0_right"></span>
-      </p>
-      <p>
-        <span id="sample0_pred1">-</span><br><span class="bar-left" id="sample0_prob1_left"></span><span class="bar-right" id="sample0_prob1_right"></span>
-      </p>
-      <p>
-        <span id="sample0_pred2">-</span><br><span class="bar-left" id="sample0_prob2_left"></span><span class="bar-right" id="sample0_prob2_right"></span>
-      </p>
+  <div class="container">
+    <div class="title" data-sr="enter bottom over 2s and move 30px">CIFAR-10 convolutional neural network</div>
+    <div class="description" data-sr="enter right over 2s and move 20px">
+      <p>This is a demo of a basic convolutional neural network on the CIFAR-10 dataset. The model based on VGGNet consists of 6 convolution layers with leaky ReLU activation units, 3 max-pooling layers with dropout, and 2 fully-connected dense layers, with final softmax for classification into 10 classes. Offline test accuracy of this simple model was around 85%, trained without any image augmentation. The architecture and weights of the model were serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file, which is then used to run the neural network <strong><em>in your browser</em></strong>, on-the-fly with the loaded sample images (prediction isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
+      <p>In CPU mode, there are five instances of the neural network running in their own Web Worker threads. Example running in GPU mode through WebGL is forthcoming.</p>
     </div>
-    <div class="sample">
-      <canvas id="sample1" width="96" height="96"></canvas>
-      <p>
-        <span id="sample1_pred0">-</span><br><span class="bar-left" id="sample1_prob0_left"></span><span class="bar-right" id="sample1_prob0_right"></span>
-      </p>
-      <p>
-        <span id="sample1_pred1">-</span><br><span class="bar-left" id="sample1_prob1_left"></span><span class="bar-right" id="sample1_prob1_right"></span>
-      </p>
-      <p>
-        <span id="sample1_pred2">-</span><br><span class="bar-left" id="sample1_prob2_left"></span><span class="bar-right" id="sample1_prob2_right"></span>
-      </p>
+    <div class="button-wrapper">
+      <div class="button" onClick="loadSamples()">load random samples</div>
     </div>
-    <div class="sample">
-      <canvas id="sample2" width="96" height="96"></canvas>
-      <p>
-        <span id="sample2_pred0">-</span><br><span class="bar-left" id="sample2_prob0_left"></span><span class="bar-right" id="sample2_prob0_right"></span>
-      </p>
-      <p>
-        <span id="sample2_pred1">-</span><br><span class="bar-left" id="sample2_prob1_left"></span><span class="bar-right" id="sample2_prob1_right"></span>
-      </p>
-      <p>
-        <span id="sample2_pred2">-</span><br><span class="bar-left" id="sample2_prob2_left"></span><span class="bar-right" id="sample2_prob2_right"></span>
-      </p>
+    <div class="samples">
+      <div class="sample">
+        <canvas id="sample0" width="96" height="96"></canvas>
+        <p>
+          <span id="sample0_pred0">-</span><br><span class="bar-left" id="sample0_prob0_left"></span><span class="bar-right" id="sample0_prob0_right"></span>
+        </p>
+        <p>
+          <span id="sample0_pred1">-</span><br><span class="bar-left" id="sample0_prob1_left"></span><span class="bar-right" id="sample0_prob1_right"></span>
+        </p>
+        <p>
+          <span id="sample0_pred2">-</span><br><span class="bar-left" id="sample0_prob2_left"></span><span class="bar-right" id="sample0_prob2_right"></span>
+        </p>
+      </div>
+      <div class="sample">
+        <canvas id="sample1" width="96" height="96"></canvas>
+        <p>
+          <span id="sample1_pred0">-</span><br><span class="bar-left" id="sample1_prob0_left"></span><span class="bar-right" id="sample1_prob0_right"></span>
+        </p>
+        <p>
+          <span id="sample1_pred1">-</span><br><span class="bar-left" id="sample1_prob1_left"></span><span class="bar-right" id="sample1_prob1_right"></span>
+        </p>
+        <p>
+          <span id="sample1_pred2">-</span><br><span class="bar-left" id="sample1_prob2_left"></span><span class="bar-right" id="sample1_prob2_right"></span>
+        </p>
+      </div>
+      <div class="sample">
+        <canvas id="sample2" width="96" height="96"></canvas>
+        <p>
+          <span id="sample2_pred0">-</span><br><span class="bar-left" id="sample2_prob0_left"></span><span class="bar-right" id="sample2_prob0_right"></span>
+        </p>
+        <p>
+          <span id="sample2_pred1">-</span><br><span class="bar-left" id="sample2_prob1_left"></span><span class="bar-right" id="sample2_prob1_right"></span>
+        </p>
+        <p>
+          <span id="sample2_pred2">-</span><br><span class="bar-left" id="sample2_prob2_left"></span><span class="bar-right" id="sample2_prob2_right"></span>
+        </p>
+      </div>
+      <div class="sample">
+        <canvas id="sample3" width="96" height="96"></canvas>
+        <p>
+          <span id="sample3_pred0">-</span><br><span class="bar-left" id="sample3_prob0_left"></span><span class="bar-right" id="sample3_prob0_right"></span>
+        </p>
+        <p>
+          <span id="sample3_pred1">-</span><br><span class="bar-left" id="sample3_prob1_left"></span><span class="bar-right" id="sample3_prob1_right"></span>
+        </p>
+        <p>
+          <span id="sample3_pred2">-</span><br><span class="bar-left" id="sample3_prob2_left"></span><span class="bar-right" id="sample3_prob2_right"></span>
+        </p>
+      </div>
+      <div class="sample">
+        <canvas id="sample4" width="96" height="96"></canvas>
+        <p>
+          <span id="sample4_pred0">-</span><br><span class="bar-left" id="sample4_prob0_left"></span><span class="bar-right" id="sample4_prob0_right"></span>
+        </p>
+        <p>
+          <span id="sample4_pred1">-</span><br><span class="bar-left" id="sample4_prob1_left"></span><span class="bar-right" id="sample4_prob1_right"></span>
+        </p>
+        <p>
+          <span id="sample4_pred2">-</span><br><span class="bar-left" id="sample4_prob2_left"></span><span class="bar-right" id="sample4_prob2_right"></span>
+        </p>
+      </div>
     </div>
-    <div class="sample">
-      <canvas id="sample3" width="96" height="96"></canvas>
-      <p>
-        <span id="sample3_pred0">-</span><br><span class="bar-left" id="sample3_prob0_left"></span><span class="bar-right" id="sample3_prob0_right"></span>
-      </p>
-      <p>
-        <span id="sample3_pred1">-</span><br><span class="bar-left" id="sample3_prob1_left"></span><span class="bar-right" id="sample3_prob1_right"></span>
-      </p>
-      <p>
-        <span id="sample3_pred2">-</span><br><span class="bar-left" id="sample3_prob2_left"></span><span class="bar-right" id="sample3_prob2_right"></span>
-      </p>
+    <div class="loader">
+      <div class="loader-squares">
+        <div class="square first"></div>
+        <div class="square second"></div>
+        <div class="square third"></div>
+        <div class="square fourth"></div>
+      </div>
+      <div class="loader-text">initializing . . . </div>
     </div>
-    <div class="sample">
-      <canvas id="sample4" width="96" height="96"></canvas>
-      <p>
-        <span id="sample4_pred0">-</span><br><span class="bar-left" id="sample4_prob0_left"></span><span class="bar-right" id="sample4_prob0_right"></span>
-      </p>
-      <p>
-        <span id="sample4_pred1">-</span><br><span class="bar-left" id="sample4_prob1_left"></span><span class="bar-right" id="sample4_prob1_right"></span>
-      </p>
-      <p>
-        <span id="sample4_pred2">-</span><br><span class="bar-left" id="sample4_prob2_left"></span><span class="bar-right" id="sample4_prob2_right"></span>
-      </p>
+    <div class="nav">
+      <div class="back" data-sr="enter left over 2s and move 20px"><a href="/"><i class="fa fa-arrow-circle-left fa-2x"></i><br>More Examples</a></div>
+      <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/cifar10_cnn", target="_blank"><i class="fa fa-github fa-2x"></i><br>View on GitHub</a></div>
     </div>
-  </div>
-  <div class="loader">
-    <div class="loader-squares">
-      <div class="square first"></div>
-      <div class="square second"></div>
-      <div class="square third"></div>
-      <div class="square fourth"></div>
-    </div>
-    <div class="loader-text">initializing . . . </div>
-  </div>
-  <div class="nav">
-    <div class="back" data-sr="enter left over 2s and move 20px"><a href="/"><i class="fa fa-arrow-circle-left fa-2x"></i><br>More Examples</a></div>
-    <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/cifar10_cnn", target="_blank"><i class="fa fa-github fa-2x"></i><br>View on GitHub</a></div>
   </div>
   <div class="copyright">&copy; 2015 <a href="https://science.ai" target="_blank">science.ai</a><br>
     Maintained by <a href="https://twitter.com/transcranial" target="_blank">@transcranial</a> | Code licensed under <a href="https://github.com/scienceai/neuralnet-predict-js/blob/master/LICENSE" target="_blank">Apache 2.0</a>
@@ -97,6 +99,7 @@
 
   <!----------- SCRIPTS ------------>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xdomain/0.7.3/xdomain.min.js" slave="https://scienceai.github.io/neuralnet-predict-js/proxy.html"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
   <script>
     'use strict';

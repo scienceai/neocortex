@@ -6,6 +6,13 @@ body {
   text-align: center;
   margin: 0;
   overflow-x: hidden;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1;
 }
 
 .logo {

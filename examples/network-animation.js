@@ -27,10 +27,10 @@
 
     // create points
     points = [];
-    for (let x = 0; x < width; x = x + width/4) {
-      for (let y = 0; y < height; y = y + height/5) {
+    for (let x = 0; x < width; x = x + width/10) {
+      for (let y = 0; y < height; y = y + height/10) {
         let px = x + Math.random()*width/10;
-        let py = y + Math.random()*height/5;
+        let py = y + Math.random()*height/10;
         let p = { x: px, originX: px, y: py, originY: py };
         points.push(p);
       }
@@ -43,7 +43,7 @@
         let p2 = points[j];
         if (!(p1 == p2)) {
           let placed = false;
-          for (let k = 0; k < 5; k++) {
+          for (let k = 0; k < 4; k++) {
             if (!placed) {
               if (closest[k] == undefined) {
                 closest[k] = p2;
@@ -52,7 +52,7 @@
             }
           }
 
-          for (let k = 0; k < 5; k++) {
+          for (let k = 0; k < 4; k++) {
             if (!placed) {
               if (getDistance(p1, p2) < getDistance(p1, closest[k])) {
                 closest[k] = p2;
@@ -66,7 +66,7 @@
     }
 
     for (let i in points) {
-      let c = new Circle(points[i], 3+Math.random()*3, 'rgba(255,255,255,0.2)');
+      let c = new Circle(points[i], 4+Math.random()*4, 'rgba(255,255,255,0.2)');
       points[i].circle = c;
     }
   }
@@ -121,7 +121,7 @@
       ctx.beginPath();
       ctx.moveTo(p.x, p.y);
       ctx.lineTo(p.closest[i].x, p.closest[i].y);
-      ctx.strokeStyle = 'rgba(200,200,200,'+ p.active+')';
+      ctx.strokeStyle = 'rgba(200,210,220,'+ p.active+')';
       ctx.stroke();
     }
   }
@@ -139,7 +139,7 @@
       if (!_this.active) return;
       ctx.beginPath();
       ctx.arc(_this.pos.x, _this.pos.y, _this.radius, 0, 2 * Math.PI, false);
-      ctx.fillStyle = 'rgba(200,200,200,'+ _this.active+')';
+      ctx.fillStyle = 'rgba(200,210,220,'+ _this.active+')';
       ctx.fill();
     };
   }
