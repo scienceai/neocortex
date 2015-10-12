@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "build-browser": "browserify src/neuralnet.js -t babelify -t brfs -p [minifyify --no-map] --standalone NeuralNet -o build/neuralnet-predict.min.js",
+    "build-browser": "rm -rf build && mkdir build && browserify src/neuralnet.js -t babelify -t brfs -p [minifyify --no-map] --standalone NeuralNet -o build/neuralnet-predict.min.js",
     "build-node": "rm -rf dist && node_modules/.bin/babel src --out-dir dist",
     "build": "npm run build-node && npm run build-browser",
     "prepublish": "npm run build",
