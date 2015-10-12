@@ -2,19 +2,38 @@
 @import url("http://fonts.googleapis.com/css?family=Inconsolata:400");
 
 body {
-  background-color: #f3f6fa;
+  background-color: #F6F6F6;
   text-align: center;
   margin: 0;
   overflow-x: hidden;
 }
 
+.logo {
+  background: #FFFFFF;
+  height: 300px;
+}
+.logo img {
+  z-index: 9;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.logo canvas {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
 a {
   text-decoration: none;
-  color: #F89406;
+  color: #F4B350;
   transition: color 0.7s;
 }
 a:hover {
-  color: #F9BF3B;
+  color: #A8F2F9;
 }
 
 .nav {
@@ -23,6 +42,7 @@ a:hover {
   font-family: 'Lato', sans-serif;
   font-size: 1.2em;
   color: #AAAAAA;
+  background: #FAFAFA;
 }
 .nav > .back {
   display: inline-block;
@@ -42,7 +62,7 @@ a:hover {
 
 .examples > .example {
   flex: 1;
-  border: 1px solid #7c8081;
+  border: 1px solid #595959;
   padding: 40px;
   margin: 30px;
 }
@@ -54,7 +74,7 @@ a:hover {
 
 .examples > .example > .example-title {
   margin-bottom: 50px;
-  color: #7c8081;
+  color: #595959;
 	font-family: 'Lato', sans-serif;
   font-size: 1.4em;
 	font-weight: 300;
@@ -64,12 +84,21 @@ a:hover {
 }
 
 .examples > .example:hover > .example-title {
-  color: #81CFE0;
+  color: #3A539B;
+}
+
+.copyright {
+  padding: 30px;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.1em;
+  line-height: 1.5em;
+  color: #AAAAAA;
+  background: #F0F0F0;
 }
 
 .title {
   text-align: center;
-  color: #81CFE0;
+  color: #3A539B;
 	font-family: 'Inconsolata', 'Lato', sans-serif;
   font-size: 3em;
 	font-weight: 400;
@@ -78,7 +107,7 @@ a:hover {
 }
 
 .description {
-  color: #7c8081;
+  color: #595959;
   font-family: 'Lato', sans-serif;
   font-size: 1.2em;
   font-weight: 400;
@@ -96,10 +125,10 @@ a:hover {
 .button-wrapper > .button {
   padding: 15px 50px;
   margin: 40px 20px;
-  border: 1px solid #7c8081;
+  border: 1px solid #595959;
   display: inline-block;
   text-align: center;
-  color: #7c8081;
+  color: #595959;
 	font-family: 'Lato', sans-serif;
   font-size: 1.2em;
 	font-weight: 300;
@@ -116,7 +145,7 @@ a:hover {
 }
 
 .button-wrapper > .button:hover {
-  background-color: #81CFE0;
+  background-color: #3A539B;
   border-color: #f3f6fa;
   color: #f3f6fa;
   cursor: pointer;
@@ -203,7 +232,7 @@ a:hover {
 }
 
 .loader-squares > .square.first {
-  background: #81CFE0;
+  background: #3A539B;
   left: 0px;
   top: 20px;
 }
@@ -225,7 +254,7 @@ a:hover {
 }
 
 .loader-squares > .square.fourth {
-  background: #81CFE0;
+  background: #3A539B;
   left: 20px;
   top: 0px;
   -webkit-animation: drop4 1s linear infinite;
