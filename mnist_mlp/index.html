@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Example: MNIST MLP</title>
+  <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body onLoad="init()">
+  <div class="container">
+    <div class="title" data-sr="enter bottom over 2s and move 30px">MNIST multi-layer perceptron</div>
+    <div class="description" data-sr="enter right over 2s and move 20px">
+      <p>This demonstrates a 3-layer MLP with ReLU activations and dropout, culminating in a 10-class softmax function which predicts the digit represented in a given 28x28 image. Offline, the architecture and weights of the model are serialized from a trained <a href="http://keras.io" target="_blank">Keras</a> model into a JSON file. Here, this file is loaded by the browser and used to run the neural network <strong><em>in the browser</em></strong>, on-the-fly with the loaded sample images (the predict function isn't called until sample images are loaded). Five sample images are randomly loaded per button-click below.</p>
+      <p>Offline, this trained model achieved 98.1% test accuracy. Of course, there are models that perform much better, such as those based on <a href="/cifar10_cnn">convolutional neural networks</a>.</p>
+    </div>
+    <div class="button-wrapper">
+      <div class="button" id="loadButton" onClick="loadSamples()">load random samples</div>
+    </div>
+    <div class="samples">
+      <div class="sample">
+        <canvas id="sample0" width="56" height="56"></canvas>
+        <p>prediction:  <span class="result" id="sample0_pred">-</span></p>
+        <p>probability: <span class="result" id="sample0_prob">-</span></p>
+      </div>
+      <div class="sample">
+        <canvas id="sample1" width="56" height="56"></canvas>
+        <p>prediction:  <span class="result" id="sample1_pred">-</span></p>
+        <p>probability: <span class="result" id="sample1_prob">-</span></p>
+      </div>
+      <div class="sample">
+        <canvas id="sample2" width="56" height="56"></canvas>
+        <p>prediction:  <span class="result" id="sample2_pred">-</span></p>
+        <p>probability: <span class="result" id="sample2_prob">-</span></p>
+      </div>
+      <div class="sample">
+        <canvas id="sample3" width="56" height="56"></canvas>
+        <p>prediction:  <span class="result" id="sample3_pred">-</span></p>
+        <p>probability: <span class="result" id="sample3_prob">-</span></p>
+      </div>
+      <div class="sample">
+        <canvas id="sample4" width="56" height="56"></canvas>
+        <p>prediction:  <span class="result" id="sample4_pred">-</span></p>
+        <p>probability: <span class="result" id="sample4_prob">-</span></p>
+      </div>
+    </div>
+    <div class="loader">
+      <div class="loader-squares">
+        <div class="square first"></div>
+        <div class="square second"></div>
+        <div class="square third"></div>
+        <div class="square fourth"></div>
+      </div>
+      <div class="loader-text">initializing . . . </div>
+    </div>
+    <div class="nav">
+      <div class="back" data-sr="enter left over 2s and move 20px"><a href="/"><i class="fa fa-arrow-circle-left fa-2x"></i><br>More Examples</a></div>
+      <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/mnist_mlp", target="_blank"><i class="fa fa-github fa-2x"></i><br>View on GitHub</a></div>
+    </div>
+  </div>
+  <div class="copyright">&copy; 2015 <a href="https://science.ai" target="_blank">science.ai</a><br>
+    Maintained by <a href="https://twitter.com/transcranial" target="_blank">@transcranial</a> | Code licensed under <a href="https://github.com/scienceai/neuralnet-predict-js/blob/master/LICENSE" target="_blank">Apache 2.0</a>
+  </div>
+
+  <!----------- SCRIPTS ------------>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+  <script src="/neuralnet-predict.min.js"></script>
+  <script>
+    'use strict';
+
+    let SAMPLE_DATA;
+    let nn;
+
+    function init() {
+
+      nn = new NeuralNet({
+        modelFilePath: 'https://s3.amazonaws.com/neuralnet-predict-js/examples-data/mnist_mlp_model_params.json.gz',
+        arrayType: 'float64',
+        useGPU: false
+      });
+
+      nn.loadModel().then(function() {
+
+        $.getJSON('https://s3.amazonaws.com/neuralnet-predict-js/examples-data/mnist_mlp_sample_data.json.gz', function(samples) {
+          $('.loader').fadeOut();
+          $('.button-wrapper').css('display', 'block');
+          $('.samples').css('display', 'block');
+
+          SAMPLE_DATA = samples;
+          loadSamples();
+        });
+
+      }).catch(function(e) {
+        console.error(e);
+      });
+
+    }
+
+
+    function loadSamples() {
+      [0, 1, 2, 3, 4].forEach(function(sampleNum) {
+        // get random sample image
+        let randIdx = Math.floor(Math.random() * SAMPLE_DATA.data.length);
+        let sampleData = SAMPLE_DATA.data[randIdx];
+        let sampleLabel = SAMPLE_DATA.labels[randIdx];
+
+        clearPredictions(sampleNum);
+        drawSample(sampleNum, sampleData);
+
+        nn.predict(sampleData).then(function(predictions) {
+          showPredictions(sampleNum, predictions, sampleLabel);
+        });
+      });
+    }
+
+
+    function drawSample(sampleNum, sampleData) {
+      let c = document.getElementById(`sample${sampleNum}`);
+      let ctx = c.getContext('2d');
+      ctx.clearRect(0, 0, c.width, c.height);
+      let imgData = ctx.createImageData(28, 28);
+
+      for (let i = 0; i < imgData.data.length; i+=4) {
+        imgData.data[i+0] = 0;
+        imgData.data[i+1] = 0;
+        imgData.data[i+2] = 0;
+        imgData.data[i+3] = 255 * sampleData[i/4];
+      }
+      ctx.putImageData(imgData, 0, 0);
+
+      // resize image 200% (context needs to be scaled back down to 100% for next paint)
+      let imageObject = new Image();
+      imageObject.onload = function() {
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.scale(2, 2);
+        ctx.drawImage(imageObject, 0, 0);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+      }
+      imageObject.src = c.toDataURL();
+    }
+
+
+    function clearPredictions(sampleNum) {
+      let $pred = document.getElementById(`sample${sampleNum}_pred`);
+      let $prob = document.getElementById(`sample${sampleNum}_prob`);
+
+      $pred.innerHTML = '-';
+      $prob.innerHTML = '0.000';
+      $pred.style.color = '#AAAAAA';
+      $pred.style.color = '#AAAAAA';
+    }
+
+
+    function showPredictions(sampleNum, predictions, sampleLabel) {
+
+      let predClasses = predictions.map(function(probability, i) {
+        return {
+          class: i,
+          probability: probability,
+          isCorrect: sampleLabel == i
+        };
+      });
+
+      predClasses.sort(function(a, b) {
+        return b.probability - a.probability;
+      });
+
+      let $pred = document.getElementById(`sample${sampleNum}_pred`);
+      let $prob = document.getElementById(`sample${sampleNum}_prob`);
+
+      $pred.innerHTML = predClasses[0].class;
+      $prob.innerHTML = predClasses[0].probability.toFixed(3);
+
+      if (predClasses[0].isCorrect) {
+        $pred.style.color = '#3FC380';
+      } else {
+        $pred.style.color = '#E74C3C';
+      }
+    }
+
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/2.3.2/scrollReveal.min.js"></script>
+  <script>
+    (function() {
+      window.sr= new scrollReveal({
+        reset: true,
+        mobile: true,
+        vFactor: 0.2
+      });
+    })();
+  </script>
+</body>
+</html>

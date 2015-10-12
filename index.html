@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>neuralnet-predict.js examples</title>
+  <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="/logo.png" data-sr="scale up 5% then enter top over 2s and move 10px" />
+      <canvas id="network-canvas"></canvas>
+    </div>
+    <div class="nav">
+      <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neuralnet-predict-js", target="_blank"><i class="fa fa-github fa-3x"></i><br>View project on GitHub</a></div>
+    </div>
+    <div class="title" data-sr="enter right over 1.5s">examples</div>
+    <div class="examples">
+      <div class="example" data-sr="enter left over 1.5s and move 25px">
+        <div class="example-title">CIFAR-10<br>Convolutional neural network</div>
+        <a href="/cifar10_cnn"><img src="https://kaggle2.blob.core.windows.net/competitions/kaggle/3649/media/cifar-10.png" /></a>
+      </div>
+      <div class="example" data-sr="enter left over 1.5s and move 25px">
+        <div class="example-title">MNIST<br>Multi-layer perceptron</div>
+        <a href="/mnist_mlp"><img src="http://i.ytimg.com/vi/0QI3xgXuB-Q/hqdefault.jpg" /></a>
+      </div>
+      <div class="example" data-sr="enter left over 1.5s and move 25px">
+        <div class="example-title">LSTM recurrent neural network for classifying astronomical object names</div>
+        <a href="/astro_lstm"><img src="http://apod.nasa.gov/apod/image/9911/m31_ware_big.jpg" /></a>
+      </div>
+    </div>
+  </div>
+  <div class="copyright">&copy; 2015 <a href="https://science.ai" target="_blank">science.ai</a><br>
+    Maintained by <a href="https://twitter.com/transcranial" target="_blank">@transcranial</a> | Code licensed under <a href="https://github.com/scienceai/neuralnet-predict-js/blob/master/LICENSE" target="_blank">Apache 2.0</a>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/2.3.2/scrollReveal.min.js"></script>
+  <script>
+    (function() {
+      window.sr= new scrollReveal({
+        reset: true,
+        mobile: true,
+        vFactor: 0.2
+      });
+    })();
+  </script>
+  <script src="/network-animation-helper.js"></script>
+  <script src="/network-animation.js"></script>
+</body>
