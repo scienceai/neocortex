@@ -1,6 +1,6 @@
 'use strict';
 
-importScripts('/neuralnet-predict.min.js');
+importScripts('../neuralnet-predict.min.js');
 
 let nn = new NeuralNet({
   modelFilePath: 'https://s3.amazonaws.com/neuralnet-predict-js/examples-data/cifar10_cnn_model_params.json.gz',
