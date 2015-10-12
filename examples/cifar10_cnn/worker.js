@@ -3,7 +3,7 @@
 importScripts('/neuralnet-predict.min.js');
 
 let nn = new NeuralNet({
-  modelFilePath: '/cifar10_cnn/cifar10_cnn_model_params.json',
+  modelFilePath: 'https://s3.amazonaws.com/neuralnet-predict-js/examples-data/cifar10_cnn_model_params.json.gz',
   arrayType: 'float32',
   useGPU: false
 });

@@ -46,7 +46,6 @@ export default class NeuralNet {
 
       if (this._environment === 'browser' || this._environment === 'webworker') {
         request.get(this._modelFilePath)
-          .withCredentials()
           .end((err, res) => {
             if (err) reject(err);
             if (res.statusCode == 200) {

@@ -44,7 +44,6 @@
 
   <!----------- SCRIPTS ------------>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xdomain/0.7.3/xdomain.min.js" slave="https://scienceai.github.io/neuralnet-predict-js/proxy.html"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
   <script src="/neuralnet-predict.min.js"></script>
   <script>
@@ -58,15 +57,15 @@
     function init() {
 
       nn = new NeuralNet({
-        modelFilePath: '/astro_lstm/astro_lstm_model_params.json',
+        modelFilePath: 'https://s3.amazonaws.com/neuralnet-predict-js/examples-data/astro_lstm_model_params.json.gz',
         arrayType: 'float32',
         useGPU: false
       });
 
       nn.loadModel().then(function() {
 
-        $.getJSON('/astro_lstm/sample_data.json', function(samples) {
-          $.getJSON('/astro_lstm/char_label_indices.json', function(indices) {
+        $.getJSON('https://s3.amazonaws.com/neuralnet-predict-js/examples-data/astro_lstm_sample_data.json.gz', function(samples) {
+          $.getJSON('https://s3.amazonaws.com/neuralnet-predict-js/examples-data/char_label_indices.json.gz', function(indices) {
             $('.loader').fadeOut();
             $('.samples').css('display', 'block');
 

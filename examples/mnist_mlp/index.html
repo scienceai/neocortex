@@ -64,7 +64,6 @@
 
   <!----------- SCRIPTS ------------>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xdomain/0.7.3/xdomain.min.js" slave="https://scienceai.github.io/neuralnet-predict-js/proxy.html"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
   <script src="/neuralnet-predict.min.js"></script>
   <script>
@@ -76,14 +75,14 @@
     function init() {
 
       nn = new NeuralNet({
-        modelFilePath: '/mnist_mlp/mnist_mlp_model_params.json',
+        modelFilePath: 'https://s3.amazonaws.com/neuralnet-predict-js/examples-data/mnist_mlp_model_params.json.gz',
         arrayType: 'float64',
         useGPU: false
       });
 
       nn.loadModel().then(function() {
 
-        $.getJSON('/mnist_mlp/sample_data.json', function(samples) {
+        $.getJSON('https://s3.amazonaws.com/neuralnet-predict-js/examples-data/mnist_mlp_sample_data.json.gz', function(samples) {
           $('.loader').fadeOut();
           $('.button-wrapper').css('display', 'block');
           $('.samples').css('display', 'block');
