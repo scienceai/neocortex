@@ -2,30 +2,87 @@
   <img src="examples/logo.png"/>
 </p>
 
-Run trained neural networks in the browser or node.js.
+###### Run trained deep neural networks in the browser or node.js.
 
-Check out the [project page and examples](https://scienceai.github.io/neuralnet-predict-js).
+###### Check out the [project page and examples](https://scienceai.github.io/neuralnet-predict-js).
 
 ### Background
 
-Training deep neural networks on any meaningful dataset requires massive computational resources and lots and lots of time. However, prediction is relatively cheap - there is no backpropagation, computational graphs, loss functions, or optimization algorithms to worry about or that needs to be implemented (online learning is a different story). What do you do when you want your neural network to power a part of your client-facing web application? Traditionally, you would deploy your model on a server and call it from your web application through an API. What if you can deploy it _in the browser_ alongside the rest of your webapp? Computation would be offloaded entirely to your end-user!
+Training deep neural networks on any meaningful dataset requires massive computational resources and lots and lots of time. However, the forward pass prediction phase is relatively cheap - typically there is no backpropagation, computational graphs, loss functions, or optimization algorithms to worry about.
 
-A pipe dream? Perhaps most users will not be able to run billion-parameter networks in their browsers quite yet, but smaller networks are certainly within the realm of possibility!
+What do you do when you have a trained deep neural network and now wish to use it to power a part of your client-facing web application? Traditionally, you would deploy your model on a server and call it from your web application through an API. But what if you can deploy it _in the browser_ alongside the rest of your webapp? Computation would be offloaded entirely to your end-user!
 
-By focusing purely on prediction of already trained neural networks, we can take into full consideration the constraints of client hardware and the capabilities of current browsers. Given a neural network architecture and pre-trained weights, we can focus on making forward predictive passes through the network as computationally efficient as possible.
+Perhaps most users will not be able to run billion-parameter networks in their browsers quite yet, but smaller networks are certainly within the realm of possibility.
 
-Computation on GPU is perfomed where possible and advantageous to do so. This is currently implemented using WebGL (hopefully WebCL will in the future make things more interesting).
+By focusing purely on prediction of already trained neural networks, we can focus on making forward predictive passes through the network as computationally efficient as possible, taking into full constraints of client hardware and the current state of web browsers.
 
-What about using emscripten to compile models to asm.js? It may be within the realm of possibility, but this would be quite heavy and not so trivial (see Cyrille Rosant's [attempts](http://cyrille.rossant.net/numpy-browser-llvm/) at running numpy in the browser through Numba and LLVM). Here, by only focusing only on the prediction phase, we can be as light and minimal as possible. The ultimate goal of this project is to be able to serialize a Keras or Caffe model together with pretrained weights into javascript, pack it in your webapp, and be off and running.
+Computation on GPU is perfomed where possible and advantageous to do so. Currently, this is implemented using WebGL within a browser environment, and ArrayFire within a node.js environment.
 
-Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of course a source of inspiration, as well as the excellent Theano-based deep learning framework [Keras](https://github.com/fchollet/keras/).
+Ultimately, the goal of this project is to have a lightweight javascript library that can take a serialized Keras, Caffe, Torch [insert other deep learning framework here] model, together with pretrained weights, pack it in your webapp, and be off and running.
+
+Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of course a source of inspiration, as well as the excellent python deep learning framework [Keras](https://github.com/fchollet/keras/).
 
 ### Examples
 
+- MNIST multi-layer perceptron / [src](https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/mnist_mlp) / [demo](http://scienceai.github.io/neuralnet-predict-js/mnist_mlp)
+
+- CIFAR-10 VGGNet-like convolutional neural network / [src](https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/cifar10_cnn) / [demo](http://scienceai.github.io/neuralnet-predict-js/cifar10_cnn)
+
+- LSTM recurrent neural network for classifying astronomical object names / [src](https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/astro_lstm) / [demo](http://scienceai.github.io/neuralnet-predict-js/astro_lstm)
 
 
 ### Usage
 
+See the source code of the examples above. In particular, the CIFAR-10 example demonstrates multi-threaded implementation with Web Workers.
+
+The core steps involve:
+
+1. Instantiate neural network class
+
+  ```js
+  let nn = new NeuralNet({
+    modelFilePath: 'model.json',
+    arrayType: 'float64',
+    useGPU: false
+  });
+  ```
+
+2. Load the model JSON file
+
+  ```js
+  nn.loadModel().then(function() {
+    // do stuff
+  });
+  ```
+
+3. Feed input data into neural network
+
+  ```js
+  nn.predict(input).then(function(predictions) {
+    // make use of predictions
+  });
+  ```
+
+
+### Build
+
+Build for both the browser (outputs to `build/neuralnet-predict.min.js`) and node.js (outputs to `dist/`):
+
+```
+$ npm run build
+```
+
+To build just for the browser:
+
+```
+$ npm run build-browser
+```
+
+### Frameworks
+
+###### Keras
+
+Script to serialize a trained [Keras](http://keras.io/) model together with its `hdf5` formatted weights is located in the `utils/` folder [here](https://github.com/scienceai/neuralnet-predict-js/blob/master/utils/serialize_keras.py). Currently only supports sequential models with layers in the API section below. Implementation of graph models is planned.
 
 
 ### API
@@ -90,19 +147,6 @@ Functions and layers currently implemented are listed below. More forthcoming.
 
 + `batchNormalizationLayer` - see [Ioffe and Szegedy 2015](http://arxiv.org/abs/1502.03167)
 
-### Build
-
-Build for both the browser (outputs to `build/neuralnet-predict.min.js`) and node.js (outputs to `dist/`):
-
-```
-$ npm run build
-```
-
-To build just for the browser:
-
-```
-$ npm run build-browser
-```
 
 ### Tests
 
@@ -110,10 +154,9 @@ $ npm run build-browser
 $ npm test
 ```
 
-Note: tests for SIMD code uses a [shim/polyfill](https://github.com/ljharb/simd) based on the [ES7 proposal](https://github.com/tc39/ecmascript_simd). The only browser that currently support SIMD is firefox nightly build.
-
 Browser testing is planned.
+
 
 ### License
 
-Apache 2.0
+[Apache 2.0](https://github.com/scienceai/neuralnet-predict-js/blob/master/LICENSE)
