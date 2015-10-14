@@ -19,7 +19,9 @@ layer_name_dict = {
     'JZS2': 'rJZS2Layer',
     'JZS3': 'rJZS3Layer',
     'Convolution2D': 'convolution2DLayer',
-    'MaxPooling2D': 'maxPooling2DLayer'
+    'MaxPooling2D': 'maxPooling2DLayer',
+    'Convolution1D': 'convolution1DLayer',
+    'MaxPooling1D': 'maxPooling1DLayer'
 }
 
 layer_params_dict = {
@@ -39,7 +41,9 @@ layer_params_dict = {
     'JZS2': ['weights', 'activation', 'inner_activation', 'return_sequences'],
     'JZS3': ['weights', 'activation', 'inner_activation', 'return_sequences'],
     'Convolution2D': ['weights', 'nb_filter', 'nb_row', 'nb_col', 'border_mode', 'subsample', 'activation'],
-    'MaxPooling2D': ['pool_size', 'stride', 'ignore_border']
+    'MaxPooling2D': ['pool_size', 'stride', 'ignore_border'],
+    'Convolution1D': ['weights', 'nb_filter', 'filter_length', 'border_mode', 'subsample_length', 'activation'],
+    'MaxPooling1D': ['pool_length', 'stride', 'ignore_border']
 }
 
 layer_weights_dict = {
@@ -53,7 +57,8 @@ layer_weights_dict = {
     'JZS1': ['W_xz', 'b_z', 'W_xr', 'W_hr', 'b_r', 'W_hh', 'b_h', 'Pmat'],
     'JZS2': ['W_xz', 'W_hz', 'b_z', 'W_hr', 'b_r', 'W_xh', 'W_hh', 'b_h', 'Pmat'],
     'JZS3': ['W_xz', 'W_hz', 'b_z', 'W_xr', 'W_hr', 'b_r', 'W_xh', 'W_hh', 'b_h'],
-    'Convolution2D': ['W', 'b']
+    'Convolution2D': ['W', 'b'],
+    'Convolution1D': ['W', 'b']
 }
 
 def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
