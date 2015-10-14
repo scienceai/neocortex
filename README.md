@@ -36,7 +36,7 @@ Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of cours
 You can also run the examples on your local machine at [`http://localhost:8000`](http://localhost:8000):
 
 ```sh
-npm run examples-server
+$ npm run examples-server
 ```
 
 
@@ -54,6 +54,10 @@ In the browser:
 ```
 
 In node.js:
+
+```sh
+$ npm install neocortex-js
+```
 
 ```js
 import NeuralNet from 'neocortex-js';
@@ -74,7 +78,7 @@ The core steps involve:
 2. Load the model JSON file
 
   ```js
-  nn.loadModel().then(function() {
+  nn.loadModel().then(() => {
     // do stuff
   });
   ```
@@ -82,7 +86,7 @@ The core steps involve:
 3. Feed input data into neural network
 
   ```js
-  nn.predict(input).then(function(predictions) {
+  nn.predict(input).then(predictions => {
     // make use of predictions
   });
   ```
