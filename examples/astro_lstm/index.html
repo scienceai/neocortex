@@ -35,17 +35,17 @@
     </div>
     <div class="nav">
       <div class="back" data-sr="enter left over 2s and move 20px"><a href="../index.html"><i class="fa fa-arrow-circle-left fa-2x"></i><br>More Examples</a></div>
-      <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/astro_lstm", target="_blank"><i class="fa fa-github fa-2x"></i><br>View on GitHub</a></div>
+      <div class="github" data-sr="enter bottom over 2s and move 20px"><a href="https://github.com/scienceai/neocortex/tree/master/examples/astro_lstm", target="_blank"><i class="fa fa-github fa-2x"></i><br>View on GitHub</a></div>
     </div>
   </div>
   <div class="copyright">&copy; 2015 <a href="https://science.ai" target="_blank">science.ai</a><br>
-    Maintained by <a href="https://twitter.com/transcranial" target="_blank">@transcranial</a> | Code licensed under <a href="https://github.com/scienceai/neuralnet-predict-js/blob/master/LICENSE" target="_blank">Apache 2.0</a>
+    Maintained by <a href="https://twitter.com/transcranial" target="_blank">@transcranial</a> | Code licensed under <a href="https://github.com/scienceai/neocortex/blob/master/LICENSE" target="_blank">Apache 2.0</a>
   </div>
 
   <!----------- SCRIPTS ------------>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-  <script src="../neuralnet-predict.min.js"></script>
+  <script src="../neocortex.min.js"></script>
   <script>
     'use strict';
 
@@ -57,15 +57,15 @@
     function init() {
 
       nn = new NeuralNet({
-        modelFilePath: 'https://s3.amazonaws.com/neuralnet-predict-js/examples-data/astro_lstm_model_params.json.gz',
+        modelFilePath: 'https://s3.amazonaws.com/neocortex-js/examples-data/astro_lstm_model_params.json.gz',
         arrayType: 'float32',
         useGPU: false
       });
 
       nn.loadModel().then(function() {
 
-        $.getJSON('https://s3.amazonaws.com/neuralnet-predict-js/examples-data/astro_lstm_sample_data.json.gz', function(samples) {
-          $.getJSON('https://s3.amazonaws.com/neuralnet-predict-js/examples-data/char_label_indices.json.gz', function(indices) {
+        $.getJSON('https://s3.amazonaws.com/neocortex-js/examples-data/astro_lstm_sample_data.json.gz', function(samples) {
+          $.getJSON('https://s3.amazonaws.com/neocortex-js/examples-data/char_label_indices.json.gz', function(indices) {
             $('.loader').fadeOut();
             $('.samples').css('display', 'block');
 

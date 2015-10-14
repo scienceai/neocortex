@@ -4,7 +4,7 @@
 
 ###### Run trained deep neural networks in the browser or node.js.
 
-###### Check out the [project page and examples](https://scienceai.github.io/neuralnet-predict-js).
+###### Check out the [project page and examples](https://scienceai.github.io/neocortex).
 
 ### Background
 
@@ -24,11 +24,11 @@ Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of cours
 
 ### Examples
 
-- MNIST multi-layer perceptron / [src](https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/mnist_mlp) / [demo](http://scienceai.github.io/neuralnet-predict-js/mnist_mlp)
+- MNIST multi-layer perceptron / [src](https://github.com/scienceai/neocortex/tree/master/examples/mnist_mlp) / [demo](http://scienceai.github.io/neocortex/mnist_mlp)
 
-- CIFAR-10 VGGNet-like convolutional neural network / [src](https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/cifar10_cnn) / [demo](http://scienceai.github.io/neuralnet-predict-js/cifar10_cnn)
+- CIFAR-10 VGGNet-like convolutional neural network / [src](https://github.com/scienceai/neocortex/tree/master/examples/cifar10_cnn) / [demo](http://scienceai.github.io/neocortex/cifar10_cnn)
 
-- LSTM recurrent neural network for classifying astronomical object names / [src](https://github.com/scienceai/neuralnet-predict-js/tree/master/examples/astro_lstm) / [demo](http://scienceai.github.io/neuralnet-predict-js/astro_lstm)
+- LSTM recurrent neural network for classifying astronomical object names / [src](https://github.com/scienceai/neocortex/tree/master/examples/astro_lstm) / [demo](http://scienceai.github.io/neocortex/astro_lstm)
 
 
 ### Usage
@@ -66,7 +66,7 @@ The core steps involve:
 
 ### Build
 
-Build for both the browser (outputs to `build/neuralnet-predict.min.js`) and node.js (outputs to `dist/`):
+Build for both the browser (outputs to `build/neocortex.min.js`) and node.js (outputs to `dist/`):
 
 ```
 $ npm run build
@@ -82,7 +82,7 @@ $ npm run build-browser
 
 ###### Keras
 
-Script to serialize a trained [Keras](http://keras.io/) model together with its `hdf5` formatted weights is located in the `utils/` folder [here](https://github.com/scienceai/neuralnet-predict-js/blob/master/utils/serialize_keras.py). Currently only supports sequential models with layers in the API section below. Implementation of graph models is planned.
+Script to serialize a trained [Keras](http://keras.io/) model together with its `hdf5` formatted weights is located in the `utils/` folder [here](https://github.com/scienceai/neocortex/blob/master/utils/serialize_keras.py). Currently only supports sequential models with layers in the API section below. Implementation of graph models is planned.
 
 
 ### API
@@ -159,4 +159,4 @@ Browser testing is planned.
 
 ### License
 
-[Apache 2.0](https://github.com/scienceai/neuralnet-predict-js/blob/master/LICENSE)
+[Apache 2.0](https://github.com/scienceai/neocortex/blob/master/LICENSE)

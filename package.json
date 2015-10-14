@@ -1,22 +1,22 @@
 {
-  "name": "neuralnet-predict-js",
-  "version": "0.0.0",
+  "name": "neocortex-js",
+  "version": "0.1.0",
   "description": "Run trained neural networks in the browser or node.js",
   "main": "dist/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "build-browser": "rm -rf build && mkdir build && browserify src/neuralnet.js -t babelify -t brfs -p [minifyify --no-map] --standalone NeuralNet -o build/neuralnet-predict.min.js",
+    "build-browser": "rm -rf build && mkdir build && browserify src/neuralnet.js -t babelify -t brfs -p [minifyify --no-map] --standalone NeuralNet -o build/neocortex.min.js",
     "build-node": "rm -rf dist && node_modules/.bin/babel src --out-dir dist",
     "build": "npm run build-node && npm run build-browser",
     "prepublish": "npm run build",
     "test": "mocha --reporter spec --compilers js:babel/register",
-    "examples-server": "npm run build-browser && cp build/neuralnet-predict.min.js examples && node examples/server.js"
+    "examples-server": "npm run build-browser && cp build/neocortex.min.js examples && node examples/server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/transcranial/neuralnet-predict-js.git"
+    "url": "git+https://github.com/transcranial/neocortex.git"
   },
   "keywords": [
     "neuralnet",
@@ -27,14 +27,15 @@
     "networks",
     "deep",
     "machine",
-    "learning"
+    "learning",
+    "keras"
   ],
   "author": "Leon Chen <lchen3@gmail.com> (@transcranial)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/transcranial/neuralnet-predict-js/issues"
+    "url": "https://github.com/transcranial/neocortex/issues"
   },
-  "homepage": "https://github.com/transcranial/neuralnet-predict-js#readme",
+  "homepage": "https://github.com/transcranial/neocortex#readme",
   "devDependencies": {
     "almost-equal": "^1.0.0",
     "babel": "^5.8.23",
