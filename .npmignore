@@ -1,2 +1,8 @@
 test/
 src/
+examples/
+.babelrc
+.eslintignore
+.eslintrc
+.git/
+.gitignore
