@@ -1,9 +1,9 @@
 'use strict';
 
-importScripts('../neuralnet-predict.min.js');
+importScripts('../neocortex.min.js');
 
 let nn = new NeuralNet({
-  modelFilePath: 'https://s3.amazonaws.com/neuralnet-predict-js/examples-data/cifar10_cnn_model_params.json.gz',
+  modelFilePath: 'https://s3.amazonaws.com/neocortex-js/examples-data/cifar10_cnn_model_params.json.gz',
   arrayType: 'float32',
   useGPU: false
 });
