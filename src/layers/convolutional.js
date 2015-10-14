@@ -9,6 +9,8 @@ import * as activationFuncs from '../functions/activations';
 * Convolutional neural network layers
 *
 * shape of input tensor: timesteps x dimensions
+* 2D: timesteps x rows x cols
+* 1D: timesteps x rows
 */
 
 ///////////////////////////////////////////////////////
@@ -104,6 +106,55 @@ export function maxPooling2DLayer(arrayType, x, pool_size=[2,2], stride=null, ig
       for (let j = 0; j < cols_new; j++) {
         y.set(stack, i, j, ops.sup(x.pick(stack, null, null).hi((i+1)*pool_size[0], (j+1)*pool_size[1]).lo(i*pool_size[0], j*pool_size[1])));
       }
+    }
+  }
+
+  return y;
+}
+
+///////////////////////////////////////////////////////
+// 1D convolutional layer
+//
+// note: convolution performed over time dimension
+//
+// TODO:
+// - subsample
+export function convolution1DLayer(arrayType, x, weights,
+  nb_filter=64, filter_length=3,
+  border_mode='valid',
+  subsample_length=1,
+  activation='relu') {
+
+  let W = pack(weights['W']);
+  let b = pack(weights['b']);
+
+  let x_mod = ndarray(new arrayType(x.size), [x.shape[1], x.shape[0], 1]);
+  ops.assign(x_mod.pick(null, null, 0), x.transpose(1, 0));
+
+  let y_mod = convolution2DLayer(arrayType, x_mod, weights,
+    nb_filter, filter_length, 1,
+    border_mode,
+    [subsample_length, 1],
+    activation);
+
+  let y = ndarray(new arrayType(y_mod.size), [y_mod.shape[1], y_mod.shape[0]]);
+  ops.assign(y, y_mod.pick(null, null, 0).transpose(1, 0));
+
+  return y;
+}
+
+
+///////////////////////////////////////////////////////
+// 1D max-pooling layer
+//
+export function maxPooling1DLayer(arrayType, x, pool_length=2, stride=null, ignore_border=true) {
+  let len_new = Math.floor(x.shape[0] / pool_length);
+
+  let y = ndarray(new arrayType(len_new * x.shape[1]), [len_new, x.shape[1]]);
+
+  for (let i = 0; i < len_new; i++) {
+    for (let j = 0; j < x.shape[1]; j++) {
+      y.set(i, j, ops.sup(x.pick(null, j).hi((i+1)*pool_length).lo(i*pool_length)));
     }
   }
 
