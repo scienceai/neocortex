@@ -2,9 +2,12 @@
   <img src="examples/logo.png"/>
 </p>
 
-###### Run trained deep neural networks in the browser or node.js.
+[![build status](https://img.shields.io/travis/scienceai/neocortex/master.svg?style=flat-square)](https://travis-ci.org/scienceai/neocortex)
+[![npm version](https://img.shields.io/npm/v/neocortex-js.svg?style=flat-square)](https://www.npmjs.com/package/neocortex-js)
 
-###### Check out the [project page and examples](https://scienceai.github.io/neocortex).
+**Run trained deep neural networks in the browser or node.js.**
+
+**Check out the _[project page and examples](https://scienceai.github.io/neocortex)_.**
 
 ### Background
 
@@ -30,20 +33,41 @@ Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of cours
 
 - LSTM recurrent neural network for classifying astronomical object names / [src](https://github.com/scienceai/neocortex/tree/master/examples/astro_lstm) / [demo](http://scienceai.github.io/neocortex/astro_lstm)
 
+You can also run the examples on your local machine at [`http://localhost:8000`](http://localhost:8000):
+
+```sh
+npm run examples-server
+```
+
 
 ### Usage
 
 See the source code of the examples above. In particular, the CIFAR-10 example demonstrates multi-threaded implementation with Web Workers.
 
+In the browser:
+
+```html
+<script src="neocortex.min.js"></script>
+<script>
+  // use neural network here
+</script>
+```
+
+In node.js:
+
+```js
+import NeuralNet from 'neocortex-js';
+```
+
 The core steps involve:
 
-1. Instantiate neural network class
+1. Instantiate neural network class (NOTE: GPU mode is a work-in-progress)
 
   ```js
   let nn = new NeuralNet({
-    modelFilePath: 'model.json',
-    arrayType: 'float64',
-    useGPU: false
+    modelFilePath: 'model.json', // relative URL in a browser environment
+    arrayType: 'float64', // float64 or float32
+    useGPU: false // if true, will try to use GPU for computations
   });
   ```
 
@@ -66,7 +90,7 @@ The core steps involve:
 
 ### Build
 
-Build for both the browser (outputs to `build/neocortex.min.js`) and node.js (outputs to `dist/`):
+To run build yourself, for both the browser (outputs to `build/neocortex.min.js`) and node.js (outputs to `dist/`):
 
 ```
 $ npm run build
@@ -155,6 +179,11 @@ $ npm test
 ```
 
 Browser testing is planned.
+
+
+### Credits
+
+Thanks to @halmos for the logo! It's an allusion to the fact that GPU computation in the browser currently needs to be interfaced through WebGL textures and shaders and all that good stuff.
 
 
 ### License
