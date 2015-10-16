@@ -45,7 +45,6 @@
     "babelify": "^6.3.0",
     "brfs": "^1.4.1",
     "browserify": "^11.2.0",
-    "concat-stream": "^1.5.0",
     "eslint": "^1.5.0",
     "express": "^4.13.3",
     "minifyify": "^7.1.0",
@@ -55,6 +54,7 @@
   },
   "dependencies": {
     "bluebird": "^2.10.2",
+    "concat-stream": "^1.5.0",
     "cwise": "^1.0.8",
     "ndarray": "^1.0.18",
     "ndarray-blas-level1": "^1.1.1",
