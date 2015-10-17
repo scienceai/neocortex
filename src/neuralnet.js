@@ -56,7 +56,7 @@ export default class NeuralNet {
             }
           });
       } else if (this._environment === 'node') {
-        let s = fs.createReadStream(__dirname + this._modelFilePath);
+        let s = fs.createReadStream(this._modelFilePath);
         if (this._modelFilePath.endsWith('.json.gz')) {
           let gunzip = zlib.createGunzip();
           s.pipe(gunzip).pipe(concat((model) => {
