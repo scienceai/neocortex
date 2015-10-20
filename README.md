@@ -2,12 +2,12 @@
   <img src="examples/logo.png"/>
 </p>
 
-[![build status](https://img.shields.io/travis/scienceai/neocortex/master.svg?style=flat-square)](https://travis-ci.org/scienceai/neocortex)
-[![npm version](https://img.shields.io/npm/v/neocortex-js.svg?style=flat-square)](https://www.npmjs.com/package/neocortex-js)
-
 **Run trained deep neural networks in the browser or node.js.**
 
 **Check out the _[project page and examples](https://scienceai.github.io/neocortex)_.**
+
+[![build status](https://img.shields.io/travis/scienceai/neocortex/master.svg?style=flat-square)](https://travis-ci.org/scienceai/neocortex)
+[![npm version](https://img.shields.io/npm/v/neocortex-js.svg?style=flat-square)](https://www.npmjs.com/package/neocortex-js)
 
 ### Background
 
@@ -69,7 +69,7 @@ The core steps involve:
 
   ```js
   let nn = new NeuralNet({
-    modelFilePath: 'model.json', // relative URL in a browser environment
+    modelFilePath: 'model.json', // relative URL in browser/webworker, absolute path in node.js
     arrayType: 'float64', // float64 or float32
     useGPU: false // if true, will try to use GPU for computations
   });
@@ -78,8 +78,8 @@ The core steps involve:
 2. Load the model JSON file
 
   ```js
-  nn.loadModel().then(() => {
-    // do stuff
+  nn.init().then(() => {
+    // do stuff with nn
   });
   ```
 
