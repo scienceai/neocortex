@@ -1,6 +1,6 @@
 {
   "name": "neocortex-js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Run trained neural networks in the browser or node.js",
   "main": "dist/index.js",
   "directories": {
