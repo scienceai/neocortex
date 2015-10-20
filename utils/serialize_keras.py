@@ -28,7 +28,7 @@ layer_params_dict = {
     'Dense': ['weights', 'activation'],
     'Dropout': ['p'],
     'Flatten': [],
-    'Embedding': ['weights'],
+    'Embedding': ['weights', 'mask_zero'],
     'BatchNormalization': ['weights', 'epsilon'],
     'LeakyReLU': ['alpha'],
     'PReLU': ['weights'],
