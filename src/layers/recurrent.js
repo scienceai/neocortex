@@ -28,30 +28,29 @@ export function rLSTMLayer(arrayType, x, weights, activation='tanh', inner_activ
   let b_o = pack(weights['b_o']);
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
-  let i_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xi = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hi = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let f_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xf = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hf = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let o_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xo = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_ho = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let i_t = ndarray(new arrayType(b_i.shape[0]), [b_i.shape[0]]);
+  let temp_xi = ndarray(new arrayType(b_i.shape[0]), [b_i.shape[0]]);
+  let temp_hi = ndarray(new arrayType(b_i.shape[0]), [b_i.shape[0]]);
+  let f_t = ndarray(new arrayType(b_f.shape[0]), [b_f.shape[0]]);
+  let temp_xf = ndarray(new arrayType(b_f.shape[0]), [b_f.shape[0]]);
+  let temp_hf = ndarray(new arrayType(b_f.shape[0]), [b_f.shape[0]]);
+  let o_t = ndarray(new arrayType(b_o.shape[0]), [b_o.shape[0]]);
+  let temp_xo = ndarray(new arrayType(b_o.shape[0]), [b_o.shape[0]]);
+  let temp_ho = ndarray(new arrayType(b_o.shape[0]), [b_o.shape[0]]);
 
-  let c_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xc = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hc = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_fc = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let c_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let c_t = ndarray(new arrayType(b_c.shape[0]), [b_c.shape[0]]);
+  let temp_xc = ndarray(new arrayType(b_c.shape[0]), [b_c.shape[0]]);
+  let temp_hc = ndarray(new arrayType(b_c.shape[0]), [b_c.shape[0]]);
+  let temp_fc = ndarray(new arrayType(b_c.shape[0]), [b_c.shape[0]]);
+  let c_tm1 = ndarray(new arrayType(b_c.shape[0]), [b_c.shape[0]]);
 
-  let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let h_t = ndarray(new arrayType(b_c.shape[0]), [b_c.shape[0]]);
+  let h_tm1 = ndarray(new arrayType(b_c.shape[0]), [b_c.shape[0]]);
 
   let h_seq;
   if (return_sequences) {
-    h_seq = ndarray(new arrayType(x.size), x.shape);
+    h_seq = ndarray(new arrayType(x.shape[0] * b_c.shape[0]), [x.shape[0], b_c.shape[0]]);
   }
 
   function _step() {
@@ -125,22 +124,22 @@ export function rGRULayer(arrayType, x, weights, activation='tanh', inner_activa
   let b_h = pack(weights['b_h']);
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp2 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let z_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let r_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp2 = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let z_t = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp_xz = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp_hz = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let r_t = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let temp_xr = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let temp_hr = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let h_t = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let temp_xh = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let temp_hh = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let h_tm1 = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
 
   let h_seq;
   if (return_sequences) {
-    h_seq = ndarray(new arrayType(x.size), x.shape);
+    h_seq = ndarray(new arrayType(x.shape[0] * b_h.shape[0]), [x.shape[0], b_h.shape[0]]);
   }
 
   function _step() {
@@ -207,21 +206,21 @@ export function rJZS1Layer(arrayType, x, weights, activation='tanh', inner_activ
   let Pmat = pack(weights['Pmat']);
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp2 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let z_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let r_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_x_proj = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp2 = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let z_t = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp_xz = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let r_t = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let temp_xr = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let temp_hr = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let h_t = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let temp_x_proj = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let temp_hh = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let h_tm1 = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
 
   let h_seq;
   if (return_sequences) {
-    h_seq = ndarray(new arrayType(x.size), x.shape);
+    h_seq = ndarray(new arrayType(x.shape[0] * b_h.shape[0]), [x.shape[0], b_h.shape[0]]);
   }
 
   function _step() {
@@ -287,22 +286,22 @@ export function rJZS2Layer(arrayType, x, weights, activation='tanh', inner_activ
   let Pmat  = pack(weights['Pmat']);
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_x_proj = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp2 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let z_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let r_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp_x_proj = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp2 = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let z_t = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp_xz = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp_hz = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let r_t = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let temp_hr = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let h_t = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let temp_xh = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let temp_hh = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let h_tm1 = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
 
   let h_seq;
   if (return_sequences) {
-    h_seq = ndarray(new arrayType(x.size), x.shape);
+    h_seq = ndarray(new arrayType(x.shape[0] * b_h.shape[0]), [x.shape[0], b_h.shape[0]]);
   }
 
   function _step() {
@@ -370,23 +369,23 @@ export function rJZS3Layer(arrayType, x, weights, activation='tanh', inner_activ
   let b_h = pack(weights['b_h']);
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp2 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let z_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hz = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let r_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hr = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let h_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_xh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let temp_hh = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let h_tm1 = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
-  let h_tm1_temp = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
+  let temp = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp2 = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let z_t = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp_xz = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let temp_hz = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
+  let r_t = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let temp_xr = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let temp_hr = ndarray(new arrayType(b_r.shape[0]), [b_r.shape[0]]);
+  let h_t = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let temp_xh = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let temp_hh = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let h_tm1 = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
+  let h_tm1_temp = ndarray(new arrayType(b_h.shape[0]), [b_h.shape[0]]);
 
   let h_seq;
   if (return_sequences) {
-    h_seq = ndarray(new arrayType(x.size), x.shape);
+    h_seq = ndarray(new arrayType(x.shape[0] * b_h.shape[0]), [x.shape[0], b_h.shape[0]]);
   }
 
   function _step() {
