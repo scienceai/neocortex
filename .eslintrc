@@ -1,27 +1,28 @@
 {
-    "rules": {
-        "quotes": [
-            2,
-            "single"
-        ],
-        "semi": [
-            2,
-            "always"
-        ],
-        "no-eval": 2,
-        "no-console": 0,
-        "no-undef": 0,
-        "no-unused-vars": 0
-    },
-    "env": {
-        "es6": true,
-        "browser": true,
-        "node": true,
-        "mocha": true,
-        "worker": true
-    },
-    "ecmaFeatures": {
-        "modules": true
-    },
-    "extends": "eslint:recommended"
+  "parser": "babel-eslint",
+  "rules": {
+    "quotes": [
+      2,
+      "single"
+    ],
+    "semi": [
+      2,
+      "always"
+    ],
+    "no-eval": 2,
+    "no-console": 0,
+    "no-undef": 0,
+    "no-unused-vars": 0
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "mocha": true,
+    "worker": true
+  },
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "extends": "eslint:recommended"
 }
