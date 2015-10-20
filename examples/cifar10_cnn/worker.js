@@ -14,7 +14,7 @@ self.onmessage = function(e) {
   onLoadMsgs.push(e);
 };
 
-nn.loadModel().then(function() {
+nn.init().then(function() {
 
     function handleMsg(e) {
 

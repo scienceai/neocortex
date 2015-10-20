@@ -38,7 +38,7 @@ export default class NeuralNet {
     this._layers = [];
   }
 
-  loadModel() {
+  init() {
     return new Promise((resolve, reject) => {
       if (!this._modelFilePath) {
         reject(new Error('no modelFilePath specified in config object.'));

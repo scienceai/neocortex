@@ -62,7 +62,7 @@
         useGPU: false
       });
 
-      nn.loadModel().then(function() {
+      nn.init().then(function() {
 
         $.getJSON('https://s3.amazonaws.com/neocortex-js/examples-data/astro_lstm_sample_data.json.gz', function(samples) {
           $.getJSON('https://s3.amazonaws.com/neocortex-js/examples-data/char_label_indices.json.gz', function(indices) {

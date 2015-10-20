@@ -80,7 +80,7 @@
         useGPU: false
       });
 
-      nn.loadModel().then(function() {
+      nn.init().then(function() {
 
         $.getJSON('https://s3.amazonaws.com/neocortex-js/examples-data/mnist_mlp_sample_data.json.gz', function(samples) {
           $('.loader').fadeOut();
