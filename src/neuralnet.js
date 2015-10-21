@@ -3,6 +3,7 @@ import ndarray from 'ndarray';
 import pack from 'ndarray-pack';
 import unpack from 'ndarray-unpack';
 import request from 'superagent';
+import fs from 'fs';
 import zlib from 'zlib';
 import concat from 'concat-stream';
 import Promise from 'bluebird';
@@ -32,7 +33,7 @@ export default class NeuralNet {
     } else {
       this._environment = 'shell';
     }
-    console.log(`Running in environment: ${this._environment}`);
+    console.log(`Neural network running in environment: ${this._environment}.`);
 
     this._modelFilePath = config.modelFilePath || null;
     this._layers = [];
