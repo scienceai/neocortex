@@ -69,7 +69,8 @@ The core steps involve:
 
   ```js
   let nn = new NeuralNet({
-    modelFilePath: 'model.json', // relative URL in browser/webworker, absolute path in node.js
+    // relative URL in browser/webworker, absolute path in node.js
+    modelFilePath: 'model.json',
     arrayType: 'float64', // float64 or float32
     useGPU: false // if true, will try to use GPU for computations
   });
