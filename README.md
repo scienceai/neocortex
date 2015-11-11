@@ -17,13 +17,13 @@ What do you do when you have a trained deep neural network and now wish to use i
 
 Perhaps most users will not be able to run billion-parameter networks in their browsers quite yet, but smaller networks are certainly within the realm of possibility.
 
-By focusing purely on prediction of already trained neural networks, we can focus on making forward predictive passes through the network as computationally efficient as possible, taking into full constraints of client hardware and the current state of web browsers.
+By focusing purely on prediction of pre-trained neural networks, we can focus on making forward predictive passes through the network as computationally efficient as possible, taking into account full constraints of client hardware and the current state of web browsers.
 
-Computation on GPU is perfomed where possible and advantageous to do so. Currently, this is implemented using WebGL within a browser environment, and ArrayFire within a node.js environment.
+Computation is performed on GPU where possible as it is advantageous to do so. Currently, this is implemented using WebGL within a browser environment, and ArrayFire within a node.js environment.
 
-Ultimately, the goal of this project is to have a lightweight javascript library that can take a serialized Keras, Caffe, Torch [insert other deep learning framework here] model, together with pretrained weights, pack it in your webapp, and be off and running.
+Ultimately, the goal of this project is to provide a lightweight javascript library that can take a serialized Keras, Caffe, Torch or [insert other deep learning framework here] model, together with pre-trained weights, pack it in your webapp, and be up and running.
 
-Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of course a source of inspiration, as well as the excellent python deep learning framework [Keras](https://github.com/fchollet/keras/).
+Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of course a source of inspiration, as well as the excellent Python deep learning framework [Keras](https://github.com/fchollet/keras/).
 
 ### Examples
 
@@ -42,7 +42,7 @@ $ npm run examples-server
 
 ### Usage
 
-See the source code of the examples above. In particular, the CIFAR-10 example demonstrates multi-threaded implementation with Web Workers.
+See the source code of the examples above. In particular, the CIFAR-10 example demonstrates a multi-threaded implementation using Web Workers.
 
 In the browser:
 
@@ -95,7 +95,7 @@ The core steps involve:
 
 ### Build
 
-To run build yourself, for both the browser (outputs to `build/neocortex.min.js`) and node.js (outputs to `dist/`):
+To build the project yourself, for both the browser (outputs to `build/neocortex.min.js`) and node.js (outputs to `dist/`):
 
 ```
 $ npm run build
@@ -111,7 +111,7 @@ $ npm run build-browser
 
 ###### Keras
 
-Script to serialize a trained [Keras](http://keras.io/) model together with its `hdf5` formatted weights is located in the `utils/` folder [here](https://github.com/scienceai/neocortex/blob/master/utils/serialize_keras.py). Currently only supports sequential models with layers in the API section below. Implementation of graph models is planned.
+A script to serialize a trained [Keras](http://keras.io/) model together with its `hdf5` formatted weights is located in the `utils/` folder [here](https://github.com/scienceai/neocortex/blob/master/utils/serialize_keras.py). It currently only supports sequential models with layers in the API section below. Implementation of graph models is planned.
 
 
 ### API
