@@ -76,18 +76,11 @@ The core steps involve:
   });
   ```
 
-2. Load the model JSON file
+2. Load the model JSON file, then once loaded, feed input data into neural network
 
   ```js
   nn.init().then(() => {
-    // do stuff with nn
-  });
-  ```
-
-3. Feed input data into neural network
-
-  ```js
-  nn.predict(input).then(predictions => {
+    let predictions = nn.predict(input);
     // make use of predictions
   });
   ```
