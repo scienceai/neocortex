@@ -108,9 +108,8 @@
         clearPredictions(sampleNum);
         drawSample(sampleNum, sampleData);
 
-        nn.predict(sampleData).then(function(predictions) {
-          showPredictions(sampleNum, predictions, sampleLabel);
-        });
+        let predictions = nn.predict(sampleData);
+        showPredictions(sampleNum, predictions, sampleLabel);
       });
     }
 

@@ -110,7 +110,6 @@
       for (let i = 0; i < 5; i++) {
         let worker = new Worker('worker.js');
         worker.onmessage = function(e) {
-          console.log(e);
           if ('predictions' in e.data) {
             showPredictions(e.data.sampleNum, e.data.predictions, e.data.sampleLabel)
           }

@@ -19,13 +19,13 @@ nn.init().then(function() {
     function handleMsg(e) {
 
       // prediction given sample image
-      nn.predict(e.data.sampleData).then(function(predictions) {
-        postMessage({
-          sampleNum: e.data.sampleNum,
-          predictions: predictions,
-          sampleLabel: e.data.sampleLabel
-        });
+      let predictions = nn.predict(e.data.sampleData);
+      postMessage({
+        sampleNum: e.data.sampleNum,
+        predictions: predictions,
+        sampleLabel: e.data.sampleLabel
       });
+
     }
 
     // handle initial page onLoad messages

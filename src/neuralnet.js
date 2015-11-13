@@ -73,22 +73,18 @@ export default class NeuralNet {
   }
 
   predict(input) {
-    return new Promise((resolve, reject) => {
+    let _predict = (X) => {
+      for (let layer of this._layers) {
+        let { layerName, parameters } = layer;
+        X = layerFuncs[layerName](this._arrayType, X, ...parameters);
+      }
+      return X;
+    };
 
-      let _predict = (X) => {
-        for (let layer of this._layers) {
-          let { layerName, parameters } = layer;
-          X = layerFuncs[layerName](this._arrayType, X, ...parameters);
-        }
-        return X;
-      };
+    let X = pack(input);
+    let output_ndarray = _predict(X);
 
-      let X = pack(input);
-      let output_ndarray = _predict(X);
-
-      resolve(unpack(output_ndarray));
-
-    });
+    return unpack(output_ndarray);
   }
 
 }

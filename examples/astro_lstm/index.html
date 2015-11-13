@@ -92,9 +92,8 @@
       let sampleLabel = SAMPLE_DATA.labels[randIdx];
 
       clearPrediction();
-      nn.predict(nameToSeq(sampleData)).then(function(predictions) {
-        showPrediction(sampleData, predictions, sampleLabel);
-      });
+      let predictions = nn.predict(nameToSeq(sampleData));
+      showPrediction(sampleData, predictions, sampleLabel);
     }
 
 
