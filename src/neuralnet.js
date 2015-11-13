@@ -19,9 +19,7 @@ export default class NeuralNet {
       this._arrayType = Float64Array;
     }
 
-    this._SIMD_AVAIL = (this._arrayType === Float32Array || this._arrayType === Float64Array) && ('SIMD' in this);
     this._WEBGL_AVAIL = true;
-
     this.useGPU = (config.useGPU || false) && this._WEBGL_AVAIL;
 
     if (typeof window === 'object') {
