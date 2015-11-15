@@ -1,5 +1,5 @@
+sudo: false
 language: node_js
 node_js:
   - "4"
-notifications:
-  slack: standardanalytics:vPQA8IowAphWwzDgGtHkdkRk
+  - "5"

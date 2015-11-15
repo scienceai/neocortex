@@ -39,7 +39,7 @@
   "devDependencies": {
     "almost-equal": "^1.0.0",
     "babel-cli": "^6.1.18",
-    "babel-core": "^6.1.19",
+    "babel-core": "^6.1.21",
     "babel-eslint": "^4.1.5",
     "babel-preset-es2015": "^6.1.18",
     "babelify": "^7.2.0",
