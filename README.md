@@ -2,9 +2,9 @@
   <img src="examples/logo.png"/>
 </p>
 
-**Run trained deep neural networks in the browser or node.js.**
+Run trained deep neural networks in the browser or node.js. Currently supports serialization from trained [Keras](https://github.com/fchollet/keras/) models.
 
-**Check out the _[project page and examples](https://scienceai.github.io/neocortex)_.**
+**[PROJECT PAGE AND EXAMPLES](https://scienceai.github.io/neocortex)**
 
 [![build status](https://img.shields.io/travis/scienceai/neocortex/master.svg?style=flat-square)](https://travis-ci.org/scienceai/neocortex)
 [![npm version](https://img.shields.io/npm/v/neocortex-js.svg?style=flat-square)](https://www.npmjs.com/package/neocortex-js)
@@ -17,13 +17,7 @@ What do you do when you have a trained deep neural network and now wish to use i
 
 Perhaps most users will not be able to run billion-parameter networks in their browsers quite yet, but smaller networks are certainly within the realm of possibility.
 
-By focusing purely on prediction of pre-trained neural networks, we can focus on making forward predictive passes through the network as computationally efficient as possible, taking into account full constraints of client hardware and the current state of web browsers.
-
-Computation is performed on GPU where possible as it is advantageous to do so. Currently, this is implemented using WebGL within a browser environment, and ArrayFire within a node.js environment.
-
-Ultimately, the goal of this project is to provide a lightweight javascript library that can take a serialized Keras, Caffe, Torch or [insert other deep learning framework here] model, together with pre-trained weights, pack it in your webapp, and be up and running.
-
-Andrej Karpathy's [ConvNetJS](https://github.com/karpathy/convnetjs) is of course a source of inspiration, as well as the excellent Python deep learning framework [Keras](https://github.com/fchollet/keras/).
+The goal of this project is to provide a lightweight javascript library that can take a serialized Keras, Caffe, Torch or [insert other deep learning framework here] model, together with pre-trained weights, pack it in your webapp, and be up and running. Currently supports serialization from trained [Keras](https://github.com/fchollet/keras/) models.
 
 ### Examples
 
@@ -65,14 +59,13 @@ import NeuralNet from 'neocortex-js';
 
 The core steps involve:
 
-1. Instantiate neural network class (NOTE: GPU mode is a work-in-progress)
+1. Instantiate neural network class
 
   ```js
   let nn = new NeuralNet({
     // relative URL in browser/webworker, absolute path in node.js
     modelFilePath: 'model.json',
     arrayType: 'float64', // float64 or float32
-    useGPU: false // if true, will try to use GPU for computations
   });
   ```
 
@@ -169,6 +162,11 @@ Functions and layers currently implemented are listed below. More forthcoming.
 
 + `batchNormalizationLayer` - see [Ioffe and Szegedy 2015](http://arxiv.org/abs/1502.03167)
 
+### Todo
+
++ [ ] implement merge and graph structures from keras
+
++ [ ] implement additional keras layers such as TimeDistributedDense, etc.
 
 ### Tests
 
@@ -181,7 +179,7 @@ Browser testing is planned.
 
 ### Credits
 
-Thanks to @halmos for the logo! It's an allusion to the fact that GPU computation in the browser currently needs to be interfaced through WebGL textures and shaders and all that good stuff.
+Thanks to @halmos for the logo.
 
 
 ### License

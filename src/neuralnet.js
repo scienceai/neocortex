@@ -19,9 +19,6 @@ export default class NeuralNet {
       this._arrayType = Float64Array;
     }
 
-    this._WEBGL_AVAIL = true;
-    this.useGPU = (config.useGPU || false) && this._WEBGL_AVAIL;
-
     if (typeof window === 'object') {
       this._environment = 'browser';
     } else if (typeof importScripts === 'function') {
