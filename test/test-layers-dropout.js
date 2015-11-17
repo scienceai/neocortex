@@ -8,7 +8,7 @@ describe('Layer: dropout', function() {
 
   it('should produce expected', (done) => {
     let expected = [0.25, 0.3, 0.6];
-    let y = dropoutLayer(Float64Array, x, 0.5);
+    let y = dropoutLayer(Float64Array, x, 0.5, true);
     assert.deepEqual(y.shape, [3]);
     for (let i = 0; i < y.shape[0]; i++) {
       assert(almostEqual(y.get(i), expected[i], almostEqual.FLT_EPSILON, almostEqual.FLT_EPSILON));
@@ -18,7 +18,27 @@ describe('Layer: dropout', function() {
 
   it('should produce expected', (done) => {
     let expected = [0.45, 0.54, 1.08];
-    let y = dropoutLayer(Float64Array, x, 0.1);
+    let y = dropoutLayer(Float64Array, x, 0.1, true);
+    assert.deepEqual(y.shape, [3]);
+    for (let i = 0; i < y.shape[0]; i++) {
+      assert(almostEqual(y.get(i), expected[i], almostEqual.FLT_EPSILON, almostEqual.FLT_EPSILON));
+    }
+    done();
+  });
+
+  it('should produce expected', (done) => {
+    let expected = [0.5, 0.6, 1.2];
+    let y = dropoutLayer(Float64Array, x, 0.5, false);
+    assert.deepEqual(y.shape, [3]);
+    for (let i = 0; i < y.shape[0]; i++) {
+      assert(almostEqual(y.get(i), expected[i], almostEqual.FLT_EPSILON, almostEqual.FLT_EPSILON));
+    }
+    done();
+  });
+
+  it('should produce expected', (done) => {
+    let expected = [0.5, 0.6, 1.2];
+    let y = dropoutLayer(Float64Array, x, 0.1, false);
     assert.deepEqual(y.shape, [3]);
     for (let i = 0; i < y.shape[0]; i++) {
       assert(almostEqual(y.get(i), expected[i], almostEqual.FLT_EPSILON, almostEqual.FLT_EPSILON));
