@@ -1,7 +1,7 @@
 import assert from 'assert';
 import almostEqual from 'almost-equal';
 import ndarray from 'ndarray';
-import pack from 'ndarray-pack';
+import pack from '../src/lib/ndarray-pack';
 import { convolution2DLayer, maxPooling2DLayer, convolution1DLayer, maxPooling1DLayer } from '../src/layers/convolutional';
 
 const EPSILON = almostEqual.FLT_EPSILON;
@@ -27,7 +27,7 @@ describe('Layer: convolutional', function() {
 
   describe('2D convolutional layer serialized from Keras', function() {
 
-    let input = pack(JSON.parse(input2d_JSON));
+    let input = pack(arrayType, JSON.parse(input2d_JSON));
 
     it('should output the correct tensor (border mode: valid)', (done) => {
       let weights = require('./fixtures/test_weights_convolution2d_keras.json');
@@ -40,7 +40,7 @@ describe('Layer: convolutional', function() {
         'linear' // activation
       );
 
-      let expected = pack(JSON.parse(convolution2D_valid_expected_JSON));
+      let expected = pack(arrayType, JSON.parse(convolution2D_valid_expected_JSON));
 
       assert.deepEqual(y.shape, [5,1,2]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -64,7 +64,7 @@ describe('Layer: convolutional', function() {
         'linear' // activation
       );
 
-      let expected = pack(JSON.parse(convolution2D_same_expected_JSON));
+      let expected = pack(arrayType, JSON.parse(convolution2D_same_expected_JSON));
 
       assert.deepEqual(y.shape, [5,4,4]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -88,7 +88,7 @@ describe('Layer: convolutional', function() {
         'linear' // activation
       );
 
-      let expected = pack(JSON.parse(convolution2D_full_expected_JSON));
+      let expected = pack(arrayType, JSON.parse(convolution2D_full_expected_JSON));
 
       assert.deepEqual(y.shape, [5,7,6]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -104,7 +104,7 @@ describe('Layer: convolutional', function() {
 
   describe('2D max-pooling layer', function() {
 
-    let input = pack(JSON.parse(input2d_JSON));
+    let input = pack(arrayType, JSON.parse(input2d_JSON));
 
     it('should output the correct tensor (input shape: [4,4], pool_size: [2,2])', (done) => {
 
@@ -114,7 +114,7 @@ describe('Layer: convolutional', function() {
         true // ignore_border
       );
 
-      let expected = pack([[[5, 7], [13, 15]], [[21, 23], [29, 31]]]);
+      let expected = pack(arrayType, [[[5, 7], [13, 15]], [[21, 23], [29, 31]]]);
 
       assert.deepEqual(y.shape, [2,2,2]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -135,7 +135,7 @@ describe('Layer: convolutional', function() {
         true // ignore_border
       );
 
-      let expected = pack([[[10.0]], [[26.0]]]);
+      let expected = pack(arrayType, [[[10.0]], [[26.0]]]);
 
       assert.deepEqual(y.shape, [2,1,1]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -156,7 +156,7 @@ describe('Layer: convolutional', function() {
         true // ignore_border
       );
 
-      let expected = pack([[[1.0, 3.0], [5.0, 7.0], [9.0, 11.0], [13.0, 15.0]], [[17.0, 19.0], [21.0, 23.0], [25.0, 27.0], [29.0, 31.0]]]);
+      let expected = pack(arrayType, [[[1.0, 3.0], [5.0, 7.0], [9.0, 11.0], [13.0, 15.0]], [[17.0, 19.0], [21.0, 23.0], [25.0, 27.0], [29.0, 31.0]]]);
 
       assert.deepEqual(y.shape, [2,4,2]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -177,7 +177,7 @@ describe('Layer: convolutional', function() {
         true // ignore_border
       );
 
-      let expected = pack([[[9.0, 11.0]], [[25.0, 27.0]]]);
+      let expected = pack(arrayType, [[[9.0, 11.0]], [[25.0, 27.0]]]);
 
       assert.deepEqual(y.shape, [2,1,2]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -198,7 +198,7 @@ describe('Layer: convolutional', function() {
         true // ignore_border
       );
 
-      let expected = pack([[[5.0]], [[21.0]]]);
+      let expected = pack(arrayType, [[[5.0]], [[21.0]]]);
 
       assert.deepEqual(y.shape, [2,1,1]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -219,7 +219,7 @@ describe('Layer: convolutional', function() {
         true // ignore_border
       );
 
-      let expected = pack([[[5.0]], [[21.0]]]);
+      let expected = pack(arrayType, [[[5.0]], [[21.0]]]);
 
       assert.deepEqual(y.shape, [2,1,1]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -235,7 +235,7 @@ describe('Layer: convolutional', function() {
 
   describe('1D convolutional layer serialized from Keras', function() {
 
-    let input = pack(JSON.parse(input1d_JSON));
+    let input = pack(arrayType, JSON.parse(input1d_JSON));
 
     it('should output the correct tensor (border mode: valid)', (done) => {
       let weights = require('./fixtures/test_weights_convolution1d_keras.json');
@@ -247,7 +247,7 @@ describe('Layer: convolutional', function() {
         'linear' // activation
       );
 
-      let expected = pack(JSON.parse(convolution1D_valid_expected_JSON));
+      let expected = pack(arrayType, JSON.parse(convolution1D_valid_expected_JSON));
 
       assert.deepEqual(y.shape, [3,5]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -268,7 +268,7 @@ describe('Layer: convolutional', function() {
         'linear' // activation
       );
 
-      let expected = pack(JSON.parse(convolution1D_same_expected_JSON));
+      let expected = pack(arrayType, JSON.parse(convolution1D_same_expected_JSON));
 
       assert.deepEqual(y.shape, [4,5]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -289,7 +289,7 @@ describe('Layer: convolutional', function() {
         'linear' // activation
       );
 
-      let expected = pack(JSON.parse(convolution1D_full_expected_JSON));
+      let expected = pack(arrayType, JSON.parse(convolution1D_full_expected_JSON));
 
       assert.deepEqual(y.shape, [5,5]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -304,7 +304,7 @@ describe('Layer: convolutional', function() {
 
   describe('1D max-pooling layer', function() {
 
-    let input = pack(JSON.parse(input1d_JSON));
+    let input = pack(arrayType, JSON.parse(input1d_JSON));
 
     it('should output the correct tensor (input shape: [4,3], pool_length: 2)', (done) => {
 
@@ -314,7 +314,7 @@ describe('Layer: convolutional', function() {
         true // ignore_border
       );
 
-      let expected = pack([[3.0, 4.0, 5.0], [9.0, 10.0, 11.0]]);
+      let expected = pack(arrayType, [[3.0, 4.0, 5.0], [9.0, 10.0, 11.0]]);
 
       assert.deepEqual(y.shape, [2,3]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -333,7 +333,7 @@ describe('Layer: convolutional', function() {
         true // ignore_border
       );
 
-      let expected = pack([[6.0, 7.0, 8.0]]);
+      let expected = pack(arrayType, [[6.0, 7.0, 8.0]]);
 
       assert.deepEqual(y.shape, [1,3]);
       for (let i = 0; i < y.shape[0]; i++) {
@@ -352,7 +352,7 @@ describe('Layer: convolutional', function() {
         true // ignore_border
       );
 
-      let expected = pack([[9.0, 10.0, 11.0]]);
+      let expected = pack(arrayType, [[9.0, 10.0, 11.0]]);
 
       assert.deepEqual(y.shape, [1,3]);
       for (let i = 0; i < y.shape[0]; i++) {

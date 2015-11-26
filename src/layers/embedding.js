@@ -1,9 +1,9 @@
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
-import pack from 'ndarray-pack';
+import pack from '../lib/ndarray-pack';
 
 export function embeddingLayer(arrayType, x, weights, mask_zero=false) {
-  let E = pack(weights['E']);
+  let E = pack(arrayType, weights['E']);
 
   let y;
 

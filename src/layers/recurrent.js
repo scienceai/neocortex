@@ -1,6 +1,6 @@
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
-import pack from 'ndarray-pack';
+import pack from '../lib/ndarray-pack';
 import mvprod from '../lib/cpu/matrix-vector-product';
 import * as activationFuncs from '../functions/activations';
 
@@ -14,18 +14,18 @@ import * as activationFuncs from '../functions/activations';
 // LSTM
 //
 export function rLSTMLayer(arrayType, x, weights, activation='tanh', inner_activation='hard_sigmoid', return_sequences=false) {
-  let W_xi = pack(weights['W_xi']);
-  let W_hi = pack(weights['W_hi']);
-  let b_i = pack(weights['b_i']);
-  let W_xc = pack(weights['W_xc']);
-  let W_hc = pack(weights['W_hc']);
-  let b_c = pack(weights['b_c']);
-  let W_xf = pack(weights['W_xf']);
-  let W_hf = pack(weights['W_hf']);
-  let b_f = pack(weights['b_f']);
-  let W_xo = pack(weights['W_xo']);
-  let W_ho = pack(weights['W_ho']);
-  let b_o = pack(weights['b_o']);
+  let W_xi = pack(arrayType, weights['W_xi']);
+  let W_hi = pack(arrayType, weights['W_hi']);
+  let b_i = pack(arrayType, weights['b_i']);
+  let W_xc = pack(arrayType, weights['W_xc']);
+  let W_hc = pack(arrayType, weights['W_hc']);
+  let b_c = pack(arrayType, weights['b_c']);
+  let W_xf = pack(arrayType, weights['W_xf']);
+  let W_hf = pack(arrayType, weights['W_hf']);
+  let b_f = pack(arrayType, weights['b_f']);
+  let W_xo = pack(arrayType, weights['W_xo']);
+  let W_ho = pack(arrayType, weights['W_ho']);
+  let b_o = pack(arrayType, weights['b_o']);
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
 
@@ -113,15 +113,15 @@ export function rLSTMLayer(arrayType, x, weights, activation='tanh', inner_activ
 // GRU
 //
 export function rGRULayer(arrayType, x, weights, activation='tanh', inner_activation='hard_sigmoid', return_sequences=false) {
-  let W_xz = pack(weights['W_xz']);
-  let W_hz = pack(weights['W_hz']);
-  let b_z = pack(weights['b_z']);
-  let W_xr = pack(weights['W_xr']);
-  let W_hr = pack(weights['W_hr']);
-  let b_r = pack(weights['b_r']);
-  let W_xh = pack(weights['W_xh']);
-  let W_hh = pack(weights['W_hh']);
-  let b_h = pack(weights['b_h']);
+  let W_xz = pack(arrayType, weights['W_xz']);
+  let W_hz = pack(arrayType, weights['W_hz']);
+  let b_z = pack(arrayType, weights['b_z']);
+  let W_xr = pack(arrayType, weights['W_xr']);
+  let W_hr = pack(arrayType, weights['W_hr']);
+  let b_r = pack(arrayType, weights['b_r']);
+  let W_xh = pack(arrayType, weights['W_xh']);
+  let W_hh = pack(arrayType, weights['W_hh']);
+  let b_h = pack(arrayType, weights['b_h']);
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
   let temp = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
@@ -196,14 +196,14 @@ export function rGRULayer(arrayType, x, weights, activation='tanh', inner_activa
 // JZS1
 //
 export function rJZS1Layer(arrayType, x, weights, activation='tanh', inner_activation='sigmoid', return_sequences=false) {
-  let W_xz = pack(weights['W_xz']);
-  let b_z = pack(weights['b_z']);
-  let W_xr = pack(weights['W_xr']);
-  let W_hr = pack(weights['W_hr']);
-  let b_r = pack(weights['b_r']);
-  let W_hh = pack(weights['W_hh']);
-  let b_h = pack(weights['b_h']);
-  let Pmat = pack(weights['Pmat']);
+  let W_xz = pack(arrayType, weights['W_xz']);
+  let b_z = pack(arrayType, weights['b_z']);
+  let W_xr = pack(arrayType, weights['W_xr']);
+  let W_hr = pack(arrayType, weights['W_hr']);
+  let b_r = pack(arrayType, weights['b_r']);
+  let W_hh = pack(arrayType, weights['W_hh']);
+  let b_h = pack(arrayType, weights['b_h']);
+  let Pmat = pack(arrayType, weights['Pmat']);
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
   let temp = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
@@ -275,15 +275,15 @@ export function rJZS1Layer(arrayType, x, weights, activation='tanh', inner_activ
 // JZS2
 //
 export function rJZS2Layer(arrayType, x, weights, activation='tanh', inner_activation='sigmoid', return_sequences=false) {
-  let W_xz = pack(weights['W_xz']);
-  let W_hz = pack(weights['W_hz']);
-  let b_z = pack(weights['b_z']);
-  let W_hr = pack(weights['W_hr']);
-  let b_r = pack(weights['b_r']);
-  let W_xh = pack(weights['W_xh']);
-  let W_hh = pack(weights['W_hh']);
-  let b_h = pack(weights['b_h']);
-  let Pmat  = pack(weights['Pmat']);
+  let W_xz = pack(arrayType, weights['W_xz']);
+  let W_hz = pack(arrayType, weights['W_hz']);
+  let b_z = pack(arrayType, weights['b_z']);
+  let W_hr = pack(arrayType, weights['W_hr']);
+  let b_r = pack(arrayType, weights['b_r']);
+  let W_xh = pack(arrayType, weights['W_xh']);
+  let W_hh = pack(arrayType, weights['W_hh']);
+  let b_h = pack(arrayType, weights['b_h']);
+  let Pmat  = pack(arrayType, weights['Pmat']);
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
   let temp_x_proj = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);
@@ -358,15 +358,15 @@ export function rJZS2Layer(arrayType, x, weights, activation='tanh', inner_activ
 // JZS3
 //
 export function rJZS3Layer(arrayType, x, weights, activation='tanh', inner_activation='sigmoid', return_sequences=false) {
-  let W_xz = pack(weights['W_xz']);
-  let W_hz = pack(weights['W_hz']);
-  let b_z = pack(weights['b_z']);
-  let W_xr = pack(weights['W_xr']);
-  let W_hr = pack(weights['W_hr']);
-  let b_r = pack(weights['b_r']);
-  let W_xh = pack(weights['W_xh']);
-  let W_hh = pack(weights['W_hh']);
-  let b_h = pack(weights['b_h']);
+  let W_xz = pack(arrayType, weights['W_xz']);
+  let W_hz = pack(arrayType, weights['W_hz']);
+  let b_z = pack(arrayType, weights['b_z']);
+  let W_xr = pack(arrayType, weights['W_xr']);
+  let W_hr = pack(arrayType, weights['W_hr']);
+  let b_r = pack(arrayType, weights['b_r']);
+  let W_xh = pack(arrayType, weights['W_xh']);
+  let W_hh = pack(arrayType, weights['W_hh']);
+  let b_h = pack(arrayType, weights['b_h']);
 
   let x_t = ndarray(new arrayType(x.shape[1]), [x.shape[1]]);
   let temp = ndarray(new arrayType(b_z.shape[0]), [b_z.shape[0]]);

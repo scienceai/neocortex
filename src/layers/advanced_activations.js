@@ -1,6 +1,6 @@
 import cwise from 'cwise';
 import ndarray from 'ndarray';
-import pack from 'ndarray-pack';
+import pack from '../lib/ndarray-pack';
 import ops from 'ndarray-ops';
 
 export function leakyReLULayer(arrayType, x, alpha=0.3) {
@@ -22,7 +22,7 @@ export function leakyReLULayer(arrayType, x, alpha=0.3) {
 }
 
 export function parametricReLULayer(arrayType, x, weights) {
-  let alphas = pack(weights['alphas']);
+  let alphas = pack(arrayType, weights['alphas']);
 
   let parametricReLU = cwise({
     args: ['array', 'array', 'array', 'array'],
@@ -41,8 +41,8 @@ export function parametricReLULayer(arrayType, x, weights) {
 }
 
 export function parametricSoftplusLayer(arrayType, x, weights) {
-  let alphas = pack(weights['alphas']);
-  let betas = pack(weights['betas']);
+  let alphas = pack(arrayType, weights['alphas']);
+  let betas = pack(arrayType, weights['betas']);
 
   let y = ndarray(new arrayType(x.size), x.shape);
 

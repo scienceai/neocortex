@@ -1,6 +1,6 @@
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
-import pack from 'ndarray-pack';
+import pack from '../lib/ndarray-pack';
 import convolve from '../lib/cpu/convolve-2d';
 import mvprod from '../lib/cpu/matrix-vector-product';
 import * as activationFuncs from '../functions/activations';
@@ -26,8 +26,8 @@ export function convolution2DLayer(arrayType, x, weights,
 
   let stack_size = x.shape[0];
 
-  let W = pack(weights['W']);
-  let b = pack(weights['b']);
+  let W = pack(arrayType, weights['W']);
+  let b = pack(arrayType, weights['b']);
 
   let stacks_new = nb_filter;
   let rows_new = x.shape[1];
@@ -125,8 +125,8 @@ export function convolution1DLayer(arrayType, x, weights,
   subsample_length=1,
   activation='relu') {
 
-  let W = pack(weights['W']);
-  let b = pack(weights['b']);
+  let W = pack(arrayType, weights['W']);
+  let b = pack(arrayType, weights['b']);
 
   let x_mod = ndarray(new arrayType(x.size), [x.shape[1], x.shape[0], 1]);
   ops.assign(x_mod.pick(null, null, 0), x.transpose(1, 0));

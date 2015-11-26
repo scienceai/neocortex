@@ -1,14 +1,14 @@
 import assert from 'assert';
 import almostEqual from 'almost-equal';
 import ndarray from 'ndarray';
-import pack from 'ndarray-pack';
+import pack from '../src/lib/ndarray-pack';
 import { rLSTMLayer, rGRULayer, rJZS1Layer, rJZS2Layer, rJZS3Layer } from '../src/layers/recurrent';
 
 const EPSILON = almostEqual.FLT_EPSILON;
 
 describe('Layer: recurrent', function() {
-  let input = pack([[0.1, 0.0, 0.9, 0.6], [0.5, 0.5, 0.5, 0.3]]);
   let arrayType = Float64Array;
+  let input = pack(arrayType, [[0.1, 0.0, 0.9, 0.6], [0.5, 0.5, 0.5, 0.3]]);
 
   describe('long short-term memory (LSTM) serialized from Keras', function() {
     it('should output the correct hidden state at the last timestep', (done) => {

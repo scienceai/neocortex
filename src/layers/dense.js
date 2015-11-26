@@ -1,12 +1,12 @@
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
-import pack from 'ndarray-pack';
+import pack from '../lib/ndarray-pack';
 import mvprod from '../lib/cpu/matrix-vector-product';
 import * as activationFuncs from '../functions/activations';
 
 export function denseLayer(arrayType, x, weights, activation='linear') {
-  let W = pack(weights['W']);
-  let b = pack(weights['b']);
+  let W = pack(arrayType, weights['W']);
+  let b = pack(arrayType, weights['b']);
 
   let y = ndarray(new arrayType(W.shape[1]), [W.shape[1]]);
 

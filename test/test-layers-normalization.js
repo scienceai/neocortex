@@ -1,14 +1,14 @@
 import assert from 'assert';
 import almostEqual from 'almost-equal';
 import ndarray from 'ndarray';
-import pack from 'ndarray-pack';
+import pack from '../src/lib/ndarray-pack';
 import { batchNormalizationLayer } from '../src/layers/normalization';
 
 const EPSILON = almostEqual.FLT_EPSILON;
 
 describe('Layer: normalization', function() {
-  let input = pack([1,0,-0.6,0.9,2,-1.2,0.4,-3]);
   let arrayType = Float64Array;
+  let input = pack(arrayType, [1,0,-0.6,0.9,2,-1.2,0.4,-3]);
 
   describe('batch normalization', function() {
     it('should output the correct values', (done) => {
@@ -20,7 +20,7 @@ describe('Layer: normalization', function() {
       };
 
       let y = batchNormalizationLayer(arrayType, input, weights);
-      let expected = pack([0.03857423737645149, 1.0031425952911377, 2.0176777839660645, 3.038480520248413, 3.9846818447113037, 5.0007195472717285, 6.0, 6.990389347076416]);
+      let expected = pack(arrayType, [0.03857423737645149, 1.0031425952911377, 2.0176777839660645, 3.038480520248413, 3.9846818447113037, 5.0007195472717285, 6.0, 6.990389347076416]);
 
       assert.deepEqual(y.shape, input.shape);
       for (let i = 0; i < y.shape[0]; i++) {
