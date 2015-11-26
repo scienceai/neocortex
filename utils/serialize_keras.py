@@ -61,6 +61,17 @@ layer_weights_dict = {
     'Convolution1D': ['W', 'b']
 }
 
+def appr_f32_prec(arr):
+    arr_formatted = []
+    for item in arr:
+        if type(item) is list:
+            arr_formatted.append(appr_f32_prec(item))
+        elif type(item) is float:
+            arr_formatted.append(float('{:.7f}'.format(item)))
+        else:
+            arr_formatted.append(item)
+    return arr_formatted
+
 def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
     with open(model_json_file, 'r') as f:
         model_metadata = json.load(f)
@@ -84,7 +95,11 @@ def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
                 weights = {}
                 weight_names = layer_weights_dict[layer['name']]
                 for p, name in enumerate(weight_names):
-                    weights[name] = weights_file.get('layer_{}/param_{}'.format(k, p)).value.tolist()
+                    arr = weights_file.get('layer_{}/param_{}'.format(k, p)).value
+                    if arr.dtype == 'float32':
+                        weights[name] = appr_f32_prec(arr.tolist())
+                    else:
+                        weights[name] = arr.tolist()
                 layer_params.append(weights)
             else:
                 layer_params.append(layer[param])
