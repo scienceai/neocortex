@@ -1,12 +1,14 @@
-import * as layerFuncs from './layers';
+import fs from 'fs';
+import zlib from 'zlib';
+import Promise from 'bluebird';
+import request from 'axios';
 import ndarray from 'ndarray';
 import pack from './lib/ndarray-pack';
 import unpack from 'ndarray-unpack';
-import request from 'axios';
-import fs from 'fs';
-import zlib from 'zlib';
-import concat from 'concat-stream';
-import Promise from 'bluebird';
+import * as layerFuncs from './layers';
+
+let readFile = Promise.promisify(fs.readFile);
+let gunzip = Promise.promisify(zlib.gunzip);
 
 export default class NeuralNet {
   constructor(config) {
@@ -41,32 +43,30 @@ export default class NeuralNet {
     }
 
     if (this._environment === 'browser' || this._environment === 'webworker') {
-      return new Promise((resolve, reject) => {
-        request.get(this._modelFilePath).then(res => {
-          if (res.statusCode == 200) {
-            this._layers = res.body;
-            resolve(true);
+      return request.get(this._modelFilePath)
+        .then(res => {
+          if (res.status == 200) {
+            this._layers = res.data;
           } else {
-            reject(new Error('error loading model file.'));
+            throw new Error('error loading model file.');
           }
-        }).catch(err => reject(err));
-      });
+        })
+        .catch(err => { throw err; });
     } else if (this._environment === 'node') {
-      return new Promise((resolve, reject) => {
-        let s = fs.createReadStream(this._modelFilePath);
-        if (this._modelFilePath.endsWith('.json.gz')) {
-          let gunzip = zlib.createGunzip();
-          s.pipe(gunzip).pipe(concat((model) => {
-            this._layers = JSON.parse(model.toString());
-            resolve(true);
-          }));
-        } else if (this._modelFilePath.endsWith('.json')) {
-          s.pipe(concat((model) => {
-            this._layers = JSON.parse(model.toString());
-            resolve(true);
-          }));
-        }
-      });
+      if (this._modelFilePath.endsWith('.json.gz')) {
+        return Promise.resolve(this._modelFilePath)
+          .then(readFile)
+          .then(gunzip)
+          .then(JSON.parse)
+          .then(data => { this._layers = data; })
+          .catch(err => { throw err; });
+      } else if (this._modelFilePath.endsWith('.json')) {
+        return Promise.resolve(this._modelFilePath)
+          .then(readFile)
+          .then(JSON.parse)
+          .then(data => { this._layers = data; })
+          .catch(err => { throw err; });
+      }
     }
   }
 

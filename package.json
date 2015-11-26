@@ -1,6 +1,6 @@
 {
   "name": "neocortex-js",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Run trained neural networks in the browser or node.js",
   "main": "dist/index.js",
   "directories": {
@@ -52,7 +52,6 @@
   "dependencies": {
     "axios": "^0.7.0",
     "bluebird": "^3.0.5",
-    "concat-stream": "^1.5.1",
     "cwise": "^1.0.8",
     "cwise-compiler": "^1.1.2",
     "ndarray": "^1.0.18",
