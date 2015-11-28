@@ -31,7 +31,6 @@ export default class NeuralNet {
     } else {
       this._environment = 'shell';
     }
-    console.log(`Neural network running in environment: ${this._environment}.`);
 
     this._modelFilePath = config.modelFilePath || null;
     this._layers = [];
