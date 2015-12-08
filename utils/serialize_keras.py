@@ -95,7 +95,8 @@ def get_layer_params(layer, weights_file, layer_num, param_num_offset):
                 merge_branch_layers = []
                 for merge_branch_layer in merge_branch['layers']:
                     merge_branch_layer_params = get_layer_params(merge_branch_layer, weights_file, layer_num, param_num_offset_update)
-                    param_num_offset_update += len(layer_weights_dict[merge_branch_layer['name']])
+                    if merge_branch_layer['name'] in layer_weights_dict:
+                        param_num_offset_update += len(layer_weights_dict[merge_branch_layer['name']])
                     merge_branch_layers.append({
                         'layerName': layer_name_dict[merge_branch_layer['name']],
                         'parameters': merge_branch_layer_params
