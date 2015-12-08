@@ -26,7 +26,7 @@ layer_name_dict = {
 }
 
 layer_params_dict = {
-    'Merge': ['layers', 'mode', 'concat_axis'],
+    'Merge': ['layers', 'mode', 'concat_axis', 'dot_axes'],
     'Dense': ['weights', 'activation'],
     'Dropout': ['p'],
     'Flatten': [],
@@ -74,6 +74,38 @@ def appr_f32_prec(arr):
             arr_formatted.append(item)
     return arr_formatted
 
+def get_layer_params(layer, weights_file, layer_num, param_num_offset):
+    layer_params = []
+    for param in layer_params_dict[layer['name']]:
+        if param == 'weights':
+            weights = {}
+            weight_names = layer_weights_dict[layer['name']]
+            for p, name in enumerate(weight_names):
+                arr = weights_file.get('layer_{}/param_{}'.format(layer_num, p + param_num_offset)).value
+                if arr.dtype == 'float32':
+                    weights[name] = appr_f32_prec(arr.tolist())
+                else:
+                    weights[name] = arr.tolist()
+            layer_params.append(weights)
+        elif param == 'layers':
+            # for merge layer
+            merge_branches = []
+            param_num_offset_update = param_num_offset
+            for merge_branch in layer['layers']:
+                merge_branch_layers = []
+                for merge_branch_layer in merge_branch['layers']:
+                    merge_branch_layer_params = get_layer_params(merge_branch_layer, weights_file, layer_num, param_num_offset_update)
+                    param_num_offset_update += len(layer_weights_dict[merge_branch_layer['name']])
+                    merge_branch_layers.append({
+                        'layerName': layer_name_dict[merge_branch_layer['name']],
+                        'parameters': merge_branch_layer_params
+                    })
+                merge_branches.append(merge_branch_layers)
+            layer_params.append(merge_branches)
+        elif param in layer:
+            layer_params.append(layer[param])
+    return layer_params
+
 def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
     with open(model_json_file, 'r') as f:
         model_metadata = json.load(f)
@@ -90,21 +122,7 @@ def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
             layers[k-num_activation_layers]['parameters'][idx_activation] = layer['activation']
             continue
 
-        layer_params = []
-
-        for param in layer_params_dict[layer['name']]:
-            if param == 'weights':
-                weights = {}
-                weight_names = layer_weights_dict[layer['name']]
-                for p, name in enumerate(weight_names):
-                    arr = weights_file.get('layer_{}/param_{}'.format(k, p)).value
-                    if arr.dtype == 'float32':
-                        weights[name] = appr_f32_prec(arr.tolist())
-                    else:
-                        weights[name] = arr.tolist()
-                layer_params.append(weights)
-            else:
-                layer_params.append(layer[param])
+        layer_params = get_layer_params(layer, weights_file, k, 0)
 
         layers.append({
             'layerName': layer_name_dict[layer['name']],
