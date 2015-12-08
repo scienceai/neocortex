@@ -1,3 +1,4 @@
+import { mergeLayer } from './layers/merge';
 import { denseLayer } from './layers/dense';
 import { dropoutLayer } from './layers/dropout';
 import { flattenLayer } from './layers/flatten';
@@ -8,6 +9,7 @@ import { rLSTMLayer, rGRULayer, rJZS1Layer, rJZS2Layer, rJZS3Layer } from './lay
 import { convolution2DLayer, maxPooling2DLayer, convolution1DLayer, maxPooling1DLayer } from './layers/convolutional';
 
 export {
+  mergeLayer,
   denseLayer,
   dropoutLayer,
   flattenLayer,

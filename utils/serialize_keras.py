@@ -3,6 +3,7 @@ import json
 import gzip
 
 layer_name_dict = {
+    'Merge': 'mergeLayer',
     'Dense': 'denseLayer',
     'Dropout': 'dropoutLayer',
     'Flatten': 'flattenLayer',
@@ -25,6 +26,7 @@ layer_name_dict = {
 }
 
 layer_params_dict = {
+    'Merge': ['layers', 'mode', 'concat_axis'],
     'Dense': ['weights', 'activation'],
     'Dropout': ['p'],
     'Flatten': [],
