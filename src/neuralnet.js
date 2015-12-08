@@ -78,7 +78,15 @@ export default class NeuralNet {
       return X;
     };
 
-    let X = pack(this._arrayType, input);
+    let X;
+    if (this._layers[0].layerName === 'mergeLayer') {
+      if (input.length !== this._layers[0].parameters[0].length) {
+        throw new Error('merge layer branch number does not match input length');
+      }
+      X = input.map(x_branch => pack(this._arrayType, x_branch));
+    } else {
+      X = pack(this._arrayType, input);
+    }
     let output_ndarray = _predict(X);
 
     return unpack(output_ndarray);
