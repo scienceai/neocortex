@@ -6,8 +6,9 @@ Run trained deep neural networks in the browser or node.js. Currently supports s
 
 **[PROJECT PAGE AND EXAMPLES](https://scienceai.github.io/neocortex)**
 
-[![build status](https://img.shields.io/travis/scienceai/neocortex/master.svg?style=flat-square)](https://travis-ci.org/scienceai/neocortex)
-[![npm version](https://img.shields.io/npm/v/neocortex-js.svg?style=flat-square)](https://www.npmjs.com/package/neocortex-js)
+[![build status](https://img.shields.io/travis/scienceai/neocortex/master.svg)](https://travis-ci.org/scienceai/neocortex)
+[![npm version](https://img.shields.io/npm/v/neocortex-js.svg)](https://www.npmjs.com/package/neocortex-js)
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.44692.svg)](http://dx.doi.org/10.5281/zenodo.44692)
 
 ### Background
 
