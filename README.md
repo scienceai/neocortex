@@ -2,17 +2,16 @@
   <img src="examples/logo.png"/>
 </p>
 
-Run trained deep neural networks in the browser or node.js. Currently supports serialization from trained [Keras](https://github.com/fchollet/keras/) models.
+Run trained deep neural networks in the browser or node.js. Currently supports serialization from trained [Keras](https://github.com/fchollet/keras/) models (note: not up-to-date with the current Keras API).
 
 **[PROJECT PAGE AND EXAMPLES](https://scienceai.github.io/neocortex)**
 
 [![build status](https://img.shields.io/travis/scienceai/neocortex/master.svg)](https://travis-ci.org/scienceai/neocortex)
 [![npm version](https://img.shields.io/npm/v/neocortex-js.svg)](https://www.npmjs.com/package/neocortex-js)
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.44692.svg)](http://dx.doi.org/10.5281/zenodo.44692)
 
 ### Background
 
-Training deep neural networks on any meaningful dataset requires massive computational resources and lots and lots of time. However, the forward pass prediction phase is relatively cheap - typically there is no backpropagation, computational graphs, loss functions, or optimization algorithms to worry about.
+Training deep neural networks on any meaningful dataset requires massive computational resources and lots and lots of time. However, the forward-pass prediction phase is relatively cheap - typically there is no backpropagation, computational graphs, loss functions, or optimization algorithms to worry about.
 
 What do you do when you have a trained deep neural network and now wish to use it to power a part of your client-facing web application? Traditionally, you would deploy your model on a server and call it from your web application through an API. But what if you can deploy it _in the browser_ alongside the rest of your webapp? Computation would be offloaded entirely to your end-user!
 
@@ -85,6 +84,7 @@ The core steps involve:
 To build the project yourself, for both the browser (outputs to `build/neocortex.min.js`) and node.js (outputs to `dist/`):
 
 ```
+$ npm install
 $ npm run build
 ```
 
@@ -94,80 +94,25 @@ To build just for the browser:
 $ npm run build-browser
 ```
 
-### Frameworks
+### Keras
 
-###### Keras
-
-A script to serialize a trained [Keras](http://keras.io/) model together with its `hdf5` formatted weights is located in the `utils/` folder [here](https://github.com/scienceai/neocortex/blob/master/utils/serialize_keras.py). It currently only supports sequential models with layers in the API section below. Implementation of graph models is planned.
-
-
-### API
+A script to serialize a trained [Keras](http://keras.io/) model together with its `hdf5` formatted weights is located in the [`utils/` folder](https://github.com/scienceai/neocortex/blob/master/utils/serialize_keras.py). It currently only supports sequential models with layers listed below. Implementation of graph models is planned.
 
 Functions and layers currently implemented are listed below. More forthcoming.
 
-##### Activation functions
++ Activation functions: `linear`, `relu`, `sigmoid`, `hard_sigmoid`, `tanh`, `softmax`
 
-+ `linear`
++ Advanced activation layers: `leakyReLULayer`, `parametricReLULayer`, `parametricSoftplusLayer`, `thresholdedLinearLayer`, `thresholdedReLuLayer`
 
-+ `relu`
++ Basic layers: `denseLayer`, `dropoutLayer`, `flattenLayer`, `mergeLayer`
 
-+ `sigmoid`
++ Recurrent layers: `rGRULayer` (gated-recurrent unit or GRU), `rLSTMLayer` (long short-term memory or LSTM), `rJZS1Layer`, `rJZS2Layer`, `rJZS3Layer` (mutated GRUs, from [Jozefowicz et al. 2015](http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf))
 
-+ `hard_sigmoid`
++ Convolutional layers: `convolution2DLayer`, `maxPooling2DLayer`, `convolution1DLayer`, `maxPooling1DLayer`
 
-+ `tanh`
++ Embedding layers: `embeddingLayer` (maps indices to corresponding embedding vectors)
 
-+ `softmax`
-
-##### Advanced activation layers
-
-+ `leakyReLULayer`
-
-+ `parametricReLULayer`
-
-+ `parametricSoftplusLayer`
-
-+ `thresholdedLinearLayer`
-
-+ `thresholdedReLuLayer`
-
-##### Basic layers
-
-+ `denseLayer`
-
-+ `flattenLayer`
-
-##### Recurrent layers
-
-+ `rGRULayer` (gated-recurrent unit or GRU)
-
-+ `rLSTMLayer` (long short-term memory or LSTM)
-
-+ `rJZS1Layer`, `rJZS2Layer`, `rJZS3Layer` (mutated GRUs - JZS1, JZS2, JZS3 - from [Jozefowicz et al. 2015](http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf))
-
-##### Convolutional layers
-
-+ `convolution2DLayer`
-
-+ `maxPooling2DLayer`
-
-+ `convolution1DLayer`
-
-+ `maxPooling1DLayer`
-
-##### Embedding layers
-
-+ `embeddingLayer` - maps indices to corresponding embedding vectors
-
-##### Normalization layers
-
-+ `batchNormalizationLayer` - see [Ioffe and Szegedy 2015](http://arxiv.org/abs/1502.03167)
-
-### Todo
-
-+ [ ] implement merge and graph structures from keras
-
-+ [ ] implement additional keras layers such as TimeDistributedDense, etc.
++ Normalization layers: `batchNormalizationLayer`
 
 ### Tests
 
@@ -182,6 +127,9 @@ Browser testing is planned.
 
 Thanks to @halmos for the logo.
 
+### Citation
+
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.44692.svg)](http://dx.doi.org/10.5281/zenodo.44692)
 
 ### License
 
