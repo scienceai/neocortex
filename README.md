@@ -2,9 +2,9 @@
   <img src="examples/logo.png"/>
 </p>
 
-Run trained deep neural networks in the browser or node.js. Currently supports serialization from trained [Keras](https://github.com/fchollet/keras/) models (note: not up-to-date with the current Keras API).
+### [PROJECT PAGE AND EXAMPLES](https://scienceai.github.io/neocortex)
 
-**[PROJECT PAGE AND EXAMPLES](https://scienceai.github.io/neocortex)**
+Run trained deep neural networks in the browser or node.js. Currently supports serialization from trained [Keras](https://github.com/fchollet/keras/) models (note: not up-to-date with the current Keras API).
 
 [![build status](https://img.shields.io/travis/scienceai/neocortex/master.svg)](https://travis-ci.org/scienceai/neocortex)
 [![npm version](https://img.shields.io/npm/v/neocortex-js.svg)](https://www.npmjs.com/package/neocortex-js)
