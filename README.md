@@ -106,7 +106,7 @@ Functions and layers currently implemented are listed below. More forthcoming.
 
 + Basic layers: `denseLayer`, `dropoutLayer`, `flattenLayer`, `mergeLayer`
 
-+ Recurrent layers: `rGRULayer` (gated-recurrent unit or GRU), `rLSTMLayer` (long short-term memory or LSTM), `rJZS1Layer`, `rJZS2Layer`, `rJZS3Layer` (mutated GRUs, from [Jozefowicz et al. 2015](http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf))
++ Recurrent layers: `rGRULayer` (gated-recurrent unit or GRU), `rLSTMLayer` (long short-term memory or LSTM)
 
 + Convolutional layers: `convolution2DLayer`, `maxPooling2DLayer`, `convolution1DLayer`, `maxPooling1DLayer`
 

@@ -2,7 +2,7 @@ import assert from 'assert';
 import almostEqual from 'almost-equal';
 import ndarray from 'ndarray';
 import pack from '../src/lib/ndarray-pack';
-import { rLSTMLayer, rGRULayer, rJZS1Layer, rJZS2Layer, rJZS3Layer } from '../src/layers/recurrent';
+import { rLSTMLayer, rGRULayer } from '../src/layers/recurrent';
 
 const EPSILON = almostEqual.FLT_EPSILON;
 
@@ -66,87 +66,4 @@ describe('Layer: recurrent', function() {
     });
   });
 
-  describe('mutated recurrent network 1 (JZS1) serialized from Keras', function() {
-    it('should output the correct hidden state at the last timestep', (done) => {
-      let weights = require('./fixtures/test_weights_JZS1_keras.json');
-
-      let y = rJZS1Layer(arrayType, input, weights);
-      let expected = new Float64Array([0.7362973093986511, -0.023125506937503815, 0.8724695444107056, 0.316345751285553]);
-
-      assert.deepEqual(y.shape, [4]);
-      for (let i = 0; i < y.shape[0]; i++) {
-        assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
-      }
-      done();
-    });
-
-    it('should output the correct hidden state at the last timestep (non-square weights)', (done) => {
-      let weights = require('./fixtures/test_weights_nonsquare_JZS1_keras.json');
-
-      let y = rJZS1Layer(arrayType, input, weights);
-      let expected = new Float64Array([0.7789963211705515, 0.6363054133364847, 0.5116611144594283]);
-
-      assert.deepEqual(y.shape, [3]);
-      for (let i = 0; i < y.shape[0]; i++) {
-        assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
-      }
-      done();
-    });
-  });
-
-  describe('mutated recurrent network 2 (JZS2) serialized from Keras', function() {
-    it('should output the correct hidden state at the last timestep', (done) => {
-      let weights = require('./fixtures/test_weights_JZS2_keras.json');
-
-      let y = rJZS2Layer(arrayType, input, weights);
-      let expected = new Float64Array([0.4409944713115692, 0.6610596179962158, 0.22975823283195496, -0.12029259651899338]);
-
-      assert.deepEqual(y.shape, [4]);
-      for (let i = 0; i < y.shape[0]; i++) {
-        assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
-      }
-      done();
-    });
-
-    it('should output the correct hidden state at the last timestep (non-square weights)', (done) => {
-      let weights = require('./fixtures/test_weights_nonsquare_JZS2_keras.json');
-
-      let y = rJZS2Layer(arrayType, input, weights);
-      let expected = new Float64Array([0.6960307678380586, 0.63672076273643, 0.005374565782340368]);
-
-      assert.deepEqual(y.shape, [3]);
-      for (let i = 0; i < y.shape[0]; i++) {
-        assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
-      }
-      done();
-    });
-  });
-
-  describe('mutated recurrent network 3 (JZS3) serialized from Keras', function() {
-    it('should output the correct hidden state at the last timestep', (done) => {
-      let weights = require('./fixtures/test_weights_JZS3_keras.json');
-
-      let y = rJZS3Layer(arrayType, input, weights);
-      let expected = new Float64Array([0.8178967237472534, 0.1090848445892334, 0.5106683969497681, 0.5130321979522705]);
-
-      assert.deepEqual(y.shape, [4]);
-      for (let i = 0; i < y.shape[0]; i++) {
-        assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
-      }
-      done();
-    });
-
-    it('should output the correct hidden state at the last timestep (non-square weights)', (done) => {
-      let weights = require('./fixtures/test_weights_nonsquare_JZS3_keras.json');
-
-      let y = rJZS3Layer(arrayType, input, weights);
-      let expected = new Float64Array([0.6544535354606844, 0.39989062885298476, 0.7527888042830722]);
-
-      assert.deepEqual(y.shape, [3]);
-      for (let i = 0; i < y.shape[0]; i++) {
-        assert(almostEqual(y.get(i), expected[i], EPSILON, EPSILON));
-      }
-      done();
-    });
-  });
 });
