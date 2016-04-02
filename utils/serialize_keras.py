@@ -127,3 +127,16 @@ def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
     else:
         with open(save_filepath, 'w') as f:
             json.dump(layers, f)
+
+
+if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Prepare Keras models for neocortex')
+    parser.add_argument('model_json_file', type=str, help='Model JSON file')
+    parser.add_argument('weights_hdf5_file', type=str, help='Weights HDF5 file')
+    parser.add_argument('save_filepath', type=str, help='Save filepath')
+    parser.add_argument('--compress', action='store_true', help='Compress output')
+    args = parser.parse_args()
+
+    serialize(args.model_json_file, args.weights_hdf5_file, args.save_filepath, args.compress)
