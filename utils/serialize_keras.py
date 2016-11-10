@@ -98,6 +98,7 @@ def get_layer_params(layer, weights_file, layer_num, param_num_offset):
             layer_params.append(layer[param])
     return layer_params
 
+
 def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
     with open(model_json_file, 'r') as f:
         model_metadata = json.load(f)
@@ -106,20 +107,34 @@ def serialize(model_json_file, weights_hdf5_file, save_filepath, compress):
     layers = []
 
     num_activation_layers = 0
-    for k, layer in enumerate(model_metadata['layers']):
-        if layer['name'] == 'Activation':
+    for k, layer in enumerate(model_metadata['config']):
+        if layer['class_name'] == 'Activation':
             num_activation_layers += 1
-            prev_layer_name = model_metadata['layers'][k-1]['name']
+            prev_layer_name = model_metadata['config'][k-1]['class_name']
             idx_activation = layer_params_dict[prev_layer_name].index('activation')
-            layers[k-num_activation_layers]['parameters'][idx_activation] = layer['activation']
+            layers[k-num_activation_layers]['parameters'][idx_activation] = layer['config']['activation']
             continue
 
-        layer_params = get_layer_params(layer, weights_file, k, 0)
+        layer_params = []
+
+        for param in layer_params_dict[layer['class_name']]:
+            if param == 'weights':
+                layer_weights = list(weights_file.keys())
+                weights = {}
+                weight_names = layer_weights_dict[layer['class_name']]
+                for name in weight_names:
+                    weights[name] = weights_file.get('{}/{}_{}'.format(layer['config']['name'], layer['config']['name'], name)).value.tolist()
+                # for name, w in zip(weight_names, layer_weights):
+                #     weights[name] = weights_file.get('layer_{}/{}'.format(k, w)).value.tolist()
+                layer_params.append(weights)
+            else:
+                layer_params.append(layer['config'][param])
 
         layers.append({
-            'layerName': layer_name_dict[layer['name']],
+            'layerName': layer_name_dict[layer['class_name']],
             'parameters': layer_params
         })
+
 
     if compress:
         with gzip.open(save_filepath, 'wb') as f:
